@@ -1,0 +1,18 @@
+{
+  "text.autoconfig.online_emotes.title": "Онлайн Эмоции",
+
+  "text.autoconfig.online_emotes.category.default": "Главная",
+  "text.autoconfig.online_emotes.category.netty": "Нетти",
+  "text.autoconfig.online_emotes.category.integrations": "Интеграции",
+
+  "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "В секундах",
+  "text.autoconfig.online_emotes.option.reconnectionDelay": "Задержка перед повторным подключением",
+  "text.autoconfig.online_emotes.option.replaceMessages": "Заменять сообщения EmoteCraft на более подробные",
+
+  "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Только для Линукс",
+  "text.autoconfig.online_emotes.option.useEpoll": "Использование Epoll вместо Nio",
+  "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Неограниченно",
+  "text.autoconfig.online_emotes.option.threads": "Количество потоков для обработки данных",
+
+  "text.autoconfig.online_emotes.option.essentialIntegration": "Интеграция с Essential"
+}

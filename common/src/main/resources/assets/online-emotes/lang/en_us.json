@@ -1,0 +1,18 @@
+{
+  "text.autoconfig.online_emotes.title": "Online Emotes",
+
+  "text.autoconfig.online_emotes.category.default": "Main",
+  "text.autoconfig.online_emotes.category.netty": "Netty",
+  "text.autoconfig.online_emotes.category.integrations": "Integrations",
+
+  "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "In seconds",
+  "text.autoconfig.online_emotes.option.reconnectionDelay": "Delay before reconnecting",
+  "text.autoconfig.online_emotes.option.replaceMessages": "Replacing EmoteCraft messages with more detail",
+
+  "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Only for linux",
+  "text.autoconfig.online_emotes.option.useEpoll": "Using Epoll instead of Nio",
+  "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Unlimited",
+  "text.autoconfig.online_emotes.option.threads": "Number of threads for data processing",
+
+  "text.autoconfig.online_emotes.option.essentialIntegration": "Integration with Essential"
+}
