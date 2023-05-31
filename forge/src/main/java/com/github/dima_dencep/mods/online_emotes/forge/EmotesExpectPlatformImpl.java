@@ -7,9 +7,9 @@ import net.minecraftforge.fml.loading.LoadingModList;
 public class EmotesExpectPlatformImpl {
     public static boolean isEssentialAvailable() {
         try {
-            return ModList.get().isLoaded("");
+            return ModList.get().isLoaded("essential");
         } catch (Throwable t) {
-            return LoadingModList.get().getModFileById("") != null;
+            return LoadingModList.get().getModFileById("essential") != null;
         }
     }
 
