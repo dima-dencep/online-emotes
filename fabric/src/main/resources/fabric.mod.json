@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "online_emotes",
+  "version": "${version}",
+  "name": "Online Emotes",
+  "description": "Allows players to see each other's emotions without installing emotecraft on the server!",
+  "authors": [
+    "dima_dencep"
+  ],
+  "contributors": [
+    "NE4T0",
+    "nneewwtt"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/online-emotes",
+    "issues": "https://github.com/dimadencep/online-emotes/issues",
+    "sources": "https://github.com/dimadencep/online-emotes"
+  },
+  "license": "AGPL-3.0-only",
+  "icon": "icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.github.dima_dencep.mods.online_emotes.fabric.FabricOnlineEmotes"
+    ],
+    "modmenu": [
+      "com.github.dima_dencep.mods.online_emotes.fabric.integrations.ModMenuImpl"
+    ]
+  },
+  "mixins": [
+    "online-emotes.mixins.json",
+    "online-emotes-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "cloth-config": "*",
+    "emotecraft": "*"
+  },
+  "recommends": {
+    "essential-loader": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "parent": "emotecraft"
+    }
+  }
+}
