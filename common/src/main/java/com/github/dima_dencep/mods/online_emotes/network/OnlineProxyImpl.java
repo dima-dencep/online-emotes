@@ -22,10 +22,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @ChannelHandler.Sharable
 public class OnlineProxyImpl extends AbstractNetworkInstance {
     public final URI uri = URI.create(OnlineEmotes.config.address);
+    public final AtomicBoolean block = new AtomicBoolean();
     public final Bootstrap bootstrap = new Bootstrap();
     public HandshakeHandler handshakeHandler;
     public Channel ch;
@@ -38,7 +40,7 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
 
         EventLoopGroup loopGroup = NettyObjectFactory.newEventLoopGroup();
         loopGroup.scheduleAtFixedRate(() -> {
-            if (!isActive()) connectAsync();
+            if (!block.get()) connectAsync();
         }, 0L, OnlineEmotes.config.reconnectionDelay, TimeUnit.SECONDS);
 
         this.bootstrap.group(loopGroup);
@@ -61,11 +63,12 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
     }
 
     public void connectAsync() {
-        if (this.isActive()) {
+        if (this.isActive() || this.block.get()) {
             throw new IllegalStateException("Already connected!");
         }
 
         OnlineEmotes.logger.info("Preparing a new connection...");
+        this.block.set(true);
 
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(
                 this.uri,
@@ -83,9 +86,16 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
 
                 this.handshakeHandler.handshakeFuture.addListener((e) -> {
                     if (e.isSuccess()) {
+                        this.block.set(true);
                         sendConfigCallback();
+                    } else {
+                        OnlineEmotes.logger.error(e.cause());
+                        this.block.set(false);
                     }
                 });
+            } else {
+                OnlineEmotes.logger.error(l.cause());
+                this.block.set(false);
             }
         });
     }
@@ -123,6 +133,7 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
                 this.ch.closeFuture().sync();
             } catch (InterruptedException ignored) {
             }
+            this.block.set(false);
         }
 
         super.disconnect();
