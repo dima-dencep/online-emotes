@@ -10,12 +10,14 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 @Config(name = OnlineEmotes.MOD_ID)
 public class EmoteConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.RequiresRestart
     public long reconnectionDelay = 15L;
 
     public boolean replaceMessages = true;
 
     @ConfigEntry.Gui.Excluded
     @ConfigEntry.Category("netty")
+    @ConfigEntry.Gui.RequiresRestart
     public String address = "wss://api.constructlegacy.ru:443/websockets/online-emotes";
 
     @ConfigEntry.Gui.Tooltip
