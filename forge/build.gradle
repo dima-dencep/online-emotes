@@ -2,6 +2,8 @@ plugins {
     id "com.github.johnrengelman.shadow"
 }
 
+version = version + "-forge"
+
 architectury {
     platformSetupLoomIde()
     forge()

@@ -26,7 +26,7 @@ public class OnlineEmotes {
     }
 
     public static void sendMessage(Text title, Text description) {
-        if (config.essentialIntegration && EmotesExpectPlatform.isEssentialAvailable()) {
+        if (EmotesExpectPlatform.isEssentialAvailable() && config.essentialIntegration) {
             EmotesExpectPlatform.sendEssentialMessage(title.getString(), description.getString());
 
             return;
