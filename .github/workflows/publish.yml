@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '**/stable'
+      - '**/backport'
 
 jobs:
   build:
@@ -45,7 +46,7 @@ jobs:
         uses: christian-draeger/read-properties@1.1.1
         with:
           path: './gradle.properties'
-          properties: 'archives_base_name mod_version minecraft_version'
+          properties: 'mod_version minecraft_version'
 
       - name: Publish Forge to Modrinth & CurseForge
         uses: Kir-Antipov/mc-publish@v3.3
@@ -60,11 +61,11 @@ jobs:
             forge/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
             forge/build/libs/*-@(dev|sources|javadoc).jar
 
-          name: ${{ steps.read_property.outputs.archives_base_name }} ${{ steps.read_property.outputs.mod_version }} Forge ${{ steps.read_property.outputs.minecraft_version }}
+          name: Online Emotes ${{ steps.read_property.outputs.mod_version }} for ${{ steps.read_property.outputs.minecraft_version }} (Forge)
 
           changelog: ${{steps.build_changelog.outputs.changelog}}
 
-          version-type: beta
+          version-type: release
 
           loaders: forge
 
@@ -91,11 +92,11 @@ jobs:
             fabric/build/libs/!(*-@(dev|sources|javadoc|shadow)).jar
             fabric/build/libs/*-@(dev|sources|javadoc).jar
 
-          name: ${{ steps.read_property.outputs.archives_base_name }} ${{ steps.read_property.outputs.mod_version }} Fabric ${{ steps.read_property.outputs.minecraft_version }}
+          name: Online Emotes ${{ steps.read_property.outputs.mod_version }} for ${{ steps.read_property.outputs.minecraft_version }} (Fabric/Quilt)
 
           changelog: ${{steps.build_changelog.outputs.changelog}}
 
-          version-type: beta
+          version-type: release
 
           loaders: |
             fabric
