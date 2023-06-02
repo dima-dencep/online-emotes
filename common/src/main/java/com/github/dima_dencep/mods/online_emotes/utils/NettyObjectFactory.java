@@ -2,6 +2,7 @@ package com.github.dima_dencep.mods.online_emotes.utils;
 
 import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -21,7 +22,7 @@ public class NettyObjectFactory {
     };
 
     public static EventLoopGroup newEventLoopGroup() {
-        if (OnlineEmotes.config.useEpoll) {
+        if (Epoll.isAvailable() && OnlineEmotes.config.useEpoll) {
             return new EpollEventLoopGroup(OnlineEmotes.config.threads, threadFactory);
         } else {
             return new NioEventLoopGroup(OnlineEmotes.config.threads, threadFactory);
@@ -29,7 +30,7 @@ public class NettyObjectFactory {
     }
 
     public static Class<? extends SocketChannel> getSocketChannel() {
-        if (OnlineEmotes.config.useEpoll) {
+        if (Epoll.isAvailable() && OnlineEmotes.config.useEpoll) {
             return EpollSocketChannel.class;
         } else {
             return NioSocketChannel.class;
