@@ -120,7 +120,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.read_property.outputs.minecraft_version }}-${{ steps.read_property.outputs.mod_version }}"
           prerelease: false
-          title: "${{ steps.read_property.outputs.archives_base_name }} ${{ steps.read_property.outputs.mod_version }} for ${{ steps.read_property.outputs.minecraft_version }}"
+          title: "Online Emotes ${{ steps.read_property.outputs.mod_version }} for ${{ steps.read_property.outputs.minecraft_version }}"
           files: |
             fabric/build/libs/*
             forge/build/libs/*
