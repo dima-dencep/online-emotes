@@ -71,6 +71,8 @@ jobs:
 
           game-versions: |
             ${{ steps.read_property.outputs.minecraft_version }}
+            1.19.2
+            1.19.3
           
           dependencies: |
             cloth-config
@@ -104,6 +106,8 @@ jobs:
 
           game-versions: |
             ${{ steps.read_property.outputs.minecraft_version }}
+            1.19.2
+            1.19.3
           
           dependencies: |
             fabric-api
