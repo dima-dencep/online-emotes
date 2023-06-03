@@ -6,6 +6,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -34,6 +35,7 @@ public class ForgeOnlineEmotes extends OnlineEmotes {
         );
     }
 
+    @SubscribeEvent
     public void onJoin(ClientPlayerNetworkEvent.LoggingIn event) {
         if (proxy.isActive()) {
             proxy.sendConfigCallback();
