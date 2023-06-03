@@ -22,12 +22,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @ChannelHandler.Sharable
 public class OnlineProxyImpl extends AbstractNetworkInstance {
     public final URI uri = URI.create(OnlineEmotes.config.address);
-    public final AtomicBoolean block = new AtomicBoolean();
     public final Bootstrap bootstrap = new Bootstrap();
     public HandshakeHandler handshakeHandler;
     public Channel ch;
@@ -38,12 +36,7 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
             throw new IllegalArgumentException("Unsupported protocol: " + protocol);
         }
 
-        EventLoopGroup loopGroup = NettyObjectFactory.newEventLoopGroup();
-        loopGroup.scheduleAtFixedRate(() -> {
-            if (!block.get()) connectAsync();
-        }, 0L, OnlineEmotes.config.reconnectionDelay, TimeUnit.SECONDS);
-
-        this.bootstrap.group(loopGroup);
+        this.bootstrap.group(NettyObjectFactory.newEventLoopGroup());
         this.bootstrap.channel(NettyObjectFactory.getSocketChannel());
         this.bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
@@ -60,15 +53,16 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineProxyImpl.this));
             }
         });
+
+        this.bootstrap.config().group().scheduleAtFixedRate(() -> {
+            if (!this.isActive()) {
+                this.connectAsync();
+            }
+        }, 0L, OnlineEmotes.config.reconnectionDelay, TimeUnit.SECONDS);
     }
 
     public void connectAsync() {
-        if (this.isActive() || this.block.get()) {
-            throw new IllegalStateException("Already connected!");
-        }
-
-        OnlineEmotes.logger.info("Preparing a new connection...");
-        this.block.set(true);
+        this.disconnectNetty();
 
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(
                 this.uri,
@@ -86,16 +80,13 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
 
                 this.handshakeHandler.handshakeFuture.addListener((e) -> {
                     if (e.isSuccess()) {
-                        this.block.set(true);
                         sendConfigCallback();
                     } else {
                         OnlineEmotes.logger.error(e.cause());
-                        this.block.set(false);
                     }
                 });
             } else {
                 OnlineEmotes.logger.error(l.cause());
-                this.block.set(false);
             }
         });
     }
@@ -125,17 +116,19 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
         }
     }
 
-    @Override
-    public void disconnect() {
+    public void disconnectNetty() {
         if (this.isActive()) {
             this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
             try {
                 this.ch.closeFuture().sync();
             } catch (InterruptedException ignored) {
             }
-            this.block.set(false);
         }
+    }
 
+    @Override
+    public void disconnect() {
+        this.disconnectNetty();
         super.disconnect();
     }
 

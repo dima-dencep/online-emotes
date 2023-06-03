@@ -23,6 +23,11 @@ public class OnlineEmotes {
         OnlineEmotes.proxy = new OnlineProxyImpl();
 
         EmotesProxyManager.registerProxyInstance(OnlineEmotes.proxy);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            OnlineEmotes.proxy.disconnect();
+            OnlineEmotes.proxy.bootstrap.config().group().shutdownGracefully();
+        }));
     }
 
     public static void sendMessage(Text title, Text description) {
@@ -32,6 +37,9 @@ public class OnlineEmotes {
             return;
         }
 
-        client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, title, description));
+        try {
+            client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, title, description));
+        } catch (Throwable ignored) {
+        }
     }
 }
