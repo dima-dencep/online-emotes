@@ -32,6 +32,9 @@ public class OnlineEmotes {
             return;
         }
 
-        client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, title, description));
+        try {
+            client.getToastManager().add(SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT, title, description));
+        } catch (Throwable ignored) {
+        }
     }
 }
