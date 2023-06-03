@@ -23,6 +23,11 @@ public class OnlineEmotes {
         OnlineEmotes.proxy = new OnlineProxyImpl();
 
         EmotesProxyManager.registerProxyInstance(OnlineEmotes.proxy);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            OnlineEmotes.proxy.disconnect();
+            OnlineEmotes.proxy.bootstrap.config().group().shutdownGracefully();
+        }));
     }
 
     public static void sendMessage(Text title, Text description) {
