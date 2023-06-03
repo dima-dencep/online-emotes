@@ -24,8 +24,6 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
 
         OnlineEmotes.sendMessage(Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket disconnected!"));
         OnlineEmotes.logger.info("WebSocket disconnected!");
-
-        this.proxy.disconnect();
     }
 
     @Override
@@ -60,7 +58,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             ctx.channel().close();
 
         } else {
-            OnlineEmotes.logger.error("Unsupported frame type: {}!", msg.getClass().getName());
+            OnlineEmotes.logger.error("Unsupported frame type: %s!", msg.getClass().getName());
         }
     }
 }
