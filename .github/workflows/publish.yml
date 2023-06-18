@@ -75,8 +75,8 @@ jobs:
             1.19.3
           
           dependencies: |
+            emotecraft{modrinth:pZ2wrerK}{curseforge:403422}
             cloth-config
-            essential(optional){modrinth:k2ZPuTBm}{curseforge:546670}
 
           java: |
             17
@@ -110,10 +110,10 @@ jobs:
             1.19.3
           
           dependencies: |
+            emotecraft{modrinth:pZ2wrerK}{curseforge:397809}
             fabric-api
             cloth-config
             modmenu(recommended)
-            essential(optional){modrinth:k2ZPuTBm}{curseforge:546670}
 
           java: |
             17
