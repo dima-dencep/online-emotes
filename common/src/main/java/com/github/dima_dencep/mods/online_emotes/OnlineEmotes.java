@@ -30,7 +30,9 @@ public class OnlineEmotes {
         }));
     }
 
-    public static void sendMessage(Text title, Text description) {
+    public static void sendMessage(boolean debug, Text title, Text description) {
+        if (debug && !config.debug) return;
+
         if (EmotesExpectPlatform.isEssentialAvailable() && config.essentialIntegration) {
             EmotesExpectPlatform.sendEssentialMessage(title.getString(), description.getString());
 

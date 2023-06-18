@@ -22,7 +22,7 @@ public abstract class ClientMethodsMixin {
     )
     public void sendChatMessage(Text msg, CallbackInfo ci) {
         if (OnlineEmotes.config.replaceMessages) {
-            OnlineEmotes.sendMessage(net.minecraft.text.Text.translatable("text.autoconfig.online_emotes.title"), ((TextImpl) msg).get());
+            OnlineEmotes.sendMessage(false, net.minecraft.text.Text.translatable("text.autoconfig.online_emotes.title"), ((TextImpl) msg).get());
 
             ci.cancel();
         }
@@ -38,7 +38,7 @@ public abstract class ClientMethodsMixin {
     )
     public void toastExportMessage(int level, Text text, String msg, CallbackInfo ci) {
         if (OnlineEmotes.config.replaceMessages) {
-            OnlineEmotes.sendMessage(((TextImpl) text).get(), net.minecraft.text.Text.of(msg));
+            OnlineEmotes.sendMessage(false, ((TextImpl) text).get(), net.minecraft.text.Text.of(msg));
 
             ci.cancel();
         }

@@ -8,6 +8,7 @@
   "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "В секундах",
   "text.autoconfig.online_emotes.option.reconnectionDelay": "Задержка перед повторным подключением",
   "text.autoconfig.online_emotes.option.replaceMessages": "Заменять сообщения EmoteCraft на более подробные",
+  "text.autoconfig.online_emotes.option.debug": "Отображение отладочных сообщений в игре",
 
   "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Только для Линукс",
   "text.autoconfig.online_emotes.option.useEpoll": "Использование Epoll вместо Nio",

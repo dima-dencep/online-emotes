@@ -8,6 +8,7 @@
   "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "In seconds",
   "text.autoconfig.online_emotes.option.reconnectionDelay": "Delay before reconnecting",
   "text.autoconfig.online_emotes.option.replaceMessages": "Replacing EmoteCraft messages with more detail",
+  "text.autoconfig.online_emotes.option.debug": "Displaying debug messages",
 
   "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Only for linux",
   "text.autoconfig.online_emotes.option.useEpoll": "Using Epoll instead of Nio",

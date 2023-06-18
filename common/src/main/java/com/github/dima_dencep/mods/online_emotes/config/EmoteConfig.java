@@ -15,6 +15,8 @@ public class EmoteConfig implements ConfigData {
 
     public boolean replaceMessages = true;
 
+    public boolean debug = false;
+
     @ConfigEntry.Gui.Excluded
     @ConfigEntry.Category("netty")
     @ConfigEntry.Gui.RequiresRestart

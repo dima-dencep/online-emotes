@@ -22,7 +22,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelInactive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
 
-        OnlineEmotes.sendMessage(Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket disconnected!"));
+        OnlineEmotes.sendMessage(true, Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket disconnected!"));
         OnlineEmotes.logger.info("WebSocket disconnected!");
     }
 
@@ -30,7 +30,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
 
-        OnlineEmotes.sendMessage(Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket connected!"));
+        OnlineEmotes.sendMessage(true, Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket connected!"));
         OnlineEmotes.logger.info("WebSocket connected!");
     }
 
@@ -48,7 +48,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             }
 
         } else if (msg instanceof TextWebSocketFrame frame) {
-            OnlineEmotes.sendMessage(Text.translatable("text.autoconfig.online_emotes.title"), Text.translatable(frame.text()));
+            OnlineEmotes.sendMessage(false, Text.translatable("text.autoconfig.online_emotes.title"), Text.translatable(frame.text()));
 
         } else if (msg instanceof PingWebSocketFrame frame) {
             frame.content().retain();
