@@ -2,7 +2,7 @@
   "required": true,
   "package": "com.github.dima_dencep.mods.online_emotes.mixins",
   "compatibilityLevel": "JAVA_17",
-  "minVersion": "0.8.5",
+  "minVersion": "0.8",
   "client": [
     "ClientMethodsMixin"
   ],
