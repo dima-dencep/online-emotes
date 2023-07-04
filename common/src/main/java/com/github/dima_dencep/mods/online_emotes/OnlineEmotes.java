@@ -25,7 +25,7 @@ public class OnlineEmotes {
         EmotesProxyManager.registerProxyInstance(OnlineEmotes.proxy);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            OnlineEmotes.proxy.disconnect();
+            OnlineEmotes.proxy.disconnectNetty();
             OnlineEmotes.proxy.bootstrap.config().group().shutdownGracefully();
         }));
     }

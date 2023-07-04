@@ -43,4 +43,11 @@ public class ForgeOnlineEmotes extends OnlineEmotes {
             proxy.connectAsync();
         }
     }
+
+    @SubscribeEvent
+    public void onExit(ClientPlayerNetworkEvent.LoggingOut event) {
+        if (proxy.isActive()) {
+            proxy.disconnect();
+        }
+    }
 }

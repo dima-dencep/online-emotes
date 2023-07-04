@@ -13,6 +13,7 @@ public class FabricOnlineEmotes extends OnlineEmotes implements ClientModInitial
         super.onInitializeClient();
 
         ClientPlayConnectionEvents.JOIN.register(this::onJoin);
+        ClientPlayConnectionEvents.DISCONNECT.register(this::onDisconnect);
     }
 
     public void onJoin(ClientPlayNetworkHandler handler, PacketSender packetSender, MinecraftClient minecraftClient) {
@@ -20,6 +21,12 @@ public class FabricOnlineEmotes extends OnlineEmotes implements ClientModInitial
             proxy.sendConfigCallback();
         } else {
             proxy.connectAsync();
+        }
+    }
+
+    private void onDisconnect(ClientPlayNetworkHandler handler, MinecraftClient minecraftClient) {
+        if (proxy.isActive()) {
+            proxy.disconnect();
         }
     }
 }
