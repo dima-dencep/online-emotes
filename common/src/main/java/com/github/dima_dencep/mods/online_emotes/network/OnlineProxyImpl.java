@@ -3,12 +3,12 @@ package com.github.dima_dencep.mods.online_emotes.network;
 import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
 import com.github.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import com.github.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
+import com.github.dima_dencep.mods.online_emotes.utils.EmotePacketWrapper;
 import com.github.dima_dencep.mods.online_emotes.utils.NettyObjectFactory;
 import io.github.kosmx.emotes.api.proxy.AbstractNetworkInstance;
 import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.github.kosmx.emotes.executor.EmoteInstance;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.*;
@@ -93,7 +93,7 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
 
     @Override
     public boolean sendPlayerID() {
-        return true;
+        return false;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
 
         EmotePacket writer = builder.build();
 
-        this.ch.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(writer.write().array())), this.ch.voidPromise());
+        this.ch.writeAndFlush(new EmotePacketWrapper(writer.write().array()).toWebSocketFrame(), this.ch.voidPromise());
 
         if (writer.data.emoteData != null && writer.data.emoteData.extraData.containsKey("song") && !writer.data.writeSong) {
             EmoteInstance.instance.getClientMethods().sendChatMessage(EmoteInstance.instance.getDefaults().newTranslationText("emotecraft.song_too_big_to_send"));
@@ -128,21 +128,6 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
 
     @Override
     public void disconnect() {
-        this.disconnectNetty();
         super.disconnect();
-    }
-
-    @Override
-    public void sendConfigCallback() {
-        EmotePacket.Builder packetBuilder = new EmotePacket.Builder();
-        packetBuilder.configureToConfigExchange(true);
-
-        if (OnlineEmotes.client.player != null) packetBuilder.configureTarget(OnlineEmotes.client.player.getUuid());
-
-        try {
-            this.sendMessage(packetBuilder, null);
-        } catch (Exception var3) {
-            OnlineEmotes.logger.warn("Error while writing packet:", var3);
-        }
     }
 }
