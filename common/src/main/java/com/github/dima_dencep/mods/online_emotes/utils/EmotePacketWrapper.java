@@ -36,7 +36,7 @@ public class EmotePacketWrapper {
             this.playerUUID = player.getUuid();
 
             if (player.networkHandler != null) {
-                this.serverAddress = getIP(player.networkHandler.getConnection().getAddress());
+                this.serverAddress = getIP(player.networkHandler.connection.getAddress());
             }
         }
     }
