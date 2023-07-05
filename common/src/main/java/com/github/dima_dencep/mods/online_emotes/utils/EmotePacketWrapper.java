@@ -4,6 +4,7 @@ import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.local.LocalAddress;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +37,7 @@ public class EmotePacketWrapper {
             this.playerUUID = player.getUuid();
 
             if (player.networkHandler != null) {
-                this.serverAddress = getIP(player.networkHandler.getConnection().getAddress());
+                this.serverAddress = getIP(player.networkHandler.connection.getAddress());
             }
         }
     }
@@ -46,6 +47,13 @@ public class EmotePacketWrapper {
     }
 
     private static String getIP(SocketAddress address) {
-        return ((InetSocketAddress) address).getAddress().getHostAddress();
+        if (address instanceof LocalAddress) {
+            return "localhost";
+
+        } else if (address instanceof InetSocketAddress inetSocketAddress) {
+            return inetSocketAddress.getAddress().getHostAddress();
+        }
+
+        return address.toString();
     }
 }
