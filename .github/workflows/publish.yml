@@ -70,7 +70,7 @@ jobs:
           loaders: forge
 
           game-versions: |
-            [1.19.2,${{ steps.read_property.outputs.minecraft_version }})
+            >=1.19.2 <=${{ steps.read_property.outputs.minecraft_version }}
           
           dependencies: |
             emotecraft{modrinth:pZ2wrerK}{curseforge:403422}
@@ -103,7 +103,7 @@ jobs:
             quilt
 
           game-versions: |
-            [1.19.2,${{ steps.read_property.outputs.minecraft_version }})
+            >=1.19.2 <=${{ steps.read_property.outputs.minecraft_version }}
           
           dependencies: |
             emotecraft{modrinth:pZ2wrerK}{curseforge:397809}
