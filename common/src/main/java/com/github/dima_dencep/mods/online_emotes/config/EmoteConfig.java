@@ -33,5 +33,5 @@ public class EmoteConfig implements ConfigData {
     public int threads = 0;
 
     @ConfigEntry.Category("integrations")
-    public boolean essentialIntegration = EmotesExpectPlatform.isEssentialAvailable();
+    public boolean essentialIntegration = true;
 }

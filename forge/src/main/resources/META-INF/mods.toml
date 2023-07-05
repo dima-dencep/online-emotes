@@ -41,10 +41,3 @@ mandatory = true
 versionRange = "*"
 ordering = "NONE"
 side = "CLIENT"
-
-[[dependencies.online_emotes]]
-modId = "essential"
-mandatory = false
-versionRange = "*"
-ordering = "NONE"
-side = "CLIENT"

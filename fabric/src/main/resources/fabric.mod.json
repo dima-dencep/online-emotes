@@ -37,9 +37,6 @@
     "cloth-config": "*",
     "emotecraft": "*"
   },
-  "recommends": {
-    "essential-loader": "*"
-  },
   "custom": {
     "modmenu": {
       "parent": "emotecraft"
