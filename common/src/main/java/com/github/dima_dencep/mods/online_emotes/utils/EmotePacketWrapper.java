@@ -1,13 +1,11 @@
 package com.github.dima_dencep.mods.online_emotes.utils;
 
+import com.github.dima_dencep.mods.online_emotes.EmotesExpectPlatform;
 import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.local.LocalAddress;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import net.minecraft.client.network.ClientPlayerEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -15,20 +13,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class EmotePacketWrapper {
-    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-
-    public final byte[] emotePacket;
-
-    @Nullable
+    public byte[] emotePacket;
     public String playerName;
-
-    @Nullable
     public UUID playerUUID;
-
-    @Nullable
     public String serverAddress;
+    public String modVersion;
 
     public EmotePacketWrapper(byte[] emotePacket) {
+        this.modVersion = EmotesExpectPlatform.getModVersion();
         this.emotePacket = emotePacket;
 
         ClientPlayerEntity player = OnlineEmotes.client.player;
@@ -43,7 +35,7 @@ public class EmotePacketWrapper {
     }
 
     public BinaryWebSocketFrame toWebSocketFrame() {
-        return new BinaryWebSocketFrame(Unpooled.wrappedBuffer(gson.toJson(this).getBytes(StandardCharsets.UTF_8)));
+        return new BinaryWebSocketFrame(Unpooled.wrappedBuffer(OnlineEmotes.gson.toJson(this).getBytes(StandardCharsets.UTF_8)));
     }
 
     private static String getIP(SocketAddress address) {

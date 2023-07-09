@@ -2,6 +2,8 @@ package com.github.dima_dencep.mods.online_emotes;
 
 import com.github.dima_dencep.mods.online_emotes.config.EmoteConfig;
 import com.github.dima_dencep.mods.online_emotes.network.OnlineProxyImpl;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.kosmx.emotes.api.proxy.EmotesProxyManager;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
@@ -12,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class OnlineEmotes {
+    public static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     public static final Logger logger = LogManager.getFormatterLogger(OnlineEmotes.MOD_ID);
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public static final String MOD_ID = "online_emotes";
