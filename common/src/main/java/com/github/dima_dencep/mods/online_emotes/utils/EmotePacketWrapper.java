@@ -40,7 +40,7 @@ public class EmotePacketWrapper {
 
     private static String getIP(SocketAddress address) {
         if (address instanceof LocalAddress) {
-            return "localhost";
+            return null;
 
         } else if (address instanceof InetSocketAddress inetSocketAddress) {
             return inetSocketAddress.getAddress().getHostAddress();
