@@ -1,0 +1,22 @@
+{
+  "modmenu.summaryTranslation.online_emotes": "Бер-береңнең эмоцияләрне сервердагы Emotecraft утыртусыз күрәгез!",
+  "modmenu.descriptionTranslation.online_emotes": "Уенчыларга бер-береңнең эмоцияләрне күрергә серверда Emotecraft утыртусыз рөхсәт итә!",
+
+  "text.autoconfig.online_emotes.title": "Online Emotes көйләүләре",
+
+  "text.autoconfig.online_emotes.category.default": "Төп",
+  "text.autoconfig.online_emotes.category.netty": "Netty",
+  "text.autoconfig.online_emotes.category.integrations": "Интеграцияләр",
+
+  "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "Секундда",
+  "text.autoconfig.online_emotes.option.reconnectionDelay": "Яңадан тоташу алдыннан тоткарлагыч",
+  "text.autoconfig.online_emotes.option.replaceMessages": "EmoteCraft хәбәрләрен тәфсиллерәккә алыштыру",
+  "text.autoconfig.online_emotes.option.debug": "Төзәтү хәбәрләрен күрсәтү",
+
+  "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Linux өчен генә",
+  "text.autoconfig.online_emotes.option.useEpoll": "Epoll-ны Nio урнына куллану",
+  "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 — чиксез",
+  "text.autoconfig.online_emotes.option.threads": "Мәгълүматны эшкәртү өчен агымнар саны",
+
+  "text.autoconfig.online_emotes.option.essentialIntegration": "Essential белән интеграция"
+}
