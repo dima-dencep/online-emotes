@@ -12,9 +12,4 @@ public class EmotesExpectPlatform {
     public static void sendEssentialMessage(String title, String description) {
         throw new AssertionError();
     }
-
-    @ExpectPlatform
-    public static String getModVersion() {
-        throw new AssertionError();
-    }
 }
