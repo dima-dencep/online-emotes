@@ -11,8 +11,4 @@ include("common")
 include("fabric")
 include("forge")
 
-if (new File(rootProject.projectDir, "server").exists()) {
-    includeBuild "server"
-}
-
 rootProject.name = "online-emotes"
