@@ -15,5 +15,7 @@
   "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Unlimited",
   "text.autoconfig.online_emotes.option.threads": "Number of threads for data processing",
 
-  "text.autoconfig.online_emotes.option.essentialIntegration": "Integration with Essential"
+  "text.autoconfig.online_emotes.option.essentialIntegration": "Integration with Essential",
+
+  "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!"
 }
