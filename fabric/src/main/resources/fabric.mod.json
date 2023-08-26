@@ -38,7 +38,14 @@
   },
   "custom": {
     "modmenu": {
-      "parent": "emotecraft"
+      "parent": "emotecraft",
+      "links": {
+        "modmenu.curseforge": "https://curseforge.com/minecraft/mc-mods/online-emotes",
+        "modmenu.discord": "https://discord.gg/jdB5JYX7W7",
+        "modmenu.donate": "https://www.donationalerts.com/c/dima_dencep",
+        "modmenu.github_releases": "https://github.com/dima-dencep/online-emotes/releases",
+        "modmenu.modrinth": "https://modrinth.com/mod/online-emotes"
+      }
     }
   }
 }
