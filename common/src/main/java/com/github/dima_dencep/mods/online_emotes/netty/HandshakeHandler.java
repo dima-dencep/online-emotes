@@ -4,6 +4,7 @@ import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.*;
+import org.jetbrains.annotations.NotNull;
 
 @ChannelHandler.Sharable
 public class HandshakeHandler extends SimpleChannelInboundHandler<FullHttpResponse> {
@@ -22,7 +23,7 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<FullHttpRespon
     }
 
     @Override
-    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(final @NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
 
         this.handshaker.handshake(ctx.channel());
@@ -41,7 +42,7 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<FullHttpRespon
         if (!handshakeFuture.isDone()) {
             handshakeFuture.setFailure(cause);
         } else {
-            OnlineEmotes.logger.error("WebSocket exception:", cause);
+            OnlineEmotes.LOGGER.error("WebSocket exception:", cause);
         }
         ctx.close();
     }
