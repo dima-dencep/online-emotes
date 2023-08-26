@@ -1,11 +1,11 @@
 package com.github.dima_dencep.mods.online_emotes.utils;
 
-import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import io.github.kosmx.emotes.main.config.ClientSerializer;
+import io.github.kosmx.emotes.server.config.Serializer;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.local.LocalAddress;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,8 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class EmotePacketWrapper {
-    private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-
     public final byte[] emotePacket;
 
     @Nullable
@@ -31,7 +29,7 @@ public class EmotePacketWrapper {
     public EmotePacketWrapper(byte[] emotePacket) {
         this.emotePacket = emotePacket;
 
-        ClientPlayerEntity player = OnlineEmotes.client.player;
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
             this.playerName = player.getEntityName();
             this.playerUUID = player.getUuid();
@@ -40,15 +38,19 @@ public class EmotePacketWrapper {
                 this.serverAddress = getIP(player.networkHandler.connection.getAddress());
             }
         }
+
+        if (Serializer.serializer == null) {
+            new ClientSerializer().initializeSerializer();
+        }
     }
 
     public BinaryWebSocketFrame toWebSocketFrame() {
-        return new BinaryWebSocketFrame(Unpooled.wrappedBuffer(gson.toJson(this).getBytes(StandardCharsets.UTF_8)));
+        return new BinaryWebSocketFrame(Unpooled.wrappedBuffer(Serializer.serializer.toJson(this).getBytes(StandardCharsets.UTF_8)));
     }
 
     private static String getIP(SocketAddress address) {
         if (address instanceof LocalAddress) {
-            return "localhost";
+            return null;
 
         } else if (address instanceof InetSocketAddress inetSocketAddress) {
             return inetSocketAddress.getAddress().getHostAddress();

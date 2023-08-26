@@ -1,20 +1,19 @@
 package com.github.dima_dencep.mods.online_emotes.netty;
 
 import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
-import com.github.dima_dencep.mods.online_emotes.network.OnlineProxyImpl;
+import com.github.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.*;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 @ChannelHandler.Sharable
 public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
-    private final OnlineProxyImpl proxy;
+    private final OnlineNetworkInstance proxy;
 
-    public WebsocketHandler(OnlineProxyImpl proxy) {
+    public WebsocketHandler(OnlineNetworkInstance proxy) {
         this.proxy = proxy;
     }
 
@@ -22,16 +21,16 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelInactive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
 
-        OnlineEmotes.sendMessage(true, Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket disconnected!"));
-        OnlineEmotes.logger.info("WebSocket disconnected!");
+        OnlineEmotes.sendMessage(true, null, "WebSocket disconnected!");
+        OnlineEmotes.LOGGER.info("WebSocket disconnected!");
     }
 
     @Override
     public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
 
-        OnlineEmotes.sendMessage(true, Text.translatable("text.autoconfig.online_emotes.title"), Text.literal("WebSocket connected!"));
-        OnlineEmotes.logger.info("WebSocket connected!");
+        OnlineEmotes.sendMessage(true, null, "WebSocket connected!");
+        OnlineEmotes.LOGGER.info("WebSocket connected!");
     }
 
     @Override
@@ -48,7 +47,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             }
 
         } else if (msg instanceof TextWebSocketFrame frame) {
-            OnlineEmotes.sendMessage(false, Text.translatable("text.autoconfig.online_emotes.title"), Text.translatable(frame.text()));
+            OnlineEmotes.sendMessage(false, null, frame.text());
 
         } else if (msg instanceof PingWebSocketFrame frame) {
             frame.content().retain();
@@ -58,7 +57,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             ctx.channel().close();
 
         } else {
-            OnlineEmotes.logger.error("Unsupported frame type: %s!", msg.getClass().getName());
+            OnlineEmotes.LOGGER.error("Unsupported frame type: %s!", msg.getClass().getName());
         }
     }
 }

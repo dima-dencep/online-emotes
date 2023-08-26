@@ -1,6 +1,7 @@
 package com.github.dima_dencep.mods.online_emotes.network;
 
 import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
+import com.github.dima_dencep.mods.online_emotes.config.EmoteConfig;
 import com.github.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import com.github.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
 import com.github.dima_dencep.mods.online_emotes.utils.EmotePacketWrapper;
@@ -24,16 +25,15 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
-public class OnlineProxyImpl extends AbstractNetworkInstance {
-    public final URI uri = URI.create(OnlineEmotes.config.address);
+public class OnlineNetworkInstance extends AbstractNetworkInstance {
+    public static final URI URI_ADDRESS = URI.create(EmoteConfig.INSTANCE.address);
     public final Bootstrap bootstrap = new Bootstrap();
     public HandshakeHandler handshakeHandler;
     public Channel ch;
 
-    public OnlineProxyImpl() {
-        String protocol = this.uri.getScheme();
-        if (!"ws".equals(protocol) && !"wss".equals(protocol)) {
-            throw new IllegalArgumentException("Unsupported protocol: " + protocol);
+    public OnlineNetworkInstance() {
+        if (!"ws".equals(URI_ADDRESS.getScheme()) && !"wss".equals(URI_ADDRESS.getScheme())) {
+            throw new IllegalArgumentException("Unsupported protocol: " + URI_ADDRESS.getScheme());
         }
 
         this.bootstrap.group(NettyObjectFactory.newEventLoopGroup());
@@ -43,14 +43,14 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
             public void initChannel(@NotNull SocketChannel ch) throws SSLException {
                 ChannelPipeline pipeline = ch.pipeline();
 
-                if ("wss".equals(protocol)) {
-                    pipeline.addLast(SslContextBuilder.forClient().build().newHandler(ch.alloc(), uri.getHost(), uri.getPort()));
+                if ("wss".equals(URI_ADDRESS.getScheme())) {
+                    pipeline.addLast(SslContextBuilder.forClient().build().newHandler(ch.alloc(), URI_ADDRESS.getHost(), URI_ADDRESS.getPort()));
                 }
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
                 pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
-                pipeline.addLast("handshaker", OnlineProxyImpl.this.handshakeHandler);
-                pipeline.addLast("ws-handler", new WebsocketHandler(OnlineProxyImpl.this));
+                pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
+                pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
         });
 
@@ -58,35 +58,36 @@ public class OnlineProxyImpl extends AbstractNetworkInstance {
             if (!this.isActive()) {
                 this.connectAsync();
             }
-        }, 0L, OnlineEmotes.config.reconnectionDelay, TimeUnit.SECONDS);
+        }, 0L, EmoteConfig.INSTANCE.reconnectionDelay, TimeUnit.SECONDS);
     }
 
     public void connectAsync() {
-        this.disconnectNetty();
+        disconnectNetty();
 
-        this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(
-                this.uri,
+        this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
                 WebSocketVersion.V13,
                 null,
                 false,
                 EmptyHttpHeaders.INSTANCE,
-                12800000)
-        );
+                12800000
+        ));
 
-        ChannelFuture channelFuture = this.bootstrap.connect(this.uri.getHost(), this.uri.getPort());
+        ChannelFuture channelFuture = this.bootstrap.connect(URI_ADDRESS.getHost(), URI_ADDRESS.getPort());
         channelFuture.addListener((l) -> {
             if (l.isSuccess()) {
+                disconnectNetty();
+
                 this.ch = channelFuture.channel();
 
                 this.handshakeHandler.handshakeFuture.addListener((e) -> {
                     if (e.isSuccess()) {
                         sendConfigCallback();
                     } else {
-                        OnlineEmotes.logger.error(e.cause());
+                        OnlineEmotes.LOGGER.error(e.cause());
                     }
                 });
             } else {
-                OnlineEmotes.logger.error(l.cause());
+                OnlineEmotes.LOGGER.error(l.cause());
             }
         });
     }

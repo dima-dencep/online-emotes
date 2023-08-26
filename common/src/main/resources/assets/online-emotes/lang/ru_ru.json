@@ -1,5 +1,5 @@
 {
-  "text.autoconfig.online_emotes.title": "Онлайн Эмоции",
+  "text.autoconfig.online_emotes.title": "Онлайн Эмоции (Online Emotes)",
 
   "text.autoconfig.online_emotes.category.default": "Главная",
   "text.autoconfig.online_emotes.category.netty": "Нетти",
@@ -15,5 +15,7 @@
   "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Неограниченно",
   "text.autoconfig.online_emotes.option.threads": "Количество потоков для обработки данных",
 
-  "text.autoconfig.online_emotes.option.essentialIntegration": "Интеграция с Essential"
+  "text.autoconfig.online_emotes.option.essentialIntegration": "Интеграция с Essential",
+
+  "online_emotes.warnings.onlyThis": "Доступна только трансляция через Online Emotes!"
 }
