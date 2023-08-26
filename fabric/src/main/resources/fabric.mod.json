@@ -3,7 +3,7 @@
   "id": "online_emotes",
   "version": "${version}",
   "name": "Online Emotes",
-  "description": "Allows players to see each other's emotions without installing emotecraft on the server!",
+  "description": "Allows players to see each other's emotes without emotecraft installed on the server.",
   "authors": [
     "dima_dencep"
   ],
@@ -12,9 +12,9 @@
     "nneewwtt"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/online-emotes",
-    "issues": "https://github.com/dimadencep/online-emotes/issues",
-    "sources": "https://github.com/dimadencep/online-emotes"
+    "homepage": "https://curseforge.com/minecraft/mc-mods/online-emotes",
+    "issues": "https://github.com/dima-dencep/online-emotes/issues",
+    "sources": "https://github.com/dima-dencep/online-emotes"
   },
   "license": "AGPL-3.0-only",
   "icon": "icon.png",
@@ -33,7 +33,6 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19.2",
     "cloth-config": "*",
     "emotecraft": "*"
   },

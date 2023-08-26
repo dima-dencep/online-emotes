@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "*"
-issueTrackerURL = "https://github.com/dimadencep/online-emotes/issues"
+issueTrackerURL = "https://github.com/dima-dencep/online-emotes/issues"
 license = "AGPL-3.0-only"
 
 [[mods]]
@@ -10,21 +10,14 @@ displayName = "Online Emotes"
 updateJSONURL = "https://api.modrinth.com/updates/online-emotes/forge_updates.json"
 authors = "dima_dencep"
 credits = "NE4T0, nneewwtt"
-displayURL = "https://modrinth.com/mod/online-emotes"
-description = "Allows players to see each other's emotions without installing emotecraft on the server!"
+displayURL = "https://curseforge.com/minecraft/mc-mods/online-emotes"
+description = "Allows players to see each other's emotes without emotecraft installed on the server."
 logoFile = "icon.png"
 
 [[dependencies.online_emotes]]
 modId = "forge"
 mandatory = true
 versionRange = "*"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.online_emotes]]
-modId = "minecraft"
-mandatory = true
-versionRange = "[1.19,)"
 ordering = "NONE"
 side = "BOTH"
 
@@ -39,5 +32,5 @@ side = "CLIENT"
 modId = "emotecraft"
 mandatory = true
 versionRange = "*"
-ordering = "NONE"
+ordering = "AFTER"
 side = "CLIENT"
