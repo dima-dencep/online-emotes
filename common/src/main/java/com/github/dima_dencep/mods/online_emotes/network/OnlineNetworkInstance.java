@@ -114,17 +114,16 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void disconnectNetty() {
-        if (!isActive())
-            return;
-
         Reconnector.stop();
 
-        try {
+        if (isActive()) {
             this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
 
-            this.ch.closeFuture().sync();
-        } catch (Throwable th) {
-            OnlineEmotes.LOGGER.error("Failed to disconnect WebSocket:", th);
+            try {
+                this.ch.closeFuture().sync();
+            } catch (Throwable th) {
+                OnlineEmotes.LOGGER.error("Failed to disconnect WebSocket:", th);
+            }
         }
     }
 
