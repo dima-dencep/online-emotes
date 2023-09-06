@@ -6,6 +6,7 @@ import com.github.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import com.github.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
 import com.github.dima_dencep.mods.online_emotes.utils.EmotePacketWrapper;
 import com.github.dima_dencep.mods.online_emotes.utils.NettyObjectFactory;
+import com.github.dima_dencep.mods.online_emotes.utils.Reconnector;
 import io.github.kosmx.emotes.api.proxy.AbstractNetworkInstance;
 import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.github.kosmx.emotes.executor.EmoteInstance;
@@ -22,7 +23,6 @@ import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
@@ -53,17 +53,13 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
         });
-
-        this.bootstrap.config().group().scheduleAtFixedRate(() -> {
-            if (!this.isActive()) {
-                this.connectAsync();
-            }
-        }, 0L, EmoteConfig.INSTANCE.reconnectionDelay, TimeUnit.SECONDS);
     }
 
     public void connectAsync() {
-        disconnectNetty();
+        Reconnector.start(bootstrap.config().group());
+    }
 
+    public void connect() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
                 WebSocketVersion.V13,
                 null,
@@ -118,17 +114,22 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void disconnectNetty() {
-        if (this.isActive()) {
+        Reconnector.stop();
+
+        if (isActive()) {
             this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
+
             try {
                 this.ch.closeFuture().sync();
-            } catch (InterruptedException ignored) {
+            } catch (Throwable th) {
+                OnlineEmotes.LOGGER.error("Failed to disconnect WebSocket:", th);
             }
         }
     }
 
     @Override
     public void disconnect() {
+        disconnectNetty();
         super.disconnect();
     }
 }

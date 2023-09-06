@@ -14,7 +14,6 @@ public class EmoteConfig implements ConfigData {
     public static final EmoteConfig INSTANCE = AutoConfig.register(EmoteConfig.class, Toml4jConfigSerializer::new).getConfig();
 
     @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.RequiresRestart
     public long reconnectionDelay = 15L;
 
     public boolean replaceMessages = true;
