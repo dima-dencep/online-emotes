@@ -35,8 +35,8 @@ dependencies {
     modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}-fabric"
     modImplementation "maven.modrinth:playeranimator:${rootProject.playeranimator_version}-fabric"
 
-    modImplementation "gg.essential:essential-${rootProject.minecraft_version}-fabric:+"
-    modRuntimeOnly "gg.essential:loader-fabric:1.2.0"
+    modCompileOnly "gg.essential:essential-${rootProject.minecraft_version}-fabric:+"
+    modRuntimeOnly "gg.essential:loader-fabric:+"
 
     include implementation("io.netty:netty-codec-http:${rootProject.netty_version}")
 

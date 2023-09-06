@@ -37,10 +37,10 @@ dependencies {
     modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}-forge"
     modImplementation "maven.modrinth:playeranimator:${rootProject.playeranimator_version}-forge"
 
-    modImplementation "gg.essential:essential-${rootProject.minecraft_version}-forge:+"
-    modRuntimeOnly "gg.essential:loader-modlauncher:1.0.0"
+    modCompileOnly "gg.essential:essential-${rootProject.minecraft_version}-forge:+"
+    modRuntimeOnly "gg.essential:loader-modlauncher:+"
 
-    include implementation("io.netty:netty-codec-http:${rootProject.netty_version}")
+    implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${rootProject.netty_version}"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
