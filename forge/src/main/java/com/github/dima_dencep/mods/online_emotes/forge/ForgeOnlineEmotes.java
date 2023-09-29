@@ -40,7 +40,7 @@ public class ForgeOnlineEmotes extends OnlineEmotes {
         if (proxy.isActive()) {
             proxy.sendConfigCallback();
         } else {
-            proxy.connectAsync();
+            proxy.connect();
         }
     }
 

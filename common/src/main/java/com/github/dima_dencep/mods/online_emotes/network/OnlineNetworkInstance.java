@@ -6,7 +6,6 @@ import com.github.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import com.github.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
 import com.github.dima_dencep.mods.online_emotes.utils.EmotePacketWrapper;
 import com.github.dima_dencep.mods.online_emotes.utils.NettyObjectFactory;
-import com.github.dima_dencep.mods.online_emotes.utils.Reconnector;
 import io.github.kosmx.emotes.api.proxy.AbstractNetworkInstance;
 import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.github.kosmx.emotes.executor.EmoteInstance;
@@ -16,6 +15,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.util.concurrent.ScheduledFuture;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,9 +23,13 @@ import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
+    private final AtomicReference<ScheduledFuture<?>> future = new AtomicReference<>();
     public static final URI URI_ADDRESS = URI.create(EmoteConfig.INSTANCE.address);
     public final Bootstrap bootstrap = new Bootstrap();
     public HandshakeHandler handshakeHandler;
@@ -55,11 +59,27 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         });
     }
 
-    public void connectAsync() {
-        Reconnector.start(bootstrap.config().group());
+    public void connect() {
+        ScheduledFuture<?> oldFuture = future.getAndSet(
+                bootstrap.config().group().scheduleAtFixedRate(() -> {
+
+                    if (!isActive()) {
+                        OnlineEmotes.LOGGER.info("Try reconnecting...");
+
+                        connectInternal();
+                    }
+
+                }, 0L, EmoteConfig.INSTANCE.reconnectionDelay, TimeUnit.SECONDS)
+        );
+
+        try {
+            oldFuture.cancel(true);
+        } catch (Throwable throwable) {
+            OnlineEmotes.LOGGER.error("Failed to stop reconnector:", throwable);
+        }
     }
 
-    public void connect() {
+    private void connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
                 WebSocketVersion.V13,
                 null,
@@ -114,7 +134,11 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void disconnectNetty() {
-        Reconnector.stop();
+        try {
+            future.get().cancel(true);
+        } catch (Throwable throwable) {
+            OnlineEmotes.LOGGER.error("Failed to stop reconnector:", throwable);
+        }
 
         if (isActive()) {
             this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
