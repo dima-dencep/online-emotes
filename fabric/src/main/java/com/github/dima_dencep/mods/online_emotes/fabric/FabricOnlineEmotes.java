@@ -20,7 +20,7 @@ public class FabricOnlineEmotes extends OnlineEmotes implements ClientModInitial
         if (proxy.isActive()) {
             proxy.sendConfigCallback();
         } else {
-            proxy.connectAsync();
+            proxy.connect();
         }
     }
 
