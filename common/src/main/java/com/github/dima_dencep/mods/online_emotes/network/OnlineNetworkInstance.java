@@ -24,14 +24,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
-    private final AtomicReference<ScheduledFuture<?>> future = new AtomicReference<>();
     public static final URI URI_ADDRESS = URI.create(EmoteConfig.INSTANCE.address);
     public final Bootstrap bootstrap = new Bootstrap();
+    private ScheduledFuture<?> reconnectingFuture;
     public HandshakeHandler handshakeHandler;
     public Channel ch;
 
@@ -60,23 +58,17 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void connect() {
-        ScheduledFuture<?> oldFuture = future.getAndSet(
-                bootstrap.config().group().scheduleAtFixedRate(() -> {
+        stopReconnecting();
 
-                    if (!isActive()) {
-                        OnlineEmotes.LOGGER.info("Try reconnecting...");
+        this.reconnectingFuture = bootstrap.config().group().scheduleAtFixedRate(() -> {
 
-                        connectInternal();
-                    }
+            if (!isActive()) {
+                OnlineEmotes.LOGGER.info("Try (re)connecting...");
 
-                }, 0L, EmoteConfig.INSTANCE.reconnectionDelay, TimeUnit.SECONDS)
-        );
+                connectInternal();
+            }
 
-        try {
-            oldFuture.cancel(true);
-        } catch (Throwable throwable) {
-            OnlineEmotes.LOGGER.error("Failed to stop reconnector:", throwable);
-        }
+        }, 0L, EmoteConfig.INSTANCE.reconnectionDelay, TimeUnit.SECONDS);
     }
 
     private void connectInternal() {
@@ -134,12 +126,6 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void disconnectNetty() {
-        try {
-            future.get().cancel(true);
-        } catch (Throwable throwable) {
-            OnlineEmotes.LOGGER.error("Failed to stop reconnector:", throwable);
-        }
-
         if (isActive()) {
             this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
 
@@ -153,7 +139,21 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     @Override
     public void disconnect() {
+        stopReconnecting();
         disconnectNetty();
         super.disconnect();
+    }
+
+    public void stopReconnecting() {
+        try {
+            if (this.reconnectingFuture != null && !this.reconnectingFuture.isCancelled()) {
+                OnlineEmotes.LOGGER.warn("What happened to the reconnector?");
+
+                this.reconnectingFuture.cancel(true);
+                this.reconnectingFuture = null;
+            }
+        } catch (Throwable th) {
+            OnlineEmotes.LOGGER.error("Failed to stop reconnector:", th);
+        }
     }
 }
