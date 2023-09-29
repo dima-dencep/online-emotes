@@ -75,7 +75,7 @@ public abstract class FastMenuScreenLogicMixin<MATRIX, SCREEN> extends AbstractS
                             screen.getWidth() - 120,
                             screen.getHeight() - 55,
                             96, 20,
-                            EmoteInstance.instance.getDefaults().newTranslationText("online-emotes.buttons.reconnect"),
+                            EmoteInstance.instance.getDefaults().textFromString("Reconnect OnlineEmotes"),
                             (button) -> OnlineEmotes.proxy.connect()
                     )
             );
