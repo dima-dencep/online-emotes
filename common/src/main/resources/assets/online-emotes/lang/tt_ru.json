@@ -18,5 +18,7 @@
   "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 — чиксез",
   "text.autoconfig.online_emotes.option.threads": "Мәгълүматны эшкәртү өчен агымнар саны",
 
-  "text.autoconfig.online_emotes.option.essentialIntegration": "Essential белән интеграция"
+  "text.autoconfig.online_emotes.option.essentialIntegration": "Essential белән интеграция",
+
+  "online_emotes.warnings.onlyThis": "Online Emotes аша агымда тапшыру ирешерлек!"
 }
