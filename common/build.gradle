@@ -12,7 +12,7 @@ dependencies {
     modImplementation "me.shedaniel.cloth:cloth-config:${rootProject.cloth_config_version}"
 
     modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}-fabric"
-    modImplementation "maven.modrinth:playeranimator:${rootProject.playeranimator_version}-fabric"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib:${rootProject.playeranimator_version}"
 
     implementation("io.netty:netty-codec-http:${rootProject.netty_version}")
 }

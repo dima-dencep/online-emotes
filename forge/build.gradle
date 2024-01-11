@@ -35,7 +35,7 @@ dependencies {
     modImplementation "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
 
     modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}-forge"
-    modImplementation "maven.modrinth:playeranimator:${rootProject.playeranimator_version}-forge"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.playeranimator_version}"
 
     modCompileOnly "gg.essential:essential-${rootProject.minecraft_version}-forge:+"
     modRuntimeOnly "gg.essential:loader-modlauncher:+"
