@@ -1,7 +1,8 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "8.1.1" apply false
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.5-SNAPSHOT" apply false
+    id "net.neoforged.licenser" version "0.7.2" apply false
     id "io.github.p03w.machete" version "2.+" apply false
 }
 
@@ -12,20 +13,36 @@ architectury {
 subprojects {
     apply plugin: "dev.architectury.loom"
     apply plugin: "io.github.p03w.machete"
+    apply plugin: "net.neoforged.licenser"
 
     loom {
         silentMojangMappingsLicense()
-        // clientOnlyMinecraftJar()
     }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-1.20.3:${rootProject.parchment_version}@zip")
+        }
     }
 
     machete {
         ignoredTasks.add("shadowJar")
         ignoredTasks.add("jar")
+    }
+
+    license {
+        header = rootProject.file('HEADER')
+        skipExistingHeaders = false
+
+        tasks {
+            oe {
+                files.from rootProject.fileTree("src", {
+                    include "**/*.java"
+                })
+            }
+        }
     }
 }
 
@@ -35,30 +52,40 @@ allprojects {
     apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.archives_base_name
-    version = rootProject.mod_version
+    version = "${rootProject.mod_version}+mc${rootProject.minecraft_version}-${project.name}"
     group = rootProject.maven_group
 
     repositories {
+        mavenCentral()
+        mavenLocal()
         maven {
             name = "Essential"
             url = "https://repo.essential.gg/repository/maven-public"
         }
         maven {
-            name = "Terraformersmc"
-            url = "https://maven.terraformersmc.com/releases"
+            name "Modrinth"
+            url "https://api.modrinth.com/maven"
+
+            content {
+                includeGroup "maven.modrinth"
+            }
         }
         maven {
-            name = "Modrinth"
-            url = "https://api.modrinth.com/maven"
+            name "CurseForge"
+            url "https://cursemaven.com"
+
+            content {
+                includeGroup "curse.maven"
+            }
         }
         maven {
-            name = "Shedaniel maven"
-            url = "https://maven.shedaniel.me"
+            name "KosmX's maven"
+            url "https://maven.kosmx.dev"
         }
-        maven {
-            name = "KosmX's maven"
-            url = "https://maven.kosmx.dev"
-        }
+        maven { url "https://maven.shedaniel.me" }
+        maven { url "https://maven.parchmentmc.org" }
+        maven { url "https://maven.neoforged.net/releases" }
+        maven { url "https://maven.terraformersmc.com/releases" }
     }
 
     tasks.withType(JavaCompile).configureEach {

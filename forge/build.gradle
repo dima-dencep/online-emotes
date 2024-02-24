@@ -2,23 +2,13 @@ plugins {
     id "com.github.johnrengelman.shadow"
 }
 
-version = version + "-forge"
-
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-
-        mixinConfig "online-emotes-common.mixins.json"
-        mixinConfig "online-emotes.mixins.json"
-    }
 }
 
 configurations {
@@ -26,24 +16,21 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
 
-    modImplementation "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
+    modLocalRuntime "curse.maven:configured-457570:5105024"
 
-    modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}-forge"
     modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.playeranimator_version}"
-
-    modCompileOnly "gg.essential:essential-${rootProject.minecraft_version}-forge:+"
-    modRuntimeOnly "gg.essential:loader-modlauncher:+"
+    modImplementation "io.github.kosmx.emotes:neoforge:${rootProject.emotecraft_version}:neoforge"
 
     implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${rootProject.netty_version}"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }
 
 processResources {
@@ -62,7 +49,9 @@ shadowJar {
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
+    atAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
+
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set null
 }
@@ -85,8 +74,8 @@ components.java {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
+        mavenNeoForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name
             from components.java
         }
     }

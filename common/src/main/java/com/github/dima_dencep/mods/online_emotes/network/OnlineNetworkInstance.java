@@ -1,14 +1,24 @@
+/*
+ * Copyright 2023 dima_dencep.
+ *
+ * Licensed under the Open Software License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *     https://spdx.org/licenses/OSL-3.0.txt
+ */
+
 package com.github.dima_dencep.mods.online_emotes.network;
 
+import com.github.dima_dencep.mods.online_emotes.ConfigExpectPlatform;
 import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
-import com.github.dima_dencep.mods.online_emotes.config.EmoteConfig;
+import com.github.dima_dencep.mods.online_emotes.client.FancyToast;
 import com.github.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import com.github.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
 import com.github.dima_dencep.mods.online_emotes.utils.EmotePacketWrapper;
 import com.github.dima_dencep.mods.online_emotes.utils.NettyObjectFactory;
 import io.github.kosmx.emotes.api.proxy.AbstractNetworkInstance;
 import io.github.kosmx.emotes.common.network.EmotePacket;
-import io.github.kosmx.emotes.executor.EmoteInstance;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
@@ -16,6 +26,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.concurrent.ScheduledFuture;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
-    public static final URI URI_ADDRESS = URI.create(EmoteConfig.INSTANCE.address);
+    public static final URI URI_ADDRESS = ConfigExpectPlatform.address();
     public final Bootstrap bootstrap = new Bootstrap();
     private ScheduledFuture<?> reconnectingFuture;
     public HandshakeHandler handshakeHandler;
@@ -50,7 +61,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 }
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
-                pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(ConfigExpectPlatform.maxContentLength()));
                 pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
@@ -68,7 +79,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 connectInternal();
             }
 
-        }, 0L, EmoteConfig.INSTANCE.reconnectionDelay, TimeUnit.SECONDS);
+        }, 0L, ConfigExpectPlatform.reconnectionDelay(), TimeUnit.SECONDS);
     }
 
     private void connectInternal() {
@@ -89,7 +100,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
                 this.handshakeHandler.handshakeFuture.addListener((e) -> {
                     if (e.isSuccess()) {
-                        sendConfigCallback();
+                        sendOnlineEmotesConfig();
                     } else {
                         OnlineEmotes.LOGGER.error(e.cause());
                     }
@@ -105,6 +116,16 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         return false;
     }
 
+    public void sendOnlineEmotesConfig() {
+        sendC2SConfig(builder -> {
+            try {
+                sendMessage(builder, null);
+            } catch (IOException e) {
+                OnlineEmotes.LOGGER.fatal(e);
+            }
+        });
+    }
+
     @Override
     public boolean isActive() {
         return this.ch != null && this.ch.isActive();
@@ -112,6 +133,8 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     @Override
     public void sendMessage(EmotePacket.Builder builder, @Nullable UUID target) throws IOException {
+        builder.setSizeLimit(ConfigExpectPlatform.maxContentLength());
+
         if (target != null) {
             builder.configureTarget(target);
         }
@@ -121,7 +144,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         this.ch.writeAndFlush(new EmotePacketWrapper(writer.write().array()).toWebSocketFrame(), this.ch.voidPromise());
 
         if (writer.data.emoteData != null && writer.data.emoteData.extraData.containsKey("song") && !writer.data.writeSong) {
-            EmoteInstance.instance.getClientMethods().sendChatMessage(EmoteInstance.instance.getDefaults().newTranslationText("emotecraft.song_too_big_to_send"));
+            FancyToast.sendMessage(null, Component.translatable("emotecraft.song_too_big_to_send"));
         }
     }
 
@@ -155,5 +178,9 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         } catch (Throwable th) {
             OnlineEmotes.LOGGER.error("Failed to stop reconnector:", th);
         }
+    }
+
+    public boolean isReconnectorAlive() {
+        return this.reconnectingFuture != null;
     }
 }

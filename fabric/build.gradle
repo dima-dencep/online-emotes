@@ -2,8 +2,6 @@ plugins {
     id "com.github.johnrengelman.shadow"
 }
 
-version = version + "-fabric"
-
 architectury {
     platformSetupLoomIde()
     fabric()
@@ -32,11 +30,8 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}-fabric"
     modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.playeranimator_version}"
-
-    modCompileOnly "gg.essential:essential-${rootProject.minecraft_version}-fabric:+"
-    modRuntimeOnly "gg.essential:loader-fabric:+"
+    modImplementation "io.github.kosmx.emotes:fabric:${rootProject.emotecraft_version}:fabric"
 
     include implementation("io.netty:netty-codec-http:${rootProject.netty_version}")
 
@@ -59,7 +54,8 @@ shadowJar {
 
 remapJar {
     injectAccessWidener = true
-    input.set shadowJar.archiveFile
+
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set null
 }
@@ -83,7 +79,7 @@ components.java {
 publishing {
     publications {
         mavenFabric(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifactId = rootProject.archives_base_name
             from components.java
         }
     }

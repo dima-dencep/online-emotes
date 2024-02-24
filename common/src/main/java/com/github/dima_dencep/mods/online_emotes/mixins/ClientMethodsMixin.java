@@ -1,15 +1,26 @@
+/*
+ * Copyright 2023 dima_dencep.
+ *
+ * Licensed under the Open Software License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *     https://spdx.org/licenses/OSL-3.0.txt
+ */
+
 package com.github.dima_dencep.mods.online_emotes.mixins;
 
-import com.github.dima_dencep.mods.online_emotes.OnlineEmotes;
-import com.github.dima_dencep.mods.online_emotes.config.EmoteConfig;
-import io.github.kosmx.emotes.arch.executor.AbstractClientMethods;
-import io.github.kosmx.emotes.executor.dataTypes.Text;
+import com.github.dima_dencep.mods.online_emotes.ConfigExpectPlatform;
+
+import com.github.dima_dencep.mods.online_emotes.client.FancyToast;
+import io.github.kosmx.emotes.arch.executor.ClientMethods;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = AbstractClientMethods.class, remap = false)
+@Mixin(value = ClientMethods.class, remap = false)
 public abstract class ClientMethodsMixin {
 
     @Inject(
@@ -19,9 +30,9 @@ public abstract class ClientMethodsMixin {
             ),
             cancellable = true
     )
-    public void onlineEmotes$sendChatMessage(Text msg, CallbackInfo ci) {
-        if (EmoteConfig.INSTANCE.replaceMessages) {
-            OnlineEmotes.sendMessage(false, null, msg.getString());
+    public void onlineEmotes$sendChatMessage(Component msg, CallbackInfo ci) {
+        if (ConfigExpectPlatform.replaceMessages()) {
+            FancyToast.sendMessage(null, msg);
 
             ci.cancel();
         }
@@ -34,9 +45,9 @@ public abstract class ClientMethodsMixin {
             ),
             cancellable = true
     )
-    public void onlineEmotes$toastExportMessage(int level, Text text, String msg, CallbackInfo ci) {
-        if (EmoteConfig.INSTANCE.replaceMessages) {
-            OnlineEmotes.sendMessage(false, text, msg);
+    public void onlineEmotes$toastExportMessage(int level, Component text, String msg, CallbackInfo ci) {
+        if (ConfigExpectPlatform.replaceMessages()) {
+            FancyToast.sendMessage(text, Component.literal(msg));
 
             ci.cancel();
         }

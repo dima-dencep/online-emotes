@@ -16,8 +16,8 @@
     "issues": "https://github.com/dima-dencep/online-emotes/issues",
     "sources": "https://github.com/dima-dencep/online-emotes"
   },
-  "license": "AGPL-3.0-only",
-  "icon": "icon.png",
+  "license": "OSL-3.0",
+  "icon": "assets/online-emotes/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -28,8 +28,7 @@
     ]
   },
   "mixins": [
-    "online-emotes.mixins.json",
-    "online-emotes-common.mixins.json"
+    "online-emotes.mixins.json"
   ],
   "depends": {
     "fabric": "*",

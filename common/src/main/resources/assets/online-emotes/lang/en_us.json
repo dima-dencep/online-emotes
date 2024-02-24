@@ -3,19 +3,28 @@
 
   "text.autoconfig.online_emotes.category.default": "Main",
   "text.autoconfig.online_emotes.category.netty": "Netty",
-  "text.autoconfig.online_emotes.category.integrations": "Integrations",
 
   "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "In seconds",
   "text.autoconfig.online_emotes.option.reconnectionDelay": "Delay before reconnecting",
   "text.autoconfig.online_emotes.option.replaceMessages": "Replacing EmoteCraft messages with more detail",
   "text.autoconfig.online_emotes.option.debug": "Displaying debug messages",
 
+  "text.autoconfig.online_emotes.option.maxContentLength.@Tooltip": "Use this option if your emotes with sound doesn't work, but we don't guarantee it will be fine...",
+  "text.autoconfig.online_emotes.option.maxContentLength": "Maximum content size",
   "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Only for linux",
   "text.autoconfig.online_emotes.option.useEpoll": "Using Epoll instead of Nio",
+  "text.autoconfig.online_emotes.option.selfPings.@Tooltip": "The server pings each player once every few seconds to avoid losing connection, enable this option if you are still experiencing connection problems",
+  "text.autoconfig.online_emotes.option.selfPings": "Ping server",
   "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Unlimited",
   "text.autoconfig.online_emotes.option.threads": "Number of threads for data processing",
 
-  "text.autoconfig.online_emotes.option.essentialIntegration": "Integration with Essential",
+  "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!",
 
-  "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!"
+  "online_emotes.button.reconect": "Reconnect OnlineEmotes",
+
+  "online_emotes.messages.connected": "WebSocket connected!",
+  "online_emotes.messages.disconnected": "WebSocket disconnected!",
+  "online_emotes.messages.internal.banned": "You have been banned for reason: %s! If this is an error, contact support.",
+  "online_emotes.messages.internal.restarting": "The server is restarting...",
+  "online_emotes.messages.internal.restarting-update": "The server is restarting to update, make sure you have the latest version of the mod!"
 }
