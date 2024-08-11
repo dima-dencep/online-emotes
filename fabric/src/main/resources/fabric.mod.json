@@ -30,7 +30,8 @@
     ]
   },
   "mixins": [
-    "online-emotes.mixins.json"
+    "online-emotes.mixins.json",
+    "online-emotes-fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${project.loader_version}",

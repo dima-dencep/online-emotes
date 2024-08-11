@@ -31,7 +31,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.playeranimator_version}"
+    modImplementation include("dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.playeranimator_version}")
     modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}"
 
     include implementation("io.netty:netty-codec-http:${rootProject.netty_version}")

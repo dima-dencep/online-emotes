@@ -92,6 +92,9 @@ allprojects {
             }
         }
         maven {
+            url "https://repo.redlance.org/public"
+        }
+        maven {
             name "KosmX's maven"
             url "https://maven.kosmx.dev"
         }
@@ -99,7 +102,7 @@ allprojects {
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set 21
     }
 
     java {

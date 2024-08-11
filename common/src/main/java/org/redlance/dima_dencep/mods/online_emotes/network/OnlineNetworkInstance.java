@@ -120,18 +120,28 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void sendOnlineEmotesConfig() {
-        sendC2SConfig(builder -> {
-            try {
-                sendMessage(builder, null);
-            } catch (IOException e) {
-                OnlineEmotes.LOGGER.fatal(e);
-            }
-        });
+        try {
+            sendC2SConfig(this::sendMessageSafe);
+        } catch (Throwable th) {
+            OnlineEmotes.LOGGER.fatal("Failed to invoke config method! Please update emotecraft!");
+
+            sendMessageSafe(new EmotePacket.Builder()
+                    .configureToConfigExchange(true)
+            );
+        }
     }
 
     @Override
     public boolean isActive() {
         return this.ch != null && this.ch.isActive();
+    }
+
+    private void sendMessageSafe(EmotePacket.Builder builder) {
+        try {
+            sendMessage(builder, null);
+        } catch (IOException e) {
+            OnlineEmotes.LOGGER.fatal("Failed to send message!", e);
+        }
     }
 
     @Override

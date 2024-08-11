@@ -12,11 +12,8 @@ package org.redlance.dima_dencep.mods.online_emotes.neoforge;
 
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import io.netty.channel.epoll.Epoll;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.config.ConfigFileTypeHandler;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -71,20 +68,12 @@ public class ConfigExpectPlatformImpl {
     }
 
     static { // Early loading for config
-        ModContainer activeContainer = ModList.get().getModContainerById(OnlineEmotes.MOD_ID).orElseThrow();
         ModConfigSpec configSpec = ConfigExpectPlatformImpl.CONFIG_SPEC_PAIR.getValue();
 
-        ModConfig modConfig = new ModConfig(ModConfig.Type.CLIENT, configSpec, activeContainer, "online_emotes.toml");
-        activeContainer.addConfig(modConfig);
-
-        if (!configSpec.isLoaded()) {
-            OnlineEmotes.LOGGER.warn("Config is not loaded?");
-
-            configSpec.acceptConfig(
-                    ConfigFileTypeHandler.TOML.reader(FMLPaths.CONFIGDIR.get())
-                            .apply(modConfig)
-            );
-        }
+        ModList.get().getModContainerById(OnlineEmotes.MOD_ID).ifPresentOrElse(
+                container -> container.registerConfig(ModConfig.Type.STARTUP, configSpec, "online_emotes.toml"),
+                () -> OnlineEmotes.LOGGER.fatal("Unable to find ModContainer, config will not load!")
+        );
     }
 
     public static long reconnectionDelay() {

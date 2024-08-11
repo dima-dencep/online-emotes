@@ -10,15 +10,21 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.forge;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 
-@Mod(OnlineEmotes.MOD_ID)
+@Mod(value = OnlineEmotes.MOD_ID, dist = Dist.CLIENT)
 public class ForgeOnlineEmotes extends OnlineEmotes {
-    public ForgeOnlineEmotes() {
+    public ForgeOnlineEmotes(ModContainer container) {
+        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+
         NeoForge.EVENT_BUS.register(this);
 
         super.onInitializeClient();
