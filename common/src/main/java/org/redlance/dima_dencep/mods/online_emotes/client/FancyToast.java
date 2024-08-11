@@ -55,7 +55,11 @@ public class FancyToast implements Toast {
             return Toast.super.width();
         }
 
-        return Minecraft.getInstance().font.width(this.msg) + 38;
+        Font font = Minecraft.getInstance().font;
+
+        return Math.max(
+                font.width(this.msg), font.width(this.title)
+        ) + 38;
     }
 
     public static void sendMessage(Component description) {

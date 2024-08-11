@@ -32,7 +32,7 @@ public abstract class ClientMethodsMixin {
     )
     public void onlineEmotes$sendChatMessage(Component msg, CallbackInfo ci) {
         if (ConfigExpectPlatform.replaceMessages()) {
-            FancyToast.sendMessage(null, msg);
+            FancyToast.sendMessage(msg);
 
             ci.cancel();
         }

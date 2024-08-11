@@ -1,0 +1,30 @@
+{
+  "text.autoconfig.online_emotes.title": "線上表情",
+
+  "text.autoconfig.online_emotes.category.default": "主要",
+  "text.autoconfig.online_emotes.category.netty": "Netty",
+
+  "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "單位：秒",
+  "text.autoconfig.online_emotes.option.reconnectionDelay": "重新連線前的延遲",
+  "text.autoconfig.online_emotes.option.replaceMessages": "以更詳細的訊息替換 EmoteCraft 訊息",
+  "text.autoconfig.online_emotes.option.debug": "顯示除錯訊息",
+
+  "text.autoconfig.online_emotes.option.maxContentLength.@Tooltip": "如果你的表情動作附帶聲音無法使用，請嘗試調整這個選項，但我們不保證一定能解決問題……",
+  "text.autoconfig.online_emotes.option.maxContentLength": "最大內容大小",
+  "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "僅限 Linux",
+  "text.autoconfig.online_emotes.option.useEpoll": "使用 Epoll 代替 Nio",
+  "text.autoconfig.online_emotes.option.selfPings.@Tooltip": "伺服器會每隔幾秒 ping 一次每個玩家以避免斷線，如果你仍然遇到連線問題，請啟用這個選項",
+  "text.autoconfig.online_emotes.option.selfPings": "Ping 伺服器",
+  "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - 無限制",
+  "text.autoconfig.online_emotes.option.threads": "資料處理的執行緒數量",
+
+  "online_emotes.warnings.onlyThis": "僅能透過線上表情進行串流！",
+
+  "online_emotes.button.reconect": "重新連線線上表情",
+
+  "online_emotes.messages.connected": "WebSocket 已連線！",
+  "online_emotes.messages.disconnected": "WebSocket 已斷線！",
+  "online_emotes.messages.internal.banned": "你因以下原因被封鎖：%s！ 如果這是錯誤的，請聯絡管理員。",
+  "online_emotes.messages.internal.restarting": "伺服器正在重新啟動……",
+  "online_emotes.messages.internal.restarting-update": "伺服器正在重新啟動以更新，請確保你安裝了最新版本的模組！"
+}
