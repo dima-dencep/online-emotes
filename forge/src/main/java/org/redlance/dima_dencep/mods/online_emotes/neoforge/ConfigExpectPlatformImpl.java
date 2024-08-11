@@ -30,7 +30,7 @@ public class ConfigExpectPlatformImpl {
     public final ModConfigSpec.IntValue maxContentLength;
     public final ModConfigSpec.BooleanValue useEpoll;
     public final ModConfigSpec.BooleanValue selfPings;
-    public final ModConfigSpec.ConfigValue<Integer> threads;
+    public final ModConfigSpec.IntValue threads;
 
     public ConfigExpectPlatformImpl(ModConfigSpec.Builder builder) {
         reconnectionDelay = builder
@@ -67,7 +67,7 @@ public class ConfigExpectPlatformImpl {
                 .translation("text.autoconfig.online_emotes.option.threads")
                 .comment("text.autoconfig.online_emotes.option.threads.@Tooltip")
                 .worldRestart()
-                .define("threads", 0);
+                .defineInRange("threads", 0, 0, Integer.MAX_VALUE);
     }
 
     static { // Early loading for config

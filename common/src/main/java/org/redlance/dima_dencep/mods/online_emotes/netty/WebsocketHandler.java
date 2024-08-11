@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
 public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
-    private static final Component disconnected = Component.translatable("online_emotes.messages.disconnected");
-    private static final Component connected = Component.translatable("online_emotes.messages.connected");
+    private static final Component DISCONNECTED = Component.translatable("online_emotes.messages.disconnected");
+    private static final Component CONNECTED = Component.translatable("online_emotes.messages.connected");
 
     private final OnlineNetworkInstance proxy;
     private ScheduledFuture<?> future;
@@ -42,7 +42,9 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelInactive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
 
-        FancyToast.sendMessage(true, proxy.isReconnectorAlive(), false, null, disconnected);
+        if (ConfigExpectPlatform.debug()) {
+            FancyToast.sendMessage(DISCONNECTED);
+        }
 
         if (future != null) {
             future.cancel(true);
@@ -53,7 +55,9 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
 
-        FancyToast.sendMessage(true, false, proxy.isReconnectorAlive(), null, connected);
+        if (ConfigExpectPlatform.debug()) {
+            FancyToast.sendMessage(CONNECTED);
+        }
 
         try {
             if (ConfigExpectPlatform.selfPings())
@@ -80,7 +84,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             }
 
         } else if (msg instanceof TextWebSocketFrame frame) {
-            FancyToast.sendMessage(null, PlatformTools.fromJson(frame.text()));
+            FancyToast.sendMessage(PlatformTools.fromJson(frame.text()));
 
         } else if (msg instanceof PingWebSocketFrame frame) {
             frame.content().retain();

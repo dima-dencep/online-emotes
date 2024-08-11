@@ -44,6 +44,7 @@ public class ConfigExpectPlatformImpl implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Category("netty")
     @ConfigEntry.Gui.RequiresRestart
+    @ConfigEntry.BoundedDiscrete(min = 0, max = Integer.MAX_VALUE)
     public int threads = 0;
 
     public static long reconnectionDelay() {
