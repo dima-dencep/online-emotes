@@ -21,7 +21,7 @@ configurations {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
-    // modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
 
     modCompileOnly("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
         transitive = false
