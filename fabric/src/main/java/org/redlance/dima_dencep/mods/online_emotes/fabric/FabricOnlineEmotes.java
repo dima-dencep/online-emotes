@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 
-
 public class FabricOnlineEmotes extends OnlineEmotes implements ClientModInitializer {
     public static final ConfigExpectPlatformImpl MOD_CONFIG = AutoConfig.register(
             ConfigExpectPlatformImpl.class, Toml4jConfigSerializer::new
