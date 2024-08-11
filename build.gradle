@@ -48,7 +48,7 @@ subprojects {
     processResources {
         // inputs.property "project", project
 
-        filesMatching(["META-INF/mods.toml", "fabric.mod.json"]) {
+        filesMatching(["META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
             expand "project": project
         }
     }
