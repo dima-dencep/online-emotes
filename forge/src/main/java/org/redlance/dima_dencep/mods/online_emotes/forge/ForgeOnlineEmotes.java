@@ -17,7 +17,6 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 
 @Mod(value = OnlineEmotes.MOD_ID, dist = Dist.CLIENT)
@@ -25,24 +24,14 @@ public class ForgeOnlineEmotes extends OnlineEmotes {
     public ForgeOnlineEmotes(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
-        NeoForge.EVENT_BUS.register(this);
-
         super.onInitializeClient();
-    }
 
-    @SubscribeEvent
-    public void onJoin(ClientPlayerNetworkEvent.LoggingIn event) {
-        if (proxy.isActive()) {
-            proxy.sendOnlineEmotesConfig();
-        } else {
-            proxy.connect();
-        }
-    }
+        NeoForge.EVENT_BUS.addListener(ClientPlayerNetworkEvent.LoggingIn.class,
+                event -> onLoggingIn(event.getPlayer(), event.getConnection())
+        );
 
-    @SubscribeEvent
-    public void onExit(ClientPlayerNetworkEvent.LoggingOut event) {
-        if (proxy.isActive()) {
-            proxy.disconnect();
-        }
+        NeoForge.EVENT_BUS.addListener(ClientPlayerNetworkEvent.LoggingOut.class,
+                event -> onLoggingOut(event.getPlayer(), event.getConnection())
+        );
     }
 }

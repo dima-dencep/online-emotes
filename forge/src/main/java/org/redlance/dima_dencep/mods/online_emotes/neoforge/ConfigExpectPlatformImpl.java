@@ -21,12 +21,11 @@ import org.apache.commons.lang3.tuple.Pair;
 public class ConfigExpectPlatformImpl {
     public static final Pair<ConfigExpectPlatformImpl, ModConfigSpec> CONFIG_SPEC_PAIR = new ModConfigSpec.Builder()
             .configure(ConfigExpectPlatformImpl::new);
+
     public final ModConfigSpec.ConfigValue<Long> reconnectionDelay;
     public final ModConfigSpec.BooleanValue replaceMessages;
     public final ModConfigSpec.BooleanValue debug;
-    public final ModConfigSpec.IntValue maxContentLength;
     public final ModConfigSpec.BooleanValue useEpoll;
-    public final ModConfigSpec.BooleanValue selfPings;
     public final ModConfigSpec.IntValue threads;
 
     public ConfigExpectPlatformImpl(ModConfigSpec.Builder builder) {
@@ -43,27 +42,16 @@ public class ConfigExpectPlatformImpl {
                 .translation("text.autoconfig.online_emotes.option.debug")
                 .define("debug", false);
 
-        maxContentLength = builder
-                .translation("text.autoconfig.online_emotes.option.maxContentLength")
-                .comment("text.autoconfig.online_emotes.option.maxContentLength.@Tooltip")
-                .worldRestart()
-                .defineInRange("maxContentLength", 65536, 1, 1048576);
-
         useEpoll = builder
                 .translation("text.autoconfig.online_emotes.option.useEpoll")
                 .comment("text.autoconfig.online_emotes.option.useEpoll.@Tooltip")
-                .worldRestart()
+                .gameRestart()
                 .define("useEpoll", Epoll.isAvailable());
-
-        selfPings = builder
-                .translation("text.autoconfig.online_emotes.option.selfPings")
-                .comment("text.autoconfig.online_emotes.option.selfPings.@Tooltip")
-                .define("selfPings", false);
 
         threads = builder
                 .translation("text.autoconfig.online_emotes.option.threads")
                 .comment("text.autoconfig.online_emotes.option.threads.@Tooltip")
-                .worldRestart()
+                .gameRestart()
                 .defineInRange("threads", 0, 0, Integer.MAX_VALUE);
     }
 
@@ -88,16 +76,8 @@ public class ConfigExpectPlatformImpl {
         return CONFIG_SPEC_PAIR.getKey().debug.get();
     }
 
-    public static int maxContentLength() {
-        return CONFIG_SPEC_PAIR.getKey().maxContentLength.get();
-    }
-
     public static boolean useEpoll() {
         return CONFIG_SPEC_PAIR.getKey().useEpoll.get();
-    }
-
-    public static boolean selfPings() {
-        return CONFIG_SPEC_PAIR.getKey().selfPings.get();
     }
 
     public static int threads() {

@@ -29,17 +29,7 @@ public class ConfigExpectPlatformImpl implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Category("netty")
     @ConfigEntry.Gui.RequiresRestart
-    @ConfigEntry.BoundedDiscrete(min = 1, max = 1048576)
-    public int maxContentLength = 65536;
-
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Category("netty")
-    @ConfigEntry.Gui.RequiresRestart
     public boolean useEpoll = Epoll.isAvailable();
-
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Category("netty")
-    public boolean selfPings = false;
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Category("netty")
@@ -59,16 +49,8 @@ public class ConfigExpectPlatformImpl implements ConfigData {
         return FabricOnlineEmotes.MOD_CONFIG.debug;
     }
 
-    public static int maxContentLength() {
-        return FabricOnlineEmotes.MOD_CONFIG.maxContentLength;
-    }
-
     public static boolean useEpoll() {
         return FabricOnlineEmotes.MOD_CONFIG.useEpoll;
-    }
-
-    public static boolean selfPings() {
-        return FabricOnlineEmotes.MOD_CONFIG.selfPings;
     }
 
     public static int threads() {

@@ -15,9 +15,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 
 public class FabricOnlineEmotes extends OnlineEmotes implements ClientModInitializer {
     public static final ConfigExpectPlatformImpl MOD_CONFIG = AutoConfig.register(
@@ -28,21 +25,11 @@ public class FabricOnlineEmotes extends OnlineEmotes implements ClientModInitial
     public void onInitializeClient() {
         super.onInitializeClient();
 
-        ClientPlayConnectionEvents.JOIN.register(this::onJoin);
-        ClientPlayConnectionEvents.DISCONNECT.register(this::onDisconnect);
-    }
-
-    public void onJoin(ClientPacketListener handler, PacketSender packetSender, Minecraft minecraftClient) {
-        if (proxy.isActive()) {
-            proxy.sendOnlineEmotesConfig();
-        } else {
-            proxy.connect();
-        }
-    }
-
-    private void onDisconnect(ClientPacketListener handler, Minecraft minecraftClient) {
-        if (proxy.isActive()) {
-            proxy.disconnect();
-        }
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) ->
+                onLoggingIn(client.player, handler.getConnection())
+        );
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) ->
+                onLoggingIn(client.player, handler.getConnection())
+        );
     }
 }

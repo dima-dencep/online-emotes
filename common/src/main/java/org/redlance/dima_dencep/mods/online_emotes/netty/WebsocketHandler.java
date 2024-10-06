@@ -20,11 +20,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.*;
-import io.netty.util.concurrent.ScheduledFuture;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
 public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
@@ -32,7 +29,6 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     private static final Component CONNECTED = Component.translatable("online_emotes.messages.connected");
 
     private final OnlineNetworkInstance proxy;
-    private ScheduledFuture<?> future;
 
     public WebsocketHandler(OnlineNetworkInstance proxy) {
         this.proxy = proxy;
@@ -43,11 +39,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         super.channelInactive(ctx);
 
         if (ConfigExpectPlatform.debug()) {
-            FancyToast.sendMessage(DISCONNECTED);
-        }
-
-        if (future != null) {
-            future.cancel(true);
+            FancyToast.sendMessage(WebsocketHandler.DISCONNECTED);
         }
     }
 
@@ -56,45 +48,35 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
         super.channelActive(ctx);
 
         if (ConfigExpectPlatform.debug()) {
-            FancyToast.sendMessage(CONNECTED);
-        }
-
-        try {
-            if (ConfigExpectPlatform.selfPings())
-                this.future = ctx.executor().scheduleWithFixedDelay(
-                        () -> ctx.channel().writeAndFlush(new PingWebSocketFrame()),
-                        20L, 20L, TimeUnit.SECONDS
-                );
-        } catch (Throwable th) {
-            OnlineEmotes.LOGGER.warn("Failed to schedule server ping!", th);
+            FancyToast.sendMessage(WebsocketHandler.CONNECTED);
         }
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) {
-        if (msg instanceof BinaryWebSocketFrame frame) {
-            ByteBuf buf = frame.content();
+        switch (msg) {
+            case BinaryWebSocketFrame frame -> {
+                ByteBuf buf = frame.content();
 
-            if (!buf.isDirect() && !buf.isReadOnly()) {
-                this.proxy.receiveMessage(buf.array());
-            } else {
-                byte[] bytes = new byte[buf.readableBytes()];
-                buf.getBytes(buf.readerIndex(), bytes);
-                this.proxy.receiveMessage(bytes);
+                if (!buf.isDirect() && !buf.isReadOnly()) {
+                    this.proxy.receiveMessage(buf.array());
+                } else {
+                    byte[] bytes = new byte[buf.readableBytes()];
+                    buf.getBytes(buf.readerIndex(), bytes);
+                    this.proxy.receiveMessage(bytes);
+                }
             }
 
-        } else if (msg instanceof TextWebSocketFrame frame) {
-            FancyToast.sendMessage(PlatformTools.fromJson(frame.text()));
+            case TextWebSocketFrame frame -> FancyToast.sendMessage(PlatformTools.fromJson(frame.text()));
 
-        } else if (msg instanceof PingWebSocketFrame frame) {
-            frame.content().retain();
-            ctx.channel().writeAndFlush(new PongWebSocketFrame(frame.content()), ctx.channel().voidPromise());
+            case PingWebSocketFrame frame -> {
+                frame.content().retain();
+                ctx.channel().writeAndFlush(new PongWebSocketFrame(frame.content()), ctx.channel().voidPromise());
+            }
 
-        } else if (msg instanceof CloseWebSocketFrame) {
-            ctx.channel().close();
+            case CloseWebSocketFrame ignored -> ctx.channel().close();
 
-        } else {
-            OnlineEmotes.LOGGER.error("Unsupported frame type: {}!", msg.getClass().getName());
+            default -> OnlineEmotes.LOGGER.error("Unsupported frame type: {}!", msg.getClass().getName());
         }
     }
 }

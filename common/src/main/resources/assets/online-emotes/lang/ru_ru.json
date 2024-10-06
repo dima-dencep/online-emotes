@@ -9,12 +9,8 @@
   "text.autoconfig.online_emotes.option.replaceMessages": "Заменять сообщения EmoteCraft на более подробные",
   "text.autoconfig.online_emotes.option.debug": "Отображение отладочных сообщений в игре",
 
-  "text.autoconfig.online_emotes.option.maxContentLength.@Tooltip": "Используйте эту опцию, если ваши эмоции со звуком не работают, но мы не гарантируем, что все будет хорошо...",
-  "text.autoconfig.online_emotes.option.maxContentLength": "Максимальный размер контента",
   "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Только для Линукс",
   "text.autoconfig.online_emotes.option.useEpoll": "Использование Epoll вместо Nio",
-  "text.autoconfig.online_emotes.option.selfPings.@Tooltip": "Сервер пингует каждого игрока раз в несколько секунд, чтобы избежать потери соединения, включите эту опцию, если вы все еще испытываете проблемы с соединением",
-  "text.autoconfig.online_emotes.option.selfPings": "Пинг сервера",
   "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Неограниченно",
   "text.autoconfig.online_emotes.option.threads": "Количество потоков для обработки данных",
 

@@ -30,17 +30,7 @@ public class ConfigExpectPlatform {
     }
 
     @ExpectPlatform
-    public static int maxContentLength() {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
     public static boolean useEpoll() {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static boolean selfPings() {
         throw new AssertionError();
     }
 

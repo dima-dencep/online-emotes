@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
     private static final URI URI_ADDRESS = URI.create("wss://api.redlance.org:443/websockets/online-emotes");
+    private static final int PAYLOAD_LENHYH = 1048576;
 
     public final Bootstrap bootstrap = new Bootstrap();
     private ScheduledFuture<?> reconnectingFuture;
@@ -46,10 +47,6 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     public Channel ch;
 
     public OnlineNetworkInstance() {
-        if (!"ws".equals(URI_ADDRESS.getScheme()) && !"wss".equals(URI_ADDRESS.getScheme())) {
-            throw new IllegalArgumentException("Unsupported protocol: " + URI_ADDRESS.getScheme());
-        }
-
         this.bootstrap.group(NettyObjectFactory.newEventLoopGroup());
         this.bootstrap.channel(NettyObjectFactory.getSocketChannel());
         this.bootstrap.handler(new ChannelInitializer<SocketChannel>() {
@@ -64,7 +61,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 }
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
-                pipeline.addLast("aggregator", new HttpObjectAggregator(ConfigExpectPlatform.maxContentLength()));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENHYH));
                 pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
@@ -72,10 +69,14 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void connect() {
+        if (isActive()) {
+            sendOnlineEmotesConfig();
+            return;
+        }
+
         stopReconnecting();
 
         this.reconnectingFuture = bootstrap.config().group().scheduleAtFixedRate(() -> {
-
             if (!isActive()) {
                 OnlineEmotes.LOGGER.info("Try (re)connecting...");
 
@@ -87,11 +88,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     private void connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
-                WebSocketVersion.V13,
-                null,
-                false,
-                EmptyHttpHeaders.INSTANCE,
-                12800000
+                WebSocketVersion.V13, null, false, EmptyHttpHeaders.INSTANCE, PAYLOAD_LENHYH
         ));
 
         ChannelFuture channelFuture = this.bootstrap.connect(URI_ADDRESS.getHost(), URI_ADDRESS.getPort());
@@ -146,13 +143,13 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     @Override
     public void sendMessage(EmotePacket.Builder builder, @Nullable UUID target) throws IOException {
-        builder.setSizeLimit(ConfigExpectPlatform.maxContentLength());
-
         if (target != null) {
             builder.configureTarget(target);
         }
 
-        EmotePacket writer = builder.build();
+        EmotePacket writer = builder
+                .setSizeLimit(Integer.MAX_VALUE)
+                .build();
 
         this.ch.writeAndFlush(new EmotePacketWrapper(writer.write().array()).toWebSocketFrame(), this.ch.voidPromise());
 
@@ -161,15 +158,16 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         }
     }
 
-    public void disconnectNetty() {
+    protected void disconnectNetty() {
         if (isActive()) {
             this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
 
             try {
                 this.ch.close().awaitUninterruptibly();
             } catch (Throwable th) {
-                OnlineEmotes.LOGGER.error("Failed to disconnect WebSocket:", th);
+                OnlineEmotes.LOGGER.error("Failed to disconnect WebSocket!", th);
             }
+            this.ch = null;
         }
     }
 
@@ -180,7 +178,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         super.disconnect();
     }
 
-    public void stopReconnecting() {
+    private void stopReconnecting() {
         try {
             if (this.reconnectingFuture != null && !this.reconnectingFuture.isCancelled()) {
                 OnlineEmotes.LOGGER.warn("What happened to the reconnector?");
