@@ -10,8 +10,8 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.network;
 
-import org.redlance.dima_dencep.mods.online_emotes.ConfigExpectPlatform;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import org.redlance.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
     private static final URI URI_ADDRESS = URI.create("wss://api.redlance.org:443/websockets/online-emotes");
-    private static final int PAYLOAD_LENHYH = 1048576;
+    private static final int PAYLOAD_LENGHT = Integer.MAX_VALUE;
 
     public final Bootstrap bootstrap = new Bootstrap();
     private ScheduledFuture<?> reconnectingFuture;
@@ -61,7 +61,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 }
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
-                pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENHYH));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENGHT));
                 pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
@@ -88,7 +88,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     private void connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
-                WebSocketVersion.V13, null, false, EmptyHttpHeaders.INSTANCE, PAYLOAD_LENHYH
+                WebSocketVersion.V13, null, false, EmptyHttpHeaders.INSTANCE, PAYLOAD_LENGHT
         ));
 
         ChannelFuture channelFuture = this.bootstrap.connect(URI_ADDRESS.getHost(), URI_ADDRESS.getPort());
@@ -117,28 +117,18 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     public void sendOnlineEmotesConfig() {
-        try {
-            sendC2SConfig(this::sendMessageSafe);
-        } catch (Throwable th) {
-            OnlineEmotes.LOGGER.fatal("Failed to invoke config method! Please update emotecraft!");
-
-            sendMessageSafe(new EmotePacket.Builder()
-                    .configureToConfigExchange(true)
-            );
-        }
+        sendC2SConfig(builder -> {
+            try {
+                sendMessage(builder, null);
+            } catch (IOException e) {
+                OnlineEmotes.LOGGER.fatal("Failed to send message!", e);
+            }
+        });
     }
 
     @Override
     public boolean isActive() {
         return this.ch != null && this.ch.isActive();
-    }
-
-    private void sendMessageSafe(EmotePacket.Builder builder) {
-        try {
-            sendMessage(builder, null);
-        } catch (IOException e) {
-            OnlineEmotes.LOGGER.fatal("Failed to send message!", e);
-        }
     }
 
     @Override
@@ -148,7 +138,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         }
 
         EmotePacket writer = builder
-                .setSizeLimit(Integer.MAX_VALUE)
+                .setSizeLimit(PAYLOAD_LENGHT)
                 .build();
 
         this.ch.writeAndFlush(new EmotePacketWrapper(writer.write().array()).toWebSocketFrame(), this.ch.voidPromise());

@@ -1,5 +1,5 @@
 plugins {
-    id "com.gradleup.shadow" version "8.3.2" apply false
+    id "com.gradleup.shadow" version "8.3.3" apply false
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
     id "net.neoforged.licenser" version "0.7.+" apply false
@@ -23,7 +23,7 @@ subprojects {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.layered() {
             officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.21:${rootProject.parchment_version}@zip")
+            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:${rootProject.parchment_version}@zip")
         }
     }
 
@@ -46,7 +46,7 @@ subprojects {
     }
 
     processResources {
-        // inputs.property "project", project
+        inputs.property "version", project.version
 
         filesMatching(["META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
             expand "project": project
@@ -72,31 +72,21 @@ allprojects {
             }
         }
         maven {
-            name "ParchmentMC"
-            url "https://maven.parchmentmc.org"
-        }
-        maven {
-            url "https://maven.shedaniel.me"
-        }
-        maven {
-            url "https://maven.terraformersmc.com/releases"
-        }
-
-        // Additional repos
-        maven {
-            name "Modrinth"
-            url "https://api.modrinth.com/maven"
+            name "CurseMaven"
+            url "https://cursemaven.com"
 
             content {
-                includeGroup "maven.modrinth"
+                includeGroup "curse.maven"
             }
         }
         maven {
-            url "https://repo.redlance.org/public"
+            name "KosmX's maven"
+            url "https://repo.redlance.org/public" // TODO replace
         }
         maven {
-            name "KosmX's maven"
-            url "https://maven.kosmx.dev"
+            name "ParchmentMC"
+            url "https://maven.parchmentmc.org"
+        }
         maven {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"

@@ -10,16 +10,17 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.mixins;
 
-import org.redlance.dima_dencep.mods.online_emotes.ConfigExpectPlatform;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
-import io.github.kosmx.emotes.arch.screen.EmoteConfigScreen;
 import io.github.kosmx.emotes.arch.screen.ingame.FastMenuScreen;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,61 +31,64 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FastMenuScreen.class)
-public abstract class FastMenuScreenLogicMixin extends EmoteConfigScreen {
+public abstract class FastMenuScreenLogicMixin extends Screen {
     @Shadow
     @Final
-    private static Component warn_only_proxy;
+    private HeaderAndFooterLayout layout;
     @Unique
-    private static final Component oe$warn = Component.translatable("online_emotes.warnings.onlyThis");
+    private static final Component OE_ONLYTHIS = Component.translatable("online_emotes.warnings.onlyThis");
     @Unique
-    private static final Component oe$reconnect = Component.translatable("online_emotes.button.reconect");
+    private static final Component OE_RECONNECT = Component.translatable("online_emotes.button.reconect");
     @Unique
     private Button oe$reconnectButton;
 
-    protected FastMenuScreenLogicMixin(@NotNull Component title, @Nullable Screen parent) {
-        super(title, parent);
+    protected FastMenuScreenLogicMixin(Component title) {
+        super(title);
     }
 
     @ModifyArg(
-            method = "render",
+            method = "init",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/GuiGraphics;drawCenteredString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"
+                    target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addTitleHeader(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)V",
+                    ordinal = 1
             ),
-            index = 1
+            index = 0
     )
     public Component onlineEmotes$emotes_renderScreen(Component text) {
-        if (text == warn_only_proxy && OnlineEmotes.proxy.isActive()) {
-            return oe$warn;
-        }
-
-        return text;
+        return OnlineEmotes.proxy.isActive() ? OE_ONLYTHIS : text;
     }
 
     @Inject(
-            method = "render",
+            method = "renderBlurredBackground",
             at = @At(
                     value = "HEAD"
             )
     )
-    public void onlineEmotes$emotes_renderScreen(GuiGraphics matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void onlineEmotes$emotes_renderScreen(float f, CallbackInfo ci) {
         if (oe$reconnectButton != null) {
             oe$reconnectButton.active = !OnlineEmotes.proxy.isActive();
         }
     }
 
-    @Inject(
+    @WrapOperation(
             method = "init",
             at = @At(
-                    value = "TAIL"
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToFooter(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;"
             )
     )
-    public void addButton(CallbackInfo ci) {
-        if (!ConfigExpectPlatform.debug())
-            return;
+    public <T extends LayoutElement> T addButton(HeaderAndFooterLayout instance, T child, Operation<T> original) {
+        if (!OnlineEmotesConfig.debug()) {
+            return original.call(instance, child);
+        }
 
-        oe$reconnectButton = addRenderableWidget(Button.builder(oe$reconnect, (button) ->
+        LinearLayout linearLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(Button.DEFAULT_SPACING));
+
+        this.oe$reconnectButton = linearLayout.addChild(Button.builder(OE_RECONNECT, (button) ->
                 OnlineEmotes.proxy.connect()
-        ).pos(getWidth() - 120, getHeight() - 55).size(96, 20).build());
+        ).width(Button.SMALL_WIDTH).build());
+
+        return linearLayout.addChild(child);
     }
 }

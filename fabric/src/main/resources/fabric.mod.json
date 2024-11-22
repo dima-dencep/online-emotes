@@ -24,20 +24,19 @@
   "entrypoints": {
     "client": [
       "org.redlance.dima_dencep.mods.online_emotes.fabric.FabricOnlineEmotes"
-    ],
-    "modmenu": [
-      "org.redlance.dima_dencep.mods.online_emotes.fabric.integrations.ModMenuImpl"
     ]
   },
   "mixins": [
-    "online-emotes.mixins.json",
-    "online-emotes-fabric.mixins.json"
+    "online-emotes.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${project.loader_version}",
     "minecraft": ">=${project.minecraft_version}",
-    "emotecraft": ">=${project.emotecraft_version}"
     "forgeconfigapiport": ">=${project.fcapip_version}",
+    "emotecraft": ">=2.4.1-b"
+  },
+  "breaks": {
+    "noemotecraft": "*"
   },
   "custom": {
     "modmenu": {

@@ -23,7 +23,7 @@ dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
 
     modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.playeranimator_version}"
-    modImplementation "maven.modrinth:emotecraft:${rootProject.emotecraft_version}" // TODO neoforge
+    modImplementation "curse.maven:emotecraft-403422:5920393"
 
     implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${rootProject.netty_version}"))
 
