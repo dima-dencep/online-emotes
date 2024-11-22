@@ -10,8 +10,8 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.netty;
 
-import org.redlance.dima_dencep.mods.online_emotes.ConfigExpectPlatform;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
 import io.github.kosmx.emotes.PlatformTools;
@@ -38,7 +38,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelInactive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
 
-        if (ConfigExpectPlatform.debug()) {
+        if (OnlineEmotesConfig.debug()) {
             FancyToast.sendMessage(WebsocketHandler.DISCONNECTED);
         }
     }
@@ -47,7 +47,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     public void channelActive(@NotNull ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
 
-        if (ConfigExpectPlatform.debug()) {
+        if (OnlineEmotesConfig.debug()) {
             FancyToast.sendMessage(WebsocketHandler.CONNECTED);
         }
     }

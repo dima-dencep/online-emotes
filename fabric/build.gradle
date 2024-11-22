@@ -27,7 +27,7 @@ dependencies {
         transitive = false
     }
 
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {
+    modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.fcapip_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 

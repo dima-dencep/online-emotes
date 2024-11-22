@@ -83,7 +83,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 connectInternal();
             }
 
-        }, 0L, ConfigExpectPlatform.reconnectionDelay(), TimeUnit.SECONDS);
+        }, 0L, OnlineEmotesConfig.reconnectionDelay(), TimeUnit.SECONDS);
     }
 
     private void connectInternal() {

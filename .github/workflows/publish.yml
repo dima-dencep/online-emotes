@@ -74,7 +74,6 @@ jobs:
 
           game-version-filter: none
           game-versions: |
-            1.21.1
             ${{ steps.read_property.outputs.minecraft_version }}
 
           dependencies: |
@@ -107,13 +106,12 @@ jobs:
 
           game-version-filter: none
           game-versions: |
-            1.21.1
             ${{ steps.read_property.outputs.minecraft_version }}
 
           dependencies: |
             emotecraft{modrinth:pZ2wrerK}{curseforge:397809}
             fabric-api
-            cloth-config
+            forge-config-api-port
 
           java: |
             21

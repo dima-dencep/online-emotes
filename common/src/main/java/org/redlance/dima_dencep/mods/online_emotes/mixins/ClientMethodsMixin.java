@@ -10,8 +10,7 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.mixins;
 
-import org.redlance.dima_dencep.mods.online_emotes.ConfigExpectPlatform;
-
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import io.github.kosmx.emotes.arch.executor.ClientMethods;
 import net.minecraft.network.chat.Component;
@@ -31,7 +30,7 @@ public abstract class ClientMethodsMixin {
             cancellable = true
     )
     public void onlineEmotes$sendChatMessage(Component msg, CallbackInfo ci) {
-        if (ConfigExpectPlatform.replaceMessages()) {
+        if (OnlineEmotesConfig.replaceMessages()) {
             FancyToast.sendMessage(msg);
 
             ci.cancel();
@@ -46,7 +45,7 @@ public abstract class ClientMethodsMixin {
             cancellable = true
     )
     public void onlineEmotes$toastExportMessage(int level, Component text, String msg, CallbackInfo ci) {
-        if (ConfigExpectPlatform.replaceMessages()) {
+        if (OnlineEmotesConfig.replaceMessages()) {
             FancyToast.sendMessage(text, Component.literal(msg));
 
             ci.cancel();

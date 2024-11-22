@@ -8,20 +8,25 @@
  *     https://spdx.org/licenses/OSL-3.0.txt
  */
 
-package org.redlance.dima_dencep.mods.online_emotes.forge;
+package org.redlance.dima_dencep.mods.online_emotes.neoforge;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.fml.common.Mod;
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 
 @Mod(value = OnlineEmotes.MOD_ID, dist = Dist.CLIENT)
 public class ForgeOnlineEmotes extends OnlineEmotes {
     public ForgeOnlineEmotes(ModContainer container) {
+        container.registerConfig(ModConfig.Type.STARTUP,
+                OnlineEmotesConfig.CONFIG_SPEC_PAIR.getValue(), "online_emotes.toml"
+        );
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 
         super.onInitializeClient();

@@ -8,6 +8,7 @@ loom {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:${rootProject.fcapip_version}"
 
     // EmoteCraft
     modImplementation "dev.kosmx.player-anim:player-animation-lib:${rootProject.playeranimator_version}"

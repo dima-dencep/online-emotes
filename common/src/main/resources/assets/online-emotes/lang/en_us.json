@@ -1,18 +1,16 @@
 {
-  "text.autoconfig.online_emotes.title": "Online Emotes",
+  "online_emotes.configuration.title": "Online Emotes",
 
-  "text.autoconfig.online_emotes.category.default": "Main",
-  "text.autoconfig.online_emotes.category.netty": "Netty",
+  "online_emotes.configuration.global": "Main",
+  "online_emotes.configuration.netty": "Netty",
 
-  "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "In seconds",
-  "text.autoconfig.online_emotes.option.reconnectionDelay": "Delay before reconnecting",
-  "text.autoconfig.online_emotes.option.replaceMessages": "Replacing EmoteCraft messages with more detail",
-  "text.autoconfig.online_emotes.option.debug": "Displaying debug messages",
+  "online_emotes.configuration.reconnectionDelay.tooltip": "In seconds",
+  "online_emotes.configuration.reconnectionDelay": "Delay before reconnecting",
+  "online_emotes.configuration.replaceMessages": "Replacing EmoteCraft messages with more detail",
+  "online_emotes.configuration.debug": "Displaying debug messages",
 
-  "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "Only for linux",
-  "text.autoconfig.online_emotes.option.useEpoll": "Using Epoll instead of Nio",
-  "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - Unlimited",
-  "text.autoconfig.online_emotes.option.threads": "Number of threads for data processing",
+  "online_emotes.configuration.useEpoll.tooltip": "Only for linux",
+  "online_emotes.configuration.useEpoll": "Using Epoll instead of Nio",
 
   "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!",
 

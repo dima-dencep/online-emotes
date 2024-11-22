@@ -1,18 +1,16 @@
 {
-  "text.autoconfig.online_emotes.title": "線上表情",
+  "online_emotes.configuration.title": "線上表情",
 
-  "text.autoconfig.online_emotes.category.default": "主要",
-  "text.autoconfig.online_emotes.category.netty": "Netty",
+  "online_emotes.configuration.global": "主要",
+  "online_emotes.configuration.netty": "Netty",
 
-  "text.autoconfig.online_emotes.option.reconnectionDelay.@Tooltip": "單位：秒",
-  "text.autoconfig.online_emotes.option.reconnectionDelay": "重新連線前的延遲",
-  "text.autoconfig.online_emotes.option.replaceMessages": "以更詳細的訊息替換 EmoteCraft 訊息",
-  "text.autoconfig.online_emotes.option.debug": "顯示除錯訊息",
+  "online_emotes.configuration.reconnectionDelay.tooltip": "單位：秒",
+  "online_emotes.configuration.reconnectionDelay": "重新連線前的延遲",
+  "online_emotes.configuration.replaceMessages": "以更詳細的訊息替換 EmoteCraft 訊息",
+  "online_emotes.configuration.debug": "顯示除錯訊息",
 
-  "text.autoconfig.online_emotes.option.useEpoll.@Tooltip": "僅限 Linux",
-  "text.autoconfig.online_emotes.option.useEpoll": "使用 Epoll 代替 Nio",
-  "text.autoconfig.online_emotes.option.threads.@Tooltip": "0 - 無限制",
-  "text.autoconfig.online_emotes.option.threads": "資料處理的執行緒數量",
+  "online_emotes.configuration.useEpoll.tooltip": "僅限 Linux",
+  "online_emotes.configuration.useEpoll": "使用 Epoll 代替 Nio",
 
   "online_emotes.warnings.onlyThis": "僅能透過線上表情進行串流！",
 

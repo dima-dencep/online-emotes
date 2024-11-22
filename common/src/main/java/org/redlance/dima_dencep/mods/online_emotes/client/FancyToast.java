@@ -22,7 +22,7 @@ import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 
 public class FancyToast implements Toast {
     public static final ResourceLocation ICON = ResourceLocation.fromNamespaceAndPath("online-emotes", "icon.png");
-    public static final Component TITLE = Component.translatable("text.autoconfig.online_emotes.title");
+    public static final Component TITLE = Component.translatable("online_emotes.configuration.title");
 
     protected final Component title;
     protected final Component msg;
