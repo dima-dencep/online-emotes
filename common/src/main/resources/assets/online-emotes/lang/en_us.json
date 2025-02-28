@@ -11,6 +11,7 @@
 
   "online_emotes.configuration.useEpoll.tooltip": "Only for linux",
   "online_emotes.configuration.useEpoll": "Using Epoll instead of Nio",
+  "online_emotes.configuration.compressionThreshold": "Compression threshold",
 
   "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!",
 
@@ -18,6 +19,8 @@
 
   "online_emotes.messages.connected": "WebSocket connected!",
   "online_emotes.messages.disconnected": "WebSocket disconnected!",
+  "online_emotes.messages.compressionset": "The compression level has been set to %s!",
+  "online_emotes.messages.compressionoff": "Compression was disabled!",
   "online_emotes.messages.internal.banned": "You have been banned for reason: %s! If this is an error, contact support.",
   "online_emotes.messages.internal.restarting": "The server is restarting...",
   "online_emotes.messages.internal.restarting-update": "The server is restarting to update, make sure you have the latest version of the mod!"

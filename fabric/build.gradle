@@ -29,6 +29,9 @@ dependencies {
     modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}"
     modImplementation "maven.modrinth:emotecraft:${emotecraft_version}-fabric"
 
+    include implementation("com.velocitypowered:velocity-native:${velocity_version}") {
+        transitive = false
+    }
     include implementation("io.netty:netty-codec-http:${netty_version}") {
         transitive = false
     }

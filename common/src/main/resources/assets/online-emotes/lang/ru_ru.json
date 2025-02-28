@@ -11,6 +11,7 @@
 
   "online_emotes.configuration.useEpoll.tooltip": "Только для Линукс",
   "online_emotes.configuration.useEpoll": "Использование Epoll вместо Nio",
+  "online_emotes.configuration.compressionThreshold": "Порог сжатия",
 
   "online_emotes.warnings.onlyThis": "Доступна только трансляция через Online Emotes!",
 
@@ -18,6 +19,8 @@
 
   "online_emotes.messages.connected": "Веб-сокет подключен!",
   "online_emotes.messages.disconnected": "Веб-сокет отключен!",
+  "online_emotes.messages.compressionset": "Установлена уровень сжатия: %s!",
+  "online_emotes.messages.compressionoff": "Сжатие было отключено!",
   "online_emotes.messages.internal.banned": "Вы были забанены по причине: %s! Если это ошибка, обратитесь в поддержку.",
   "online_emotes.messages.internal.restarting": "Сервер перезапускается...",
   "online_emotes.messages.internal.restarting-update": "Сервер перезапускается для обновления, убедитесь, что у вас установлена последняя версия мода!"

@@ -13,6 +13,7 @@ package org.redlance.dima_dencep.mods.online_emotes;
 import io.netty.channel.epoll.Epoll;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
+import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
 
 public class OnlineEmotesConfig {
     public static final Pair<OnlineEmotesConfig, ModConfigSpec> CONFIG_SPEC_PAIR = new ModConfigSpec.Builder()
@@ -25,6 +26,7 @@ public class OnlineEmotesConfig {
 
     // Netty
     public final ModConfigSpec.BooleanValue useEpoll;
+    public final ModConfigSpec.IntValue compressionThreshold;
 
     public OnlineEmotesConfig(ModConfigSpec.Builder builder) {
         builder.push("global");
@@ -35,6 +37,9 @@ public class OnlineEmotesConfig {
 
         builder.push("netty");
         this.useEpoll = builder.define("useEpoll", Epoll.isAvailable());
+        this.compressionThreshold = builder.defineInRange("compressionThreshold",
+                256, 256, OnlineNetworkInstance.PAYLOAD_LENGHT
+        );
         builder.pop();
     }
 
@@ -52,5 +57,9 @@ public class OnlineEmotesConfig {
 
     public static boolean useEpoll() {
         return OnlineEmotesConfig.CONFIG_SPEC_PAIR.getKey().useEpoll.get();
+    }
+
+    public static int compressionThreshold() {
+        return OnlineEmotesConfig.CONFIG_SPEC_PAIR.getKey().compressionThreshold.get();
     }
 }

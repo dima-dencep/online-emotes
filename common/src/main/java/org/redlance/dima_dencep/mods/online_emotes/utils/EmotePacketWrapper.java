@@ -23,6 +23,7 @@ import java.net.SocketAddress;
 import java.util.UUID;
 
 public class EmotePacketWrapper {
+    public final boolean supportsCompression = true;
     public final byte[] emotePacket;
 
     @Nullable

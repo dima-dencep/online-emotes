@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
     private static final URI URI_ADDRESS = URI.create("wss://api.redlance.org:443/websockets/online-emotes");
-    private static final int PAYLOAD_LENGHT = Integer.MAX_VALUE;
+    public static final int PAYLOAD_LENGHT = Integer.MAX_VALUE;
 
     public final Bootstrap bootstrap = new Bootstrap();
     private ScheduledFuture<?> reconnectingFuture;
@@ -88,7 +88,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     private void connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
-                WebSocketVersion.V13, null, false, EmptyHttpHeaders.INSTANCE, PAYLOAD_LENGHT
+                WebSocketVersion.V13, null, true, EmptyHttpHeaders.INSTANCE, PAYLOAD_LENGHT
         ));
 
         ChannelFuture channelFuture = this.bootstrap.connect(URI_ADDRESS.getHost(), URI_ADDRESS.getPort());

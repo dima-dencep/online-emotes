@@ -98,6 +98,10 @@ allprojects {
             name = "Fuzs Mod Resources"
             url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
         }
+        maven {
+            name = "VelocityPowered"
+            url = "https://repo.papermc.io/repository/maven-public/"
+        }
     }
 
     tasks.withType(JavaCompile).configureEach {

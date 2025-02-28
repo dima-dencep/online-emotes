@@ -25,6 +25,9 @@ dependencies {
     modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
     modImplementation "maven.modrinth:emotecraft:${emotecraft_version}-forge"
 
+    implementation forgeRuntimeLibrary(include("com.velocitypowered:velocity-native:${velocity_version}") {
+        transitive = false
+    })
     implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${netty_version}") {
         transitive = false
     })
