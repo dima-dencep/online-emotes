@@ -6,7 +6,7 @@ license = "OSL-3.0"
 [[mods]]
 displayTest = "IGNORE_ALL_VERSION"
 modId = "online_emotes"
-version = "${project.version}"
+version = "${version}"
 displayName = "Online Emotes"
 updateJSONURL = "https://api.modrinth.com/updates/online-emotes/forge_updates.json?neoforge=include"
 authors = "dima_dencep"
@@ -21,20 +21,20 @@ config = "online-emotes.mixins.json"
 [[dependencies.online_emotes]]
 modId = "neoforge"
 type = "required"
-versionRange = "[${project.forge_version},)"
+versionRange = "[${neo_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.online_emotes]]
 modId = "minecraft"
 type = "required"
-versionRange = "[${project.minecraft_version},)"
+versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.online_emotes]]
 modId = "emotecraft"
 type = "required"
-versionRange = "[2.4.1,)"
+versionRange = "[2.4.8,)"
 ordering = "NONE"
 side = "CLIENT"

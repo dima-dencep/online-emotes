@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "online_emotes",
-  "version": "${project.version}",
+  "version": "${version}",
   "name": "Online Emotes",
   "description": "Allows players to see each other's emotes without emotecraft installed on the server.",
   "authors": [
@@ -30,10 +30,10 @@
     "online-emotes.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${project.loader_version}",
-    "minecraft": ">=${project.minecraft_version}",
-    "forgeconfigapiport": ">=${project.fcapip_version}",
-    "emotecraft": ">=2.4.1-b"
+    "fabricloader": ">=${fabric_version}",
+    "minecraft": ">=${minecraft_version}",
+    "forgeconfigapiport": ">=${fcapip_version}",
+    "emotecraft": ">=2.4.8"
   },
   "breaks": {
     "noemotecraft": "*"

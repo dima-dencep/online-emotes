@@ -7,15 +7,21 @@ loom {
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
-    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:${rootProject.fcapip_version}"
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:${fcapip_version}"
+    modCompileOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${fcapip_version}") {
+        transitive = false
+    }
 
     // EmoteCraft
-    modImplementation "dev.kosmx.player-anim:player-animation-lib:${rootProject.playeranimator_version}"
-    modImplementation "dev.kosmx.player-anim:anim-core:${rootProject.playeranimator_version}"
-    modImplementation "curse.maven:emotecraft-397809:5920392"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
+    modImplementation "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
+    modImplementation "maven.modrinth:emotecraft:${emotecraft_version}-fabric"
 
-    implementation "io.netty:netty-codec-http:${rootProject.netty_version}"
+    implementation("io.netty:netty-codec-http:${netty_version}") {
+        transitive = false
+    }
 }
 
 jar {

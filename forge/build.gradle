@@ -20,14 +20,16 @@ configurations {
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${forge_version}"
 
-    modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:${rootProject.playeranimator_version}"
-    modImplementation "curse.maven:emotecraft-403422:5920393"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib-forge:${playeranimator_version}"
+    modImplementation "maven.modrinth:emotecraft:${emotecraft_version}-forge"
 
-    implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${rootProject.netty_version}"))
+    implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${netty_version}") {
+        transitive = false
+    })
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }
 

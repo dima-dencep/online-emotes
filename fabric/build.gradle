@@ -20,19 +20,21 @@ configurations {
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
-    modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.fcapip_version}") {
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${fcapip_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${rootProject.playeranimator_version}"
-    modImplementation "curse.maven:emotecraft-397809:5920392"
+    modImplementation "dev.kosmx.player-anim:player-animation-lib-fabric:${playeranimator_version}"
+    modImplementation "maven.modrinth:emotecraft:${emotecraft_version}-fabric"
 
-    include implementation("io.netty:netty-codec-http:${rootProject.netty_version}")
+    include implementation("io.netty:netty-codec-http:${netty_version}") {
+        transitive = false
+    }
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
 }
 
 shadowJar {

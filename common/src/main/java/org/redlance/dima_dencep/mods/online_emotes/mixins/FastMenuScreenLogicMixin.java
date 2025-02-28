@@ -12,6 +12,7 @@ package org.redlance.dima_dencep.mods.online_emotes.mixins;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -27,7 +28,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FastMenuScreen.class)
@@ -35,6 +35,9 @@ public abstract class FastMenuScreenLogicMixin extends Screen {
     @Shadow
     @Final
     private HeaderAndFooterLayout layout;
+    @Shadow
+    @Final
+    private static Component WARN_ONLY_PROXY;
     @Unique
     private static final Component OE_ONLYTHIS = Component.translatable("online_emotes.warnings.onlyThis");
     @Unique
@@ -46,17 +49,18 @@ public abstract class FastMenuScreenLogicMixin extends Screen {
         super(title);
     }
 
-    @ModifyArg(
+    @WrapOperation(
             method = "init",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addTitleHeader(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)V",
-                    ordinal = 1
-            ),
-            index = 0
+                    target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addTitleHeader(Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;)V"
+            )
     )
-    public Component onlineEmotes$emotes_renderScreen(Component text) {
-        return OnlineEmotes.proxy.isActive() ? OE_ONLYTHIS : text;
+    public void onlineEmotes$emotes_renderScreen(HeaderAndFooterLayout instance, Component message, Font font, Operation<Void> original) {
+        if (OnlineEmotes.proxy.isActive() && message == WARN_ONLY_PROXY) {
+            message = OE_ONLYTHIS;
+        }
+        original.call(instance, message, font);
     }
 
     @Inject(
