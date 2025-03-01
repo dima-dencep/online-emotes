@@ -17,19 +17,23 @@ import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FancyToast implements Toast {
     public static final ResourceLocation ICON = ResourceLocation.fromNamespaceAndPath("online-emotes", "icon.png");
     public static final Component TITLE = Component.translatable("online_emotes.configuration.title");
 
     protected final Component title;
-    protected final Component msg;
+    private final List<FormattedCharSequence> messageLines = new ArrayList<>();
 
-    protected FancyToast(Component title, Component msg) {
+    protected FancyToast(Component title, List<FormattedCharSequence> msg) {
         this.title = title;
-        this.msg = msg;
+        this.messageLines.addAll(msg);
     }
 
     @Override
@@ -44,22 +48,34 @@ public class FancyToast implements Toast {
             guiGraphics.drawString(textRenderer, this.title, 30, 7, 16777215, false);
         }
 
-        guiGraphics.drawString(textRenderer, msg, 30, title != null ? 18 : 16, 16777215, false);
+        for (int j = 0; j < this.messageLines.size(); j++) {
+            guiGraphics.drawString(textRenderer, this.messageLines.get(j), 30, (title != null ? 18 : 16) + j * 12, -1, false);
+        }
 
         return timeSinceLastVisible < (double) 1500L * manager.getNotificationDisplayTimeMultiplier() ? Visibility.SHOW : Visibility.HIDE;
     }
 
     @Override
     public int width() {
-        if (this.msg == null) {
-            return Toast.super.width();
-        }
-
         Font font = Minecraft.getInstance().font;
 
-        return Math.max(
-                font.width(this.msg), font.width(this.title)
-        ) + 38;
+        int headerSize = font.width(this.title);
+        int messageSize = this.messageLines.stream()
+                .mapToInt(font::width)
+                .max()
+                .orElse(200);
+
+        return 37 + Math.max(headerSize, messageSize);
+    }
+
+    @Override
+    public int height() {
+        return 20 + Math.max(this.messageLines.size(), 1) * 12;
+    }
+
+    @Override
+    public int slotCount() {
+        return Math.min(Toast.super.slotCount(), 5);
     }
 
     public static void sendMessage(Component description) {
@@ -67,9 +83,9 @@ public class FancyToast implements Toast {
     }
 
     public static void sendMessage(Component title, Component description) {
-        OnlineEmotes.LOGGER.info(description.getString());
-
-        Minecraft.getInstance().getToasts()
-                .addToast(new FancyToast(title, description));
+        OnlineEmotes.LOGGER.info("Toast message: {}", description.getString());
+        Minecraft.getInstance().getToasts().addToast(new FancyToast(title,
+                Minecraft.getInstance().font.split(description, 200)
+        ));
     }
 }
