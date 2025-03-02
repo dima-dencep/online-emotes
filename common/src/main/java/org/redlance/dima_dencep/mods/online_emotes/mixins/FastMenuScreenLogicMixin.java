@@ -69,7 +69,7 @@ public abstract class FastMenuScreenLogicMixin extends Screen {
                     value = "HEAD"
             )
     )
-    public void onlineEmotes$emotes_renderScreen(float f, CallbackInfo ci) {
+    public void onlineEmotes$emotes_renderScreen(CallbackInfo ci) {
         if (oe$reconnectButton != null) {
             oe$reconnectButton.active = !OnlineEmotes.proxy.isActive();
         }

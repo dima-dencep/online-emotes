@@ -137,11 +137,8 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
             builder.configureTarget(target);
         }
 
-        EmotePacket writer = builder
-                .setSizeLimit(PAYLOAD_LENGHT)
-                .build();
-
-        this.ch.writeAndFlush(new EmotePacketWrapper(writer.write().array()).toWebSocketFrame(), this.ch.voidPromise());
+        EmotePacket writer = builder.setSizeLimit(PAYLOAD_LENGHT, false).build();
+        this.ch.writeAndFlush(new EmotePacketWrapper(writer).toWebSocketFrame(), this.ch.voidPromise());
 
         if (writer.data.emoteData != null && writer.data.emoteData.extraData.containsKey("song") && !writer.data.writeSong) {
             FancyToast.sendMessage(Component.translatable("emotecraft.song_too_big_to_send"));

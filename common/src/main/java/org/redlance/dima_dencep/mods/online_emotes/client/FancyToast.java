@@ -14,7 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.gui.components.toasts.ToastManager;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -31,18 +32,28 @@ public class FancyToast implements Toast {
     protected final Component title;
     private final List<FormattedCharSequence> messageLines = new ArrayList<>();
 
+    private Visibility visibility = Visibility.SHOW;
+
     protected FancyToast(Component title, List<FormattedCharSequence> msg) {
         this.title = title;
         this.messageLines.addAll(msg);
     }
 
     @Override
-    public @NotNull Visibility render(GuiGraphics guiGraphics, ToastComponent manager, long timeSinceLastVisible) {
+    public @NotNull Visibility getWantedVisibility() {
+        return this.visibility;
+    }
+
+    @Override
+    public void update(ToastManager manager, long timeSinceLastVisible) {
+        this.visibility = timeSinceLastVisible < (double) 1500L * manager.getNotificationDisplayTimeMultiplier() ? Visibility.SHOW : Visibility.HIDE;
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, Font textRenderer, long timeSinceLastVisible) {
         guiGraphics.fill(0, 0, width(), height() - 1, -1207959552);
         guiGraphics.fill(0, height() - 1, width(), height(), 0xFFfc1a47);
-        guiGraphics.blit(ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
-
-        Font textRenderer = manager.getMinecraft().font;
+        guiGraphics.blit(RenderType::guiTextured, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
 
         if (this.title != null) {
             guiGraphics.drawString(textRenderer, this.title, 30, 7, 16777215, false);
@@ -51,8 +62,6 @@ public class FancyToast implements Toast {
         for (int j = 0; j < this.messageLines.size(); j++) {
             guiGraphics.drawString(textRenderer, this.messageLines.get(j), 30, (title != null ? 18 : 16) + j * 12, -1, false);
         }
-
-        return timeSinceLastVisible < (double) 1500L * manager.getNotificationDisplayTimeMultiplier() ? Visibility.SHOW : Visibility.HIDE;
     }
 
     @Override
@@ -74,8 +83,8 @@ public class FancyToast implements Toast {
     }
 
     @Override
-    public int slotCount() {
-        return Math.min(Toast.super.slotCount(), 5);
+    public int occcupiedSlotCount() {
+        return Math.min(Toast.super.occcupiedSlotCount(), 5);
     }
 
     public static void sendMessage(Component description) {
@@ -84,7 +93,7 @@ public class FancyToast implements Toast {
 
     public static void sendMessage(Component title, Component description) {
         OnlineEmotes.LOGGER.info("Toast message: {}", description.getString());
-        Minecraft.getInstance().getToasts().addToast(new FancyToast(title,
+        Minecraft.getInstance().getToastManager().addToast(new FancyToast(title,
                 Minecraft.getInstance().font.split(description, 200)
         ));
     }

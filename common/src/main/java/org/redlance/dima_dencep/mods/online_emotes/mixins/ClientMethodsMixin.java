@@ -10,16 +10,16 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.mixins;
 
+import io.github.kosmx.emotes.PlatformTools;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
-import io.github.kosmx.emotes.arch.executor.ClientMethods;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ClientMethods.class, remap = false)
+@Mixin(value = PlatformTools.class, remap = false)
 public abstract class ClientMethodsMixin {
 
     @Inject(
@@ -29,7 +29,7 @@ public abstract class ClientMethodsMixin {
             ),
             cancellable = true
     )
-    public void onlineEmotes$sendChatMessage(Component msg, CallbackInfo ci) {
+    private static void onlineEmotes$sendChatMessage(Component msg, CallbackInfo ci) {
         if (OnlineEmotesConfig.replaceMessages()) {
             FancyToast.sendMessage(msg);
 
@@ -44,7 +44,7 @@ public abstract class ClientMethodsMixin {
             ),
             cancellable = true
     )
-    public void onlineEmotes$toastExportMessage(int level, Component text, String msg, CallbackInfo ci) {
+    private static void onlineEmotes$toastExportMessage(Component text, String msg, CallbackInfo ci) {
         if (OnlineEmotesConfig.replaceMessages()) {
             FancyToast.sendMessage(text, Component.literal(msg));
 

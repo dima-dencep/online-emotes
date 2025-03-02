@@ -13,14 +13,15 @@ package org.redlance.dima_dencep.mods.online_emotes.netty;
 import com.google.gson.JsonObject;
 import com.velocitypowered.natives.compression.VelocityCompressor;
 import com.velocitypowered.natives.util.Natives;
+import io.github.kosmx.emotes.mc.McUtils;
 import io.github.kosmx.emotes.server.config.Serializer;
+import net.minecraft.core.RegistryAccess;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.netty.compression.VelocityCompressDecoder;
 import org.redlance.dima_dencep.mods.online_emotes.netty.compression.VelocityCompressEncoder;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
-import io.github.kosmx.emotes.PlatformTools;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -80,10 +81,10 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             }
 
             case TextWebSocketFrame frame -> {
-                JsonObject object = Serializer.serializer.fromJson(frame.text(), JsonObject.class);
+                JsonObject object = Serializer.getSerializer().fromJson(frame.text(), JsonObject.class);
 
                 if (object.has("message")) {
-                    FancyToast.sendMessage(PlatformTools.fromJson(object.get("message")));
+                    FancyToast.sendMessage(McUtils.fromJson(object.get("message"), RegistryAccess.EMPTY));
                 }
 
                 if (object.has("compression")) {

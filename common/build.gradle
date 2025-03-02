@@ -15,9 +15,7 @@ dependencies {
     }
 
     // EmoteCraft
-    modImplementation "dev.kosmx.player-anim:player-animation-lib:${playeranimator_version}"
-    modImplementation "dev.kosmx.player-anim:anim-core:${playeranimator_version}"
-    modImplementation "maven.modrinth:emotecraft:${emotecraft_version}-fabric"
+    modImplementation "io.github.kosmx.emotes:archCommon:${emotecraft_version}"
 
     implementation("com.velocitypowered:velocity-native:${velocity_version}") {
         transitive = false

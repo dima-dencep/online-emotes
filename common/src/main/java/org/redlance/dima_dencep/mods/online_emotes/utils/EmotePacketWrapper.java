@@ -10,7 +10,8 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.utils;
 
-import io.github.kosmx.emotes.main.config.ClientSerializer;
+import io.github.kosmx.emotes.api.proxy.INetworkInstance;
+import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.github.kosmx.emotes.server.config.Serializer;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.Connection;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.UUID;
@@ -33,6 +35,10 @@ public class EmotePacketWrapper {
     @Nullable
     public String serverAddress;
 
+    public EmotePacketWrapper(EmotePacket packet) throws IOException {
+        this(INetworkInstance.safeGetBytesFromBuffer(packet.write()));
+    }
+
     public EmotePacketWrapper(byte[] emotePacket) {
         this.emotePacket = emotePacket;
 
@@ -46,14 +52,10 @@ public class EmotePacketWrapper {
                 this.serverAddress = getIP(connection.getRemoteAddress());
             }
         }
-
-        if (Serializer.serializer == null) {
-            new ClientSerializer().initializeSerializer();
-        }
     }
 
     public TextWebSocketFrame toWebSocketFrame() {
-        return new TextWebSocketFrame(Serializer.serializer.toJson(this));
+        return new TextWebSocketFrame(Serializer.getSerializer().toJson(this));
     }
 
     private static String getIP(SocketAddress address) {
