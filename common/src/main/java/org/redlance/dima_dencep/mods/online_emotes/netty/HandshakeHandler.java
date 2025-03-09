@@ -56,4 +56,8 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<FullHttpRespon
         }
         ctx.close();
     }
+
+    public boolean isSuccess() {
+        return this.handshakeFuture.isSuccess();
+    }
 }
