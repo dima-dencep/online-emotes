@@ -128,19 +128,22 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     @Override
     public boolean isActive() {
-        return this.ch != null && this.ch.isActive();
+        return this.ch != null && this.ch.isActive() &&
+                this.handshakeHandler != null && this.handshakeHandler.isSuccess();
     }
 
     @Override
     public void sendMessage(EmotePacket.Builder builder, @Nullable UUID target) throws IOException {
+        if (!isActive()) {
+            OnlineEmotes.LOGGER.error("Can't send packet to an inactive channel!");
+            return;
+        }
+
         if (target != null) {
             builder.configureTarget(target);
         }
 
-        EmotePacket writer = builder
-                .setSizeLimit(PAYLOAD_LENGHT)
-                .build();
-
+        EmotePacket writer = builder.setSizeLimit(PAYLOAD_LENGHT).build();
         this.ch.writeAndFlush(new EmotePacketWrapper(writer.write().array()).toWebSocketFrame(), this.ch.voidPromise());
 
         if (writer.data.emoteData != null && writer.data.emoteData.extraData.containsKey("song") && !writer.data.writeSong) {
