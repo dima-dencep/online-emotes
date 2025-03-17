@@ -82,7 +82,7 @@ public abstract class FastMenuScreenLogicMixin extends Screen {
                     target = "Lnet/minecraft/client/gui/layouts/HeaderAndFooterLayout;addToFooter(Lnet/minecraft/client/gui/layouts/LayoutElement;)Lnet/minecraft/client/gui/layouts/LayoutElement;"
             )
     )
-    public <T extends LayoutElement> T addButton(HeaderAndFooterLayout instance, T child, Operation<T> original) {
+    public LayoutElement addButton(HeaderAndFooterLayout instance, LayoutElement child, Operation<LayoutElement> original) {
         if (!OnlineEmotesConfig.debug()) {
             return original.call(instance, child);
         }

@@ -38,16 +38,15 @@ public abstract class ClientMethodsMixin {
     }
 
     @Inject(
-            method = "toastExportMessage",
+            method = "addToast(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V",
             at = @At(
                     value = "HEAD"
             ),
             cancellable = true
     )
-    private static void onlineEmotes$toastExportMessage(Component text, String msg, CallbackInfo ci) {
+    private static void onlineEmotes$toastExportMessage(Component title, Component message, CallbackInfo ci) {
         if (OnlineEmotesConfig.replaceMessages()) {
-            FancyToast.sendMessage(text, Component.literal(msg));
-
+            FancyToast.sendMessage(title, message);
             ci.cancel();
         }
     }
