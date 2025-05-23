@@ -38,7 +38,7 @@ public class OnlineEmotesConfig {
         builder.push("netty");
         this.useEpoll = builder.define("useEpoll", Epoll.isAvailable());
         this.compressionThreshold = builder.defineInRange("compressionThreshold",
-                256, 256, OnlineNetworkInstance.PAYLOAD_LENGHT
+                256, 256, OnlineNetworkInstance.PAYLOAD_LENGTH
         );
         builder.pop();
     }

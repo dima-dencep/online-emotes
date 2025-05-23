@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 @ChannelHandler.Sharable
 public class OnlineNetworkInstance extends AbstractNetworkInstance {
     private static final URI URI_ADDRESS = URI.create("wss://api.redlance.org:443/websockets/online-emotes");
-    public static final int PAYLOAD_LENGHT = Integer.MAX_VALUE;
+    public static final int PAYLOAD_LENGTH = Integer.MAX_VALUE;
 
     public final Bootstrap bootstrap = new Bootstrap();
     private ScheduledFuture<?> reconnectingFuture;
@@ -66,7 +66,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 }
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
-                pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENGHT));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENGTH));
                 pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
@@ -93,7 +93,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     private void connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
-                WebSocketVersion.V13, null, true, createHeaders(), PAYLOAD_LENGHT
+                WebSocketVersion.V13, null, true, createHeaders(), PAYLOAD_LENGTH
         ));
 
         ChannelFuture channelFuture = this.bootstrap.connect(URI_ADDRESS.getHost(), URI_ADDRESS.getPort());
@@ -148,7 +148,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
             builder.configureTarget(target);
         }
 
-        EmotePacket writer = builder.setSizeLimit(PAYLOAD_LENGHT, false).build();
+        EmotePacket writer = builder.setSizeLimit(PAYLOAD_LENGTH, false).build();
         this.ch.writeAndFlush(new EmotePacketWrapper(writer).toWebSocketFrame(), this.ch.voidPromise());
 
         if (writer.data.emoteData != null && writer.data.emoteData.extraData.containsKey("song") && !writer.data.writeSong) {
