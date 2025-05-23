@@ -160,7 +160,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         if (this.ch == null) return;
         if (this.ch.isActive()) {
             this.ch.writeAndFlush(
-                    new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE)
+                    new CloseWebSocketFrame()
             ).addListener(ChannelFutureListener.CLOSE).awaitUninterruptibly();
             this.ch = null;
         }
