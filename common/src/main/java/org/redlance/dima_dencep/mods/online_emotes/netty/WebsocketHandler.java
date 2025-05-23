@@ -82,7 +82,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             }
 
             case TextWebSocketFrame frame -> {
-                JsonElement element = Serializer.getSerializer().toJsonTree(frame.text());
+                JsonElement element = Serializer.getSerializer().fromJson(frame.text(), JsonElement.class);
                 if (!element.isJsonObject()) {
                     FancyToast.sendMessage(McUtils.fromJson(element, RegistryAccess.EMPTY));
                     break;
