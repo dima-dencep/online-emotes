@@ -10,8 +10,12 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.network;
 
+import io.github.kosmx.emotes.common.CommonData;
+import net.minecraft.SharedConstants;
+import net.minecraft.client.Minecraft;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesPlatform;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import org.redlance.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
@@ -29,6 +33,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redlance.platformtools.PlatformFileReferer;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -88,7 +93,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     private void connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
-                WebSocketVersion.V13, null, true, EmptyHttpHeaders.INSTANCE, PAYLOAD_LENGHT
+                WebSocketVersion.V13, null, true, createHeaders(), PAYLOAD_LENGHT
         ));
 
         ChannelFuture channelFuture = this.bootstrap.connect(URI_ADDRESS.getHost(), URI_ADDRESS.getPort());
@@ -152,14 +157,11 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     protected void disconnectNetty() {
-        if (isActive()) {
-            this.ch.writeAndFlush(new CloseWebSocketFrame(), this.ch.voidPromise());
-
-            try {
-                this.ch.close().awaitUninterruptibly();
-            } catch (Throwable th) {
-                OnlineEmotes.LOGGER.error("Failed to disconnect WebSocket!", th);
-            }
+        if (this.ch == null) return;
+        if (this.ch.isActive()) {
+            this.ch.writeAndFlush(
+                    new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE)
+            ).addListener(ChannelFutureListener.CLOSE).awaitUninterruptibly();
             this.ch = null;
         }
     }
@@ -186,5 +188,30 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     public boolean isReconnectorAlive() {
         return this.reconnectingFuture != null;
+    }
+
+    private static HttpHeaders createHeaders() {
+        DefaultHttpHeaders headers = new DefaultHttpHeaders();
+
+        headers.add(HttpHeaderNames.USER_AGENT, String.format("%s/%s %s/%s Minecraft/%s",
+                OnlineEmotes.MOD_ID, OnlineEmotesPlatform.getModVersion(OnlineEmotes.MOD_ID),
+                CommonData.MOD_NAME, OnlineEmotesPlatform.getModVersion(CommonData.MOD_ID),
+                SharedConstants.getProtocolVersion()
+        ));
+
+        try {
+            headers.add(HttpHeaderNames.REFERER, PlatformFileReferer.INSTANCE.getFileReferer(
+                    OnlineEmotesPlatform.getModFile(OnlineEmotes.MOD_ID)
+            ));
+        } catch (Throwable th) {
+            headers.add(HttpHeaderNames.REFERER, th.toString());
+        }
+
+        try { // Because LanguageManager is reloadable
+            headers.add(HttpHeaderNames.ACCEPT_LANGUAGE, Minecraft.getInstance().getLanguageManager().getSelected());
+        } catch (Throwable ignored) {}
+
+        OnlineEmotes.LOGGER.info("Headers: {}", headers.unwrap());
+        return headers;
     }
 }

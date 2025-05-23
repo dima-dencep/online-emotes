@@ -23,6 +23,9 @@ dependencies {
     implementation("io.netty:netty-codec-http:${netty_version}") {
         transitive = false
     }
+    implementation("org.redlance:platformtools:${platformtools_version}") {
+        transitive = false
+    }
 }
 
 jar {
