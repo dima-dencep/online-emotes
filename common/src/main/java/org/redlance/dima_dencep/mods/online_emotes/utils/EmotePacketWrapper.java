@@ -10,13 +10,19 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.utils;
 
+import com.mojang.authlib.GameProfile;
 import io.github.kosmx.emotes.api.proxy.INetworkInstance;
 import io.github.kosmx.emotes.common.network.EmotePacket;
-import io.github.kosmx.emotes.server.config.Serializer;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.Connection;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.Utf8String;
+import net.minecraft.network.codec.ByteBufCodecs;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -25,13 +31,11 @@ import java.net.SocketAddress;
 import java.util.UUID;
 
 public class EmotePacketWrapper {
-    public final boolean supportsCompression = true;
     public final byte[] emotePacket;
+    public GameProfile gameProfile;
 
     @Nullable
-    public String playerName;
-    @Nullable
-    public UUID playerUUID;
+    public UUID playerWorldId;
     @Nullable
     public String serverAddress;
 
@@ -44,8 +48,8 @@ public class EmotePacketWrapper {
 
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            this.playerName = player.getScoreboardName();
-            this.playerUUID = player.getUUID();
+            this.gameProfile = player.getGameProfile();
+            this.playerWorldId = player.getUUID();
 
             Connection connection = player.connection.getConnection();
             if (!connection.isMemoryConnection()) {
@@ -54,8 +58,19 @@ public class EmotePacketWrapper {
         }
     }
 
-    public TextWebSocketFrame toWebSocketFrame() {
-        return new TextWebSocketFrame(Serializer.getSerializer().toJson(this));
+    public WebSocketFrame toWebSocketFrame() {
+        ByteBuf byteBuf = Unpooled.buffer();
+        byteBuf.writeByte(0); // Version
+        ByteBufCodecs.GAME_PROFILE.encode(byteBuf, this.gameProfile); // Profile
+
+        // Level data
+        FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, FriendlyByteBuf::writeUUID);
+        FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress,
+                (buf, address) -> Utf8String.write(buf, address, address.length())
+        );
+
+        FriendlyByteBuf.writeByteArray(byteBuf, this.emotePacket); // Emote Packet
+        return new BinaryWebSocketFrame(byteBuf); // Frame
     }
 
     private static String getIP(SocketAddress address) {

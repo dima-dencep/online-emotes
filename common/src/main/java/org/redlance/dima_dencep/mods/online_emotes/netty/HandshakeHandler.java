@@ -58,6 +58,6 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<FullHttpRespon
     }
 
     public boolean isSuccess() {
-        return this.handshakeFuture.isSuccess();
+        return this.handshakeFuture != null && this.handshakeFuture.isSuccess();
     }
 }

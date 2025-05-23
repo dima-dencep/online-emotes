@@ -10,6 +10,7 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.netty;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.velocitypowered.natives.compression.VelocityCompressor;
 import com.velocitypowered.natives.util.Natives;
@@ -81,8 +82,13 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             }
 
             case TextWebSocketFrame frame -> {
-                JsonObject object = Serializer.getSerializer().fromJson(frame.text(), JsonObject.class);
+                JsonElement element = Serializer.getSerializer().toJsonTree(frame.text());
+                if (!element.isJsonObject()) {
+                    FancyToast.sendMessage(McUtils.fromJson(element, RegistryAccess.EMPTY));
+                    break;
+                }
 
+                JsonObject object = element.getAsJsonObject();
                 if (object.has("message")) {
                     FancyToast.sendMessage(McUtils.fromJson(object.get("message"), RegistryAccess.EMPTY));
                 }
