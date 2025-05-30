@@ -34,9 +34,8 @@ dependencies {
     include implementation("io.netty:netty-codec-http:${netty_version}") {
         transitive = false
     }
-    include implementation("org.redlance:platformtools:${platformtools_version}") {
-        transitive = false
-    }
+    include implementation("org.redlance:platformtools:${platformtools_version}")
+    include("com.github.dima-dencep:jfa:3cf4588cc7") // by platformutils (for mac)
 
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
