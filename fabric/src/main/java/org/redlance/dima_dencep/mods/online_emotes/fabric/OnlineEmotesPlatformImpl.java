@@ -14,6 +14,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.fabricmc.loader.api.metadata.ModOrigin;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
@@ -31,7 +32,8 @@ public class OnlineEmotesPlatformImpl {
 
     public static @Nullable Path getModFile(String modid) {
         return FabricLoader.getInstance().getModContainer(modid)
-                .map(ModContainer::getRootPaths)
+                .map(ModContainer::getOrigin)
+                .map(ModOrigin::getPaths)
                 .map(List::getFirst)
                 .orElse(null);
     }

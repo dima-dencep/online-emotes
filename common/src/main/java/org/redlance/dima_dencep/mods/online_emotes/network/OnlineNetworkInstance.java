@@ -200,9 +200,10 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         ));
 
         try {
-            headers.add(HttpHeaderNames.REFERER, PlatformFileReferer.INSTANCE.getFileReferer(
+            String referer = PlatformFileReferer.INSTANCE.getFileReferer(
                     OnlineEmotesPlatform.getModFile(OnlineEmotes.MOD_ID)
-            ));
+            );
+            if (referer != null) headers.add(HttpHeaderNames.REFERER, referer);
         } catch (Throwable th) {
             headers.add(HttpHeaderNames.REFERER, th.toString());
         }
