@@ -23,6 +23,7 @@ dependencies {
     neoForge "net.neoforged:neoforge:${forge_version}"
 
     modImplementation "io.github.kosmx.emotes:emotesNeo:${emotecraft_version}"
+    forgeRuntimeLibrary("net.raphimc:NoteBlockLib:3.0.1-SNAPSHOT")
 
     implementation forgeRuntimeLibrary(include("com.velocitypowered:velocity-native:${velocity_version}") {
         transitive = false
