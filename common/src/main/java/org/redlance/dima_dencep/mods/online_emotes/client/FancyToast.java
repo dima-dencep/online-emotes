@@ -15,7 +15,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -53,7 +53,7 @@ public class FancyToast implements Toast {
     public void render(GuiGraphics guiGraphics, Font textRenderer, long timeSinceLastVisible) {
         guiGraphics.fill(0, 0, width(), height() - 1, -1207959552);
         guiGraphics.fill(0, height() - 1, width(), height(), 0xFFfc1a47);
-        guiGraphics.blit(RenderType::guiTextured, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
 
         if (this.title != null) {
             guiGraphics.drawString(textRenderer, this.title, 30, 7, 16777215, false);
