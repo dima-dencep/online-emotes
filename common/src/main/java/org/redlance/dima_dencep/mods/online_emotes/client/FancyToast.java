@@ -56,7 +56,7 @@ public class FancyToast implements Toast {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
 
         if (this.title != null) {
-            guiGraphics.drawString(textRenderer, this.title, 30, 7, 16777215, false);
+            guiGraphics.drawString(textRenderer, this.title, 30, 7, -1, false);
         }
 
         for (int j = 0; j < this.messageLines.size(); j++) {
