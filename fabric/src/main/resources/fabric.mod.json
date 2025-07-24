@@ -11,7 +11,8 @@
     "NE4T0",
     "nneewwtt",
     "Amirhan-Taipovjan",
-    "yichifauzi"
+    "yichifauzi",
+    "Riflusso"
   ],
   "contact": {
     "homepage": "https://curseforge.com/minecraft/mc-mods/online-emotes",
@@ -33,7 +34,7 @@
     "fabricloader": ">=${fabric_version}",
     "minecraft": ">=${minecraft_version}",
     "forgeconfigapiport": ">=${fcapip_version}",
-    "emotecraft": ">=2.4.8"
+    "emotecraft": ">=3.0.0-a"
   },
   "breaks": {
     "noemotecraft": "*"
