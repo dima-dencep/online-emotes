@@ -28,7 +28,7 @@ side = "BOTH"
 [[dependencies.online_emotes]]
 modId = "minecraft"
 type = "required"
-versionRange = "[${minecraft_version},)"
+versionRange = "[1.21.7,)"
 ordering = "NONE"
 side = "BOTH"
 
