@@ -33,8 +33,8 @@
   "depends": {
     "fabricloader": ">=${fabric_version}",
     "minecraft": ">=1.21.7",
-    "emotecraft": ">=3.0.0-a"
     "forgeconfigapiport": ">=21.7.0",
+    "emotecraft": ">=3.0.0-a.build.110"
   },
   "breaks": {
     "noemotecraft": "*"

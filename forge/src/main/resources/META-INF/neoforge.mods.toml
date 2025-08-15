@@ -35,6 +35,6 @@ side = "BOTH"
 [[dependencies.online_emotes]]
 modId = "emotecraft"
 type = "required"
-versionRange = "[3.0.0,)"
+versionRange = "[3.0.0-a.build.110,)"
 ordering = "NONE"
 side = "CLIENT"
