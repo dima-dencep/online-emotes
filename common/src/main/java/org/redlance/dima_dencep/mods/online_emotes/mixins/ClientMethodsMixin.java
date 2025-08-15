@@ -21,22 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlatformTools.class)
 public abstract class ClientMethodsMixin {
-
-    @Inject(
-            method = "sendChatMessage",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
-    private static void onlineEmotes$sendChatMessage(Component msg, CallbackInfo ci) {
-        if (OnlineEmotesConfig.replaceMessages()) {
-            FancyToast.sendMessage(msg);
-
-            ci.cancel();
-        }
-    }
-
     @Inject(
             method = "addToast(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V",
             at = @At(

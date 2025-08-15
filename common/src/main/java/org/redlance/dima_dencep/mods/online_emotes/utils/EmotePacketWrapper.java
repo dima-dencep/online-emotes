@@ -66,7 +66,7 @@ public class EmotePacketWrapper {
         // Level data
         FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, FriendlyByteBuf::writeUUID);
         FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress,
-                (buf, address) -> Utf8String.write(buf, address, address.length())
+                (buf, address) -> Utf8String.write(buf, address, 32767)
         );
 
         FriendlyByteBuf.writeByteArray(byteBuf, this.emotePacket); // Emote Packet
