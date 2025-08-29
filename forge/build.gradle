@@ -32,7 +32,6 @@ dependencies {
         transitive = false
     })
     implementation forgeRuntimeLibrary(include("org.redlance:platformtools:${platformtools_version}"))
-    forgeRuntimeLibrary include("com.github.dima-dencep:jfa:2f7d03970f") // by platformutils (for mac)
 
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
