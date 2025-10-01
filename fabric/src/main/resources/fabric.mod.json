@@ -32,9 +32,9 @@
   ],
   "depends": {
     "fabricloader": ">=${fabric_version}",
-    "minecraft": ">=1.21.7",
-    "forgeconfigapiport": ">=21.7.0",
-    "emotecraft": ">=3.0.0-a.build.110"
+    "minecraft": ">=${minecraft_version}",
+    "forgeconfigapiport": ">=${fcapip_version}",
+    "emotecraft": ">=3.1.0-b.build.124"
   },
   "breaks": {
     "noemotecraft": "*"

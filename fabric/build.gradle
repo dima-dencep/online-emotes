@@ -21,7 +21,7 @@ configurations {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modApi fabricApi.module("fabric-networking-api-v1", fabric_version)
     modApi("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${fcapip_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
@@ -29,9 +29,6 @@ dependencies {
     modImplementation "io.github.kosmx.emotes:emotesFabric:${emotecraft_version}"
 
     include implementation("com.velocitypowered:velocity-native:${velocity_version}") {
-        transitive = false
-    }
-    include implementation("io.netty:netty-codec-http:${netty_version}") {
         transitive = false
     }
     include implementation("org.redlance:platformtools:${platformtools_version}")
@@ -63,10 +60,8 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
+shadow {
+    addShadowVariantIntoJavaComponent = false
 }
 
 publishing {

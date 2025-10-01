@@ -23,12 +23,8 @@ dependencies {
     neoForge "net.neoforged:neoforge:${forge_version}"
 
     modImplementation "io.github.kosmx.emotes:emotesNeo:${emotecraft_version}"
-    forgeRuntimeLibrary("net.raphimc:NoteBlockLib:3.1.0")
 
     implementation forgeRuntimeLibrary(include("com.velocitypowered:velocity-native:${velocity_version}") {
-        transitive = false
-    })
-    implementation forgeRuntimeLibrary(include("io.netty:netty-codec-http:${netty_version}") {
         transitive = false
     })
     implementation forgeRuntimeLibrary(include("org.redlance:platformtools:${platformtools_version}"))
@@ -62,10 +58,8 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
+shadow {
+    addShadowVariantIntoJavaComponent = false
 }
 
 publishing {

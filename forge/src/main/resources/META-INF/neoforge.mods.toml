@@ -28,13 +28,13 @@ side = "BOTH"
 [[dependencies.online_emotes]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.7,)"
+versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.online_emotes]]
 modId = "emotecraft"
 type = "required"
-versionRange = "[3.0.0-a.build.110,)"
+versionRange = "[3.1.0-b.build.124,)"
 ordering = "NONE"
 side = "CLIENT"
