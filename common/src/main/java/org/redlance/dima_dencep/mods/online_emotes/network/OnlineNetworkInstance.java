@@ -38,6 +38,8 @@ import org.redlance.platformtools.PlatformFileReferer;
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -81,7 +83,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
         stopReconnecting();
 
-        this.reconnectingFuture = bootstrap.config().group().scheduleAtFixedRate(() -> {
+        this.reconnectingFuture = this.bootstrap.config().group().scheduleAtFixedRate(() -> {
             if (!isActive()) {
                 OnlineEmotes.LOGGER.info("Try (re)connecting...");
 
@@ -186,6 +188,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         }
     }
 
+    @SuppressWarnings("unused")
     public boolean isReconnectorAlive() {
         return this.reconnectingFuture != null;
     }
@@ -200,12 +203,11 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
         ));
 
         try {
-            String referer = PlatformFileReferer.INSTANCE.getFileReferer(
-                    OnlineEmotesPlatform.getModFile(OnlineEmotes.MOD_ID)
-            );
-            if (referer != null) headers.add(HttpHeaderNames.REFERER, referer);
+            for (String referer : PlatformFileReferer.INSTANCE.getFileReferer(OnlineEmotesPlatform.getModFile(OnlineEmotes.MOD_ID))) {
+                headers.add(HttpHeaderNames.REFERER, URLEncoder.encode(referer, StandardCharsets.UTF_8));
+            }
         } catch (Throwable th) {
-            headers.add(HttpHeaderNames.REFERER, th.toString());
+            headers.add(HttpHeaderNames.REFERER, URLEncoder.encode(th.toString(), StandardCharsets.UTF_8));
         }
 
         try { // Because LanguageManager is reloadable
