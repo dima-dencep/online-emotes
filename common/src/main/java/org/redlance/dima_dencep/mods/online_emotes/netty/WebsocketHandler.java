@@ -14,8 +14,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.velocitypowered.natives.compression.VelocityCompressor;
 import com.velocitypowered.natives.util.Natives;
+import com.zigythebird.playeranimcore.PlayerAnimLib;
+import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.github.kosmx.emotes.mc.McUtils;
-import io.github.kosmx.emotes.server.config.Serializer;
 import net.minecraft.core.RegistryAccess;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
@@ -23,7 +24,6 @@ import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.netty.compression.VelocityCompressDecoder;
 import org.redlance.dima_dencep.mods.online_emotes.netty.compression.VelocityCompressEncoder;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -69,20 +69,10 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) {
         switch (msg) {
-            case BinaryWebSocketFrame frame -> {
-                ByteBuf buf = frame.content();
-
-                if (!buf.isDirect() && !buf.isReadOnly()) {
-                    this.proxy.receiveMessage(buf.array());
-                } else {
-                    byte[] bytes = new byte[buf.readableBytes()];
-                    buf.getBytes(buf.readerIndex(), bytes);
-                    this.proxy.receiveMessage(bytes);
-                }
-            }
+            case BinaryWebSocketFrame frame -> this.proxy.receiveMessage(new EmotePacket(frame.content()));
 
             case TextWebSocketFrame frame -> {
-                JsonElement element = Serializer.getSerializer().fromJson(frame.text(), JsonElement.class);
+                JsonElement element = PlayerAnimLib.GSON.fromJson(frame.text(), JsonElement.class);
                 if (!element.isJsonObject()) {
                     FancyToast.sendMessage(McUtils.fromJson(element, RegistryAccess.EMPTY));
                     break;
