@@ -17,9 +17,7 @@ dependencies {
     // EmoteCraft
     modImplementation "io.github.kosmx.emotes:archCommon:${emotecraft_version}"
 
-    implementation("com.velocitypowered:velocity-native:${velocity_version}") {
-        transitive = false
-    }
+    // Third-party
     implementation("org.redlance:platformtools:${platformtools_version}")
 }
 

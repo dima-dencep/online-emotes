@@ -12,6 +12,7 @@ package org.redlance.dima_dencep.mods.online_emotes.network;
 
 import io.github.kosmx.emotes.common.CommonData;
 import io.github.kosmx.emotes.common.network.PacketConfig;
+import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
@@ -70,6 +71,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
                 pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENGTH));
+                pipeline.addLast("ws-compression", WebSocketClientCompressionHandler.INSTANCE);
                 pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }

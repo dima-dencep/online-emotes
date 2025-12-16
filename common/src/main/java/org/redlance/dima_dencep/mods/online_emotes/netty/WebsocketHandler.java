@@ -12,8 +12,6 @@ package org.redlance.dima_dencep.mods.online_emotes.netty;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.velocitypowered.natives.compression.VelocityCompressor;
-import com.velocitypowered.natives.util.Natives;
 import com.zigythebird.playeranimcore.PlayerAnimLib;
 import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.github.kosmx.emotes.mc.McUtils;
@@ -21,8 +19,6 @@ import net.minecraft.core.RegistryAccess;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
-import org.redlance.dima_dencep.mods.online_emotes.netty.compression.VelocityCompressDecoder;
-import org.redlance.dima_dencep.mods.online_emotes.netty.compression.VelocityCompressEncoder;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -36,16 +32,10 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     private static final Component DISCONNECTED = Component.translatable("online_emotes.messages.disconnected");
     private static final Component CONNECTED = Component.translatable("online_emotes.messages.connected");
 
-    private static final Component COMPRESSIONOFF = Component.translatable("online_emotes.messages.compressionoff");
-
     private final OnlineNetworkInstance proxy;
 
     public WebsocketHandler(OnlineNetworkInstance proxy) {
         this.proxy = proxy;
-    }
-
-    static {
-        OnlineEmotes.LOGGER.info("Compression will use {}", Natives.compress.getLoadedVariant());
     }
 
     @Override
@@ -83,41 +73,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
                     FancyToast.sendMessage(McUtils.fromJson(object.get("message"), RegistryAccess.EMPTY));
                 }
 
-                if (object.has("compression")) {
-                    int compressionLevel = object.get("compression").getAsInt();
-
-                    if (compressionLevel <= 0) {
-                        if (ctx.pipeline().get(VelocityCompressDecoder.NAME) instanceof VelocityCompressDecoder) {
-                            ctx.pipeline().remove(VelocityCompressDecoder.NAME);
-                        }
-
-                        if (ctx.pipeline().get(VelocityCompressEncoder.NAME) instanceof VelocityCompressEncoder) {
-                            ctx.pipeline().remove(VelocityCompressEncoder.NAME);
-                        }
-
-                        if (OnlineEmotesConfig.debug()) {
-                            FancyToast.sendMessage(WebsocketHandler.COMPRESSIONOFF);
-                        }
-                    } else {
-                        VelocityCompressor compressor = Natives.compress.get().create(compressionLevel);
-
-                        if (ctx.pipeline().get(VelocityCompressDecoder.NAME) instanceof VelocityCompressDecoder decoder) {
-                            ctx.pipeline().replace(decoder, VelocityCompressDecoder.NAME, new VelocityCompressDecoder(compressor));
-                        } else {
-                            ctx.pipeline().addAfter("ws-decoder", VelocityCompressDecoder.NAME, new VelocityCompressDecoder(compressor));
-                        }
-
-                        if (ctx.pipeline().get(VelocityCompressEncoder.NAME) instanceof VelocityCompressEncoder encoder) {
-                            ctx.pipeline().replace(encoder, VelocityCompressEncoder.NAME, new VelocityCompressEncoder(compressor));
-                        } else {
-                            ctx.pipeline().addAfter("ws-encoder", VelocityCompressEncoder.NAME, new VelocityCompressEncoder(compressor));
-                        }
-
-                        if (OnlineEmotesConfig.debug()) {
-                            FancyToast.sendMessage(Component.translatable("online_emotes.messages.compressionset", compressionLevel));
-                        }
-                    }
-                }
+                // TODO
             }
 
             case PingWebSocketFrame frame -> {

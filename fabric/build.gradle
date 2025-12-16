@@ -28,9 +28,7 @@ dependencies {
 
     modImplementation "io.github.kosmx.emotes:emotesFabric:${emotecraft_version}"
 
-    include implementation("com.velocitypowered:velocity-native:${velocity_version}") {
-        transitive = false
-    }
+    // Third-party
     include implementation("org.redlance:platformtools:${platformtools_version}")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }

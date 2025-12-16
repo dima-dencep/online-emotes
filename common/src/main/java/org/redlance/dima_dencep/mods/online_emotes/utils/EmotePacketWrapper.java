@@ -11,6 +11,7 @@
 package org.redlance.dima_dencep.mods.online_emotes.utils;
 
 import com.mojang.authlib.GameProfile;
+import com.zigythebird.playeranimcore.network.NetworkUtils;
 import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -20,9 +21,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.Utf8String;
 import net.minecraft.network.codec.ByteBufCodecs;
 import org.jetbrains.annotations.Nullable;
+import team.unnamed.mocha.util.network.ProtocolUtils;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -60,10 +61,8 @@ public class EmotePacketWrapper {
         ByteBufCodecs.GAME_PROFILE.encode(byteBuf, this.gameProfile); // Profile
 
         // Level data
-        FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, FriendlyByteBuf::writeUUID);
-        FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress,
-                (buf, address) -> Utf8String.write(buf, address, 32767)
-        );
+        FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, NetworkUtils::writeUuid);
+        FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress, ProtocolUtils::writeString);
 
         this.emotePacket.write(byteBuf, alloc); // Emote Packet
         return new BinaryWebSocketFrame(byteBuf); // Frame
