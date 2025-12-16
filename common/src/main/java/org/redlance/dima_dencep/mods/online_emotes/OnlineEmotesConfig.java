@@ -10,10 +10,8 @@
 
 package org.redlance.dima_dencep.mods.online_emotes;
 
-import io.netty.channel.epoll.Epoll;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
-import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
 
 public class OnlineEmotesConfig {
     public static final Pair<OnlineEmotesConfig, ModConfigSpec> CONFIG_SPEC_PAIR = new ModConfigSpec.Builder()
@@ -25,8 +23,8 @@ public class OnlineEmotesConfig {
     public final ModConfigSpec.BooleanValue debug;
 
     // Netty
-    public final ModConfigSpec.BooleanValue useEpoll;
-    public final ModConfigSpec.IntValue compressionThreshold;
+    // public final ModConfigSpec.BooleanValue useEpoll;
+    // public final ModConfigSpec.BooleanValue useKQueue;
 
     public OnlineEmotesConfig(ModConfigSpec.Builder builder) {
         builder.push("global");
@@ -35,12 +33,10 @@ public class OnlineEmotesConfig {
         this.debug = builder.define("debug", false);
         builder.pop();
 
-        builder.push("netty");
-        this.useEpoll = builder.define("useEpoll", Epoll.isAvailable());
-        this.compressionThreshold = builder.defineInRange("compressionThreshold",
-                256, 256, OnlineNetworkInstance.PAYLOAD_LENGTH
-        );
-        builder.pop();
+        /*builder.push("netty");
+        this.useEpoll = builder.define("useEpoll", true);
+        this.useKQueue = builder.define("useKQueue", true);
+        builder.pop();*/
     }
 
     public static long reconnectionDelay() {
@@ -55,11 +51,11 @@ public class OnlineEmotesConfig {
         return OnlineEmotesConfig.CONFIG_SPEC_PAIR.getKey().debug.get();
     }
 
-    public static boolean useEpoll() {
+    /*public static boolean useEpoll() {
         return OnlineEmotesConfig.CONFIG_SPEC_PAIR.getKey().useEpoll.get();
     }
 
-    public static int compressionThreshold() {
-        return OnlineEmotesConfig.CONFIG_SPEC_PAIR.getKey().compressionThreshold.get();
-    }
+    public static boolean useKQueue() {
+        return OnlineEmotesConfig.CONFIG_SPEC_PAIR.getKey().useKQueue.get();
+    }*/
 }

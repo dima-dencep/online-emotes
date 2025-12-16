@@ -9,6 +9,9 @@
  */
 
 package org.redlance.dima_dencep.mods.online_emotes;
+
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.kqueue.KQueue;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.Connection;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
@@ -16,6 +19,7 @@ import io.github.kosmx.emotes.api.proxy.EmotesProxyManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@SuppressWarnings("unused")
 public abstract class OnlineEmotes {
     public static final Logger LOGGER = LogManager.getLogger(OnlineEmotes.MOD_ID);
     public static final String MOD_ID = "online_emotes";
@@ -23,6 +27,9 @@ public abstract class OnlineEmotes {
 
     protected void onInitializeClient() {
         EmotesProxyManager.registerProxyInstance(OnlineEmotes.proxy = new OnlineNetworkInstance());
+
+        OnlineEmotes.LOGGER.info("KQueue.isAvailable: {}", KQueue.isAvailable());
+        OnlineEmotes.LOGGER.info("Epoll.isAvailable: {}", Epoll.isAvailable());
     }
 
     protected void onLoggingIn(LocalPlayer player, Connection connection) {

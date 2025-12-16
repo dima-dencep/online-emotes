@@ -11,13 +11,17 @@
 package org.redlance.dima_dencep.mods.online_emotes.utils;
 
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.IoHandlerFactory;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
 import io.netty.channel.epoll.Epoll;
-import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollIoHandler;
 import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.kqueue.KQueue;
+import io.netty.channel.kqueue.KQueueIoHandler;
+import io.netty.channel.kqueue.KQueueSocketChannel;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesConfig;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,18 +36,18 @@ public class NettyObjectFactory {
     };
 
     public static EventLoopGroup newEventLoopGroup() {
-        if (Epoll.isAvailable() && OnlineEmotesConfig.useEpoll()) {
-            return new EpollEventLoopGroup(threadFactory);
-        } else {
-            return new NioEventLoopGroup(threadFactory);
-        }
+        return new MultiThreadIoEventLoopGroup(threadFactory, ioHandlerFactory());
+    }
+
+    private static IoHandlerFactory ioHandlerFactory() {
+        if (KQueue.isAvailable()) return KQueueIoHandler.newFactory();
+        if (Epoll.isAvailable()) return EpollIoHandler.newFactory();
+        return NioIoHandler.newFactory();
     }
 
     public static Class<? extends SocketChannel> getSocketChannel() {
-        if (Epoll.isAvailable() && OnlineEmotesConfig.useEpoll()) {
-            return EpollSocketChannel.class;
-        } else {
-            return NioSocketChannel.class;
-        }
+        if (KQueue.isAvailable()) return KQueueSocketChannel.class;
+        if (Epoll.isAvailable()) return EpollSocketChannel.class;
+        return NioSocketChannel.class;
     }
 }

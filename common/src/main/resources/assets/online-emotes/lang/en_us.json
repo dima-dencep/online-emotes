@@ -11,7 +11,8 @@
 
   "online_emotes.configuration.useEpoll.tooltip": "Only for linux",
   "online_emotes.configuration.useEpoll": "Using Epoll instead of Nio",
-  "online_emotes.configuration.compressionThreshold": "Compression threshold",
+  "online_emotes.configuration.useKQueue.tooltip": "Only for macOS",
+  "online_emotes.configuration.useKQueue": "Using KQueue instead of Nio",
 
   "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!",
 

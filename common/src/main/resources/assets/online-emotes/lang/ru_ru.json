@@ -11,7 +11,8 @@
 
   "online_emotes.configuration.useEpoll.tooltip": "Только для Линукс",
   "online_emotes.configuration.useEpoll": "Использование Epoll вместо Nio",
-  "online_emotes.configuration.compressionThreshold": "Порог сжатия",
+  "online_emotes.configuration.useKQueue.tooltip": "Только для макОС",
+  "online_emotes.configuration.useKQueue": "Использование KQueue вместо Nio",
 
   "online_emotes.warnings.onlyThis": "Доступна только трансляция через Online Emotes!",
 
