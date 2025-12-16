@@ -17,16 +17,16 @@ import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FancyToast implements Toast {
-    public static final ResourceLocation ICON = ResourceLocation.fromNamespaceAndPath("online-emotes", "icon.png");
+    public static final Identifier ICON = Identifier.fromNamespaceAndPath("online-emotes", "icon.png");
     public static final Component TITLE = Component.translatable("online_emotes.configuration.title");
 
     protected final Component title;
@@ -40,7 +40,7 @@ public class FancyToast implements Toast {
     }
 
     @Override
-    public @NotNull Visibility getWantedVisibility() {
+    public @NonNull Visibility getWantedVisibility() {
         return this.visibility;
     }
 
@@ -50,7 +50,7 @@ public class FancyToast implements Toast {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, Font textRenderer, long timeSinceLastVisible) {
+    public void render(GuiGraphics guiGraphics, @NonNull Font textRenderer, long timeSinceLastVisible) {
         guiGraphics.fill(0, 0, width(), height() - 1, -1207959552);
         guiGraphics.fill(0, height() - 1, width(), height(), 0xFFfc1a47);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);

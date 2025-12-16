@@ -76,7 +76,6 @@ jobs:
           game-version-filter: none
           game-versions: |
             ${{ steps.read_property.outputs.minecraft_version }}
-            1.21.10
 
           dependencies: |
             emotecraft{modrinth:pZ2wrerK}{curseforge:403422}
@@ -109,7 +108,6 @@ jobs:
           game-version-filter: none
           game-versions: |
             ${{ steps.read_property.outputs.minecraft_version }}
-            1.21.10
 
           dependencies: |
             emotecraft{modrinth:pZ2wrerK}{curseforge:397809}

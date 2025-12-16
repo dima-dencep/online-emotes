@@ -71,7 +71,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
                 pipeline.addLast("http-codec", new HttpClientCodec());
                 pipeline.addLast("aggregator", new HttpObjectAggregator(PAYLOAD_LENGTH));
-                pipeline.addLast("ws-compression", WebSocketClientCompressionHandler.INSTANCE);
+                pipeline.addLast("ws-compression", new WebSocketClientCompressionHandler(PAYLOAD_LENGTH));
                 pipeline.addLast("handshaker", OnlineNetworkInstance.this.handshakeHandler);
                 pipeline.addLast("ws-handler", new WebsocketHandler(OnlineNetworkInstance.this));
             }
