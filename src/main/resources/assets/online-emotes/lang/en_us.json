@@ -1,0 +1,26 @@
+{
+  "online_emotes.configuration.title": "Online Emotes",
+
+  "online_emotes.configuration.global": "Main",
+  "online_emotes.configuration.netty": "Netty",
+
+  "online_emotes.otherconfig.reconnectionDelay.tooltip": "In seconds",
+  "online_emotes.otherconfig.reconnectionDelay": "Delay before reconnecting",
+  "online_emotes.otherconfig.replaceMessages": "Replacing EmoteCraft messages with more detail",
+  "online_emotes.otherconfig.debug": "Displaying debug messages",
+
+  "online_emotes.otherconfig.useEpoll.tooltip": "Only for linux",
+  "online_emotes.otherconfig.useEpoll": "Using Epoll instead of Nio",
+  "online_emotes.otherconfig.useKQueue.tooltip": "Only for macOS",
+  "online_emotes.otherconfig.useKQueue": "Using KQueue instead of Nio",
+
+  "online_emotes.warnings.onlyThis": "Only streaming via Online Emotes is available!",
+
+  "online_emotes.button.reconect": "Reconnect OnlineEmotes",
+
+  "online_emotes.messages.connected": "WebSocket connected!",
+  "online_emotes.messages.disconnected": "WebSocket disconnected!",
+  "online_emotes.messages.internal.banned": "You have been banned for reason: %s! If this is an error, contact support.",
+  "online_emotes.messages.internal.restarting": "The server is restarting...",
+  "online_emotes.messages.internal.restarting-update": "The server is restarting to update, make sure you have the latest version of the mod!"
+}

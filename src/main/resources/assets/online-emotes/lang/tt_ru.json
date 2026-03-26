@@ -1,0 +1,19 @@
+{
+  "modmenu.summaryTranslation.online_emotes": "Бер-береңнең эмоцияләрне сервердагы Emotecraft утыртусыз күрәгез!",
+  "modmenu.descriptionTranslation.online_emotes": "Уенчыларга бер-береңнең эмоцияләрне күрергә серверда Emotecraft утыртусыз рөхсәт итә!",
+
+  "online_emotes.configuration.title": "Online Emotes көйләүләре",
+
+  "online_emotes.configuration.global": "Төп",
+  "online_emotes.configuration.netty": "Netty",
+
+  "online_emotes.otherconfig.reconnectionDelay.tooltip": "Секундда",
+  "online_emotes.otherconfig.reconnectionDelay": "Яңадан тоташу алдыннан тоткарлагыч",
+  "online_emotes.otherconfig.replaceMessages": "EmoteCraft хәбәрләрен тәфсиллерәккә алыштыру",
+  "online_emotes.otherconfig.debug": "Төзәтү хәбәрләрен күрсәтү",
+
+  "online_emotes.otherconfig.useEpoll.tooltip": "Linux өчен генә",
+  "online_emotes.otherconfig.useEpoll": "Epoll-ны Nio урнына куллану",
+
+  "online_emotes.warnings.onlyThis": "Online Emotes аша агымда тапшыру ирешерлек!"
+}

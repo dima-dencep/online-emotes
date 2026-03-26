@@ -1,0 +1,37 @@
+/*
+ * Copyright 2023 - 2026 dima_dencep.
+ *
+ * Licensed under the Open Software License, Version 3.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * You may obtain a copy of the License at
+ *     https://spdx.org/licenses/OSL-3.0.txt
+ */
+
+package org.redlance.dima_dencep.mods.online_emotes.mixins;
+
+import io.github.kosmx.emotes.PlatformTools;
+import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
+import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
+import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(PlatformTools.class)
+public abstract class ClientMethodsMixin {
+    @Inject(
+            method = "addToast(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;)V",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
+    private static void onlineEmotes$toastExportMessage(Component title, Component message, CallbackInfo ci) {
+        if (OnlineEmotes.getConfig().replaceMessages.get()) {
+            FancyToast.sendMessage(title, message);
+            ci.cancel();
+        }
+    }
+}

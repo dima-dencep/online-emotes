@@ -18,4 +18,4 @@ classes/
 .settings
 *.launch
 .DS_Store
-.architectury-transformer/debug.log
+/.architectury-transformer

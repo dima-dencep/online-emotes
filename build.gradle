@@ -1,109 +1,178 @@
+import org.redlance.dima_dencep.gradle.publish2discord.tasks.PublishDiscordTask
+
 plugins {
-    id "com.gradleup.shadow" version "9.3.0" apply false
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
-    id "net.neoforged.licenser" version "0.7.5" apply false
-    id "io.github.p03w.machete" version "2.0.1" apply false
+    id "org.redlance.dima_dencep.gradle.PublishToDiscord" version "1.0.8"
+    id "com.gradleup.shadow" version "9.4.0"
+    id "xyz.wagyourtail.unimined" version "1.4.2+redlance.2"
+    id "net.neoforged.licenser" version "0.7.5"
+    id "org.redlance.dima_dencep.gradle.machete"  version "1.0.2"
 }
 
-architectury {
-    minecraft = rootProject.minecraft_version
-}
+license {
+    header = rootProject.file('HEADER')
+    skipExistingHeaders = false
 
-subprojects {
-    apply plugin: "dev.architectury.loom"
-    apply plugin: "io.github.p03w.machete"
-    apply plugin: "net.neoforged.licenser"
-
-    loom {
-        silentMojangMappingsLicense()
-    }
-
-    dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.21.10:${rootProject.parchment_version}@zip")
-        }
-    }
-
-    machete {
-        ignoredTasks.add("shadowJar")
-        ignoredTasks.add("jar")
-    }
-
-    license {
-        header = rootProject.file('HEADER')
-        skipExistingHeaders = false
-
-        tasks {
-            oe {
-                files.from rootProject.fileTree("src", {
-                    include "**/*.java"
-                })
-            }
-        }
-    }
-
-    processResources {
-        inputs.property "version", version
-        inputs.property "minecraft_version", minecraft_version
-        inputs.property "fabric_version", loader_version
-        inputs.property "neo_version", forge_version
-        inputs.property "fcapip_version", fcapip_version
-
-        filesMatching(["META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
-            expand "version": version,
-                    "minecraft_version": minecraft_version,
-                    "fabric_version": loader_version,
-                    "neo_version": forge_version,
-                    "fcapip_version": fcapip_version
+    tasks {
+        rrls {
+            files.from rootProject.fileTree("src", {
+                include "**/*.java"
+            })
         }
     }
 }
 
-allprojects {
-    apply plugin: "java"
-    apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
+base.archivesName = rootProject.archives_base_name
+version = "${rootProject.mod_version}+mc.${rootProject.minecraft_version}"
+group = rootProject.maven_group
 
-    base.archivesName = rootProject.archives_base_name
-    version = "${rootProject.mod_version}+mc${rootProject.minecraft_version}-${project.name}"
-    group = rootProject.maven_group
+sourceSets {
+    fabric
+    neoforge
+}
 
-    repositories {
-        maven {
-            name = "NeoForged"
-            url = "https://maven.neoforged.net/releases"
-            content {
-                excludeGroupByRegex "org.parchmentmc"
-            }
-        }
-        maven {
-            name = "RedlanceMinecraft"
-            url = "https://repo.redlance.org/public"
-        }
-        maven {
-            name = "ParchmentMC"
-            url = "https://maven.parchmentmc.org"
-        }
-        maven {
-            name = "Fuzs Mod Resources"
-            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-        }
+repositories {
+    mavenLocal()
+    maven {
+        name = "RedlancePublic"
+        url = "https://repo.redlance.org/public"
+    }
+    maven {
+        name = "NeoForged"
+        url = "https://maven.neoforged.net/releases"
+    }
+    maven {
+        name = "TerraformersMC maven"
+        url = "https://maven.terraformersmc.com/"
+    }
+}
+
+configurations {
+    shadow
+
+    platformInclude
+    fabricInclude.extendsFrom platformInclude
+    neoforgeInclude.extendsFrom platformInclude
+}
+
+unimined.minecraft(sourceSets.main) {
+    version minecraft_version
+
+    fabric {
+        loader fabric_loader_version
+        accessWidener file("src/main/resources/online-emotes.classtweaker")
     }
 
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = "UTF-8"
-        options.release.set 21
+    defaultRemapJar = false
+}
+
+unimined.minecraft(sourceSets.fabric) {
+    combineWith(sourceSets.main)
+
+    fabric {
+        loader fabric_loader_version
+        accessWidener file("src/main/resources/online-emotes.classtweaker")
+    }
+    defaultRemapJar = true
+}
+
+unimined.minecraft(sourceSets.neoforge) {
+    combineWith(sourceSets.main)
+
+    neoForge {
+        loader("net.neoforged:neoforge:$neoforge_version:universal")
+        mixinConfig("online-emotes.mixins.json")
+
+        // accessTransformer aw2at(file("src/main/resources/online-emotes.classtweaker"))
+    }
+    defaultRemapJar = true
+}
+
+dependencies {
+    // Core
+    implementation platformInclude("org.redlance.platformtools:common:$platformtools_version") { transitive = false }
+    implementation platformInclude("org.redlance.platformtools:referer:$platformtools_version") { transitive = false }
+
+    // Common
+    compileOnly("io.github.kosmx.emotes:archCommon:$emotecraft_version")
+
+    // Fabric
+    fabricImplementation("io.github.kosmx.emotes:emotesFabric:$emotecraft_version")
+    fabricImplementation("com.terraformersmc:modmenu:$modmenu_version") { transitive = false }
+
+    // Neoforge
+    neoforgeImplementation("io.github.kosmx.emotes:emotesNeo:$emotecraft_version")
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+
+    from(tasks.named("remapFabricJar").map { zipTree(it.archiveFile) })
+    from(tasks.named("remapNeoforgeJar").map { zipTree(it.archiveFile) })
+
+    archiveClassifier.set null
+
+    // Services
+    filesMatching('META-INF/services/**') {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    mergeServiceFiles()
+
+    // Fix fabric jij
+    filesMatching("META-INF/jarjar/*.jar") {
+        path = path.replace("META-INF/jarjar/", "META-INF/jars/")
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    filesMatching('META-INF/jarjar/metadata.json') {
+        filter { it.replace('META-INF/jarjar/', 'META-INF/jars/') }
+    }
+}
+
+[tasks.processResources, tasks.processFabricResources, tasks.processNeoforgeResources].each {
+    def buildProps = rootProject.properties.clone()
+    buildProps.put("version", version)
+
+    // Another workaround
+    buildProps.put("fabric_minecraft_version", minecraft_version.replace('-snapshot-', '-alpha.'))
+
+    it.filesMatching(["META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
+        expand buildProps
+    }
+}
+
+machete {
+    tasks.set(Collections.singleton("shadowJar"))
+    sourceFileStriping.enabled = true
+
+    png.compressionLevel.set(9)
+    png.compressorIterations.set(32)
+    png.enabled = false
+}
+
+tasks.register("publishToDiscord", PublishDiscordTask) {
+    username.set("Online Emotes Updates")
+    url.set(providers.environmentVariable("DISCORD_WEBHOOK"))
+    avatar.set("TODO")
+
+    container {
+        it.title = "## ✨ Online Emotes\n### v${version} is out!"
+        it.description = "### What's new:\n${providers.environmentVariable("MOD_CHANGELOG").orElse("").get()}"
+
+        it.thumbnail("TODO")
+        it.timestamp(System.currentTimeMillis())
     }
 
-    java {
-        withSourcesJar()
+    links {
+        it.fromEnvHack()
     }
 
-    publishing {
-        repositories {
-        }
-    }
+    footer = "||<@&1136394910103257229>||"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release.set 25
+}
+
+jar {
+    archiveClassifier.set "dev"
 }
