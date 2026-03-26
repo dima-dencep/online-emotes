@@ -93,9 +93,16 @@ public class FancyToast implements Toast {
 
     public static void sendMessage(Component title, Component description) {
         OnlineEmotes.LOGGER.info("Toast message: {}", description.getString());
-        List<FormattedCharSequence> msg = Minecraft.getInstance().submit(() ->
-                Minecraft.getInstance().font.split(description, 200)
-        ).join();
-        Minecraft.getInstance().getToastManager().addToast(new FancyToast(title, msg));
+
+        Runnable task = () -> {
+            List<FormattedCharSequence> msg = Minecraft.getInstance().font.split(description, 200);
+            Minecraft.getInstance().getToastManager().addToast(new FancyToast(title, msg));
+        };
+
+        if (Minecraft.getInstance().isSameThread()) {
+            task.run();
+        } else {
+            Minecraft.getInstance().execute(task);
+        }
     }
 }

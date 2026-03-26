@@ -12,6 +12,7 @@ package org.redlance.dima_dencep.mods.online_emotes.netty;
 
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import io.netty.channel.*;
+import java.io.IOException;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.*;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,14 @@ public class HandshakeHandler extends SimpleChannelInboundHandler<FullHttpRespon
             handshaker.finishHandshake(ctx.channel(), msg);
             handshakeFuture.setSuccess();
         }
+    }
+
+    @Override
+    public void channelInactive(@NotNull ChannelHandlerContext ctx) throws Exception {
+        if (!handshakeFuture.isDone()) {
+            handshakeFuture.setFailure(new IOException("Channel closed before handshake completed"));
+        }
+        super.channelInactive(ctx);
     }
 
     @Override

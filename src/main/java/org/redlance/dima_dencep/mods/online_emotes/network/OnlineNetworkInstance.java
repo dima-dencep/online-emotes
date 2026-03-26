@@ -85,17 +85,22 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
         stopReconnecting();
 
-        this.reconnectingFuture = this.bootstrap.config().group().scheduleAtFixedRate(() -> {
+        this.reconnectingFuture = this.bootstrap.config().group().scheduleWithFixedDelay(() -> {
             if (!isActive()) {
                 OnlineEmotes.LOGGER.info("Try (re)connecting...");
 
-                connectInternal();
+                ChannelFuture future = connectInternal();
+                future.awaitUninterruptibly();
+
+                if (future.isSuccess()) {
+                    this.handshakeHandler.handshakeFuture.awaitUninterruptibly();
+                }
             }
 
         }, 0L, OnlineEmotes.getConfig().reconnectionDelay.get(), TimeUnit.SECONDS);
     }
 
-    private void connectInternal() {
+    private ChannelFuture connectInternal() {
         this.handshakeHandler = new HandshakeHandler(WebSocketClientHandshakerFactory.newHandshaker(URI_ADDRESS,
                 WebSocketVersion.V13, null, true, createHeaders(), PAYLOAD_LENGTH
         ));
@@ -118,6 +123,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
                 OnlineEmotes.LOGGER.error("Failed to connect!", l.cause());
             }
         });
+        return channelFuture;
     }
 
     @Override
@@ -161,12 +167,12 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
     }
 
     protected void disconnectNetty() {
-        if (this.ch == null) return;
-        if (this.ch.isActive()) {
-            this.ch.writeAndFlush(
-                    new CloseWebSocketFrame()
-            ).addListener(ChannelFutureListener.CLOSE).awaitUninterruptibly();
-            this.ch = null;
+        Channel channel = this.ch;
+        this.ch = null;
+
+        if (channel != null && channel.isActive()) {
+            channel.writeAndFlush(new CloseWebSocketFrame())
+                    .addListener(ChannelFutureListener.CLOSE);
         }
     }
 
@@ -179,9 +185,7 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
     private void stopReconnecting() {
         try {
-            if (this.reconnectingFuture != null && !this.reconnectingFuture.isCancelled()) {
-                OnlineEmotes.LOGGER.warn("What happened to the reconnector?");
-
+            if (this.reconnectingFuture != null) {
                 this.reconnectingFuture.cancel(true);
                 this.reconnectingFuture = null;
             }

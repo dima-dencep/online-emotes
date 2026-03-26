@@ -34,7 +34,7 @@ public abstract class OnlineEmotes {
             OnlineEmotesPlatform.INSTANCE.getConfigPath()
     );
 
-    public static OnlineNetworkInstance proxy;
+    public static volatile OnlineNetworkInstance proxy;
 
     protected void onInitializeClient() {
         EmotesProxyManager.registerProxyInstance(OnlineEmotes.proxy = new OnlineNetworkInstance());
@@ -52,9 +52,7 @@ public abstract class OnlineEmotes {
     }
 
     protected void onLoggingOut(LocalPlayer player, Connection connection) {
-        if (proxy.isActive()) {
-            proxy.disconnect();
-        }
+        proxy.disconnect();
     }
 
     public static Screen createConfigScreen(Screen parent) {

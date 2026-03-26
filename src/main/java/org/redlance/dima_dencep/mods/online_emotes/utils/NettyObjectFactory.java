@@ -36,7 +36,7 @@ public class NettyObjectFactory {
     };
 
     public static EventLoopGroup newEventLoopGroup() {
-        return new MultiThreadIoEventLoopGroup(threadFactory, ioHandlerFactory());
+        return new MultiThreadIoEventLoopGroup(2, threadFactory, ioHandlerFactory());
     }
 
     private static IoHandlerFactory ioHandlerFactory() {

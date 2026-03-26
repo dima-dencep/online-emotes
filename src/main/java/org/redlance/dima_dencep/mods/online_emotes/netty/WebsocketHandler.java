@@ -61,18 +61,22 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
             case BinaryWebSocketFrame frame -> this.proxy.receiveMessage(new EmotePacket(frame.content()));
 
             case TextWebSocketFrame frame -> {
-                JsonElement element = PlayerAnimLib.GSON.fromJson(frame.text(), JsonElement.class);
-                if (!element.isJsonObject()) {
-                    FancyToast.sendMessage(McUtils.fromJson(element, RegistryAccess.EMPTY));
-                    break;
-                }
+                try {
+                    JsonElement element = PlayerAnimLib.GSON.fromJson(frame.text(), JsonElement.class);
+                    if (!element.isJsonObject()) {
+                        FancyToast.sendMessage(McUtils.fromJson(element, RegistryAccess.EMPTY));
+                        break;
+                    }
 
-                JsonObject object = element.getAsJsonObject();
-                if (object.has("message")) {
-                    FancyToast.sendMessage(McUtils.fromJson(object.get("message"), RegistryAccess.EMPTY));
-                }
+                    JsonObject object = element.getAsJsonObject();
+                    if (object.has("message")) {
+                        FancyToast.sendMessage(McUtils.fromJson(object.get("message"), RegistryAccess.EMPTY));
+                    }
 
-                // TODO
+                    // TODO
+                } catch (Exception e) {
+                    OnlineEmotes.LOGGER.error("Failed to parse text frame: {}", frame.text(), e);
+                }
             }
 
             case PingWebSocketFrame frame -> {
