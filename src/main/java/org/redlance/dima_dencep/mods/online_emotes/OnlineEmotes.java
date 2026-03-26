@@ -15,8 +15,10 @@ import io.github.kosmx.emotes.server.config.ConfigSerializer;
 import io.github.kosmx.emotes.server.config.Serializer;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.kqueue.KQueue;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.Connection;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
@@ -44,6 +46,12 @@ public abstract class OnlineEmotes {
     }
 
     protected void onLoggingIn(LocalPlayer player, Connection connection) {
+        IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
+        if (server != null && !server.isPublished()) return;
+        OnlineEmotes.onLoggingInInternal();
+    }
+
+    public static void onLoggingInInternal() {
         if (proxy.isActive()) {
             proxy.sendOnlineEmotesConfig();
         } else {

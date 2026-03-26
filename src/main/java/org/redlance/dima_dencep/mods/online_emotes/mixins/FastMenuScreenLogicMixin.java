@@ -89,7 +89,7 @@ public abstract class FastMenuScreenLogicMixin extends Screen {
         LinearLayout linearLayout = this.layout.addToFooter(LinearLayout.horizontal().spacing(Button.DEFAULT_SPACING));
 
         this.oe$reconnectButton = linearLayout.addChild(Button.builder(OE_RECONNECT, (_) ->
-                OnlineEmotes.proxy.connect()
+                OnlineEmotes.onLoggingInInternal()
         ).width(Button.SMALL_WIDTH).build());
 
         return linearLayout.addChild(child);
