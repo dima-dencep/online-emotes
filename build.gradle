@@ -151,13 +151,13 @@ machete {
 tasks.register("publishToDiscord", PublishDiscordTask) {
     username.set("Online Emotes Updates")
     url.set(providers.environmentVariable("DISCORD_WEBHOOK"))
-    avatar.set("TODO")
+    avatar.set("https://raw.githubusercontent.com/dima-dencep/online-emotes/HEAD/src/main/resources/assets/online-emotes/icon.png")
 
     container {
         it.title = "## ✨ Online Emotes\n### v${version} is out!"
         it.description = "### What's new:\n${providers.environmentVariable("MOD_CHANGELOG").orElse("").get()}"
 
-        it.thumbnail("TODO")
+        it.thumbnail("https://raw.githubusercontent.com/dima-dencep/online-emotes/HEAD/src/main/resources/assets/online-emotes/icon.png")
         it.timestamp(System.currentTimeMillis())
     }
 
