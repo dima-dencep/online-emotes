@@ -25,7 +25,8 @@ dependencies {
     modImplementation "io.github.kosmx.emotes:emotesNeo:${emotecraft_version}"
 
     // Third-party
-    implementation forgeRuntimeLibrary(include("org.redlance:platformtools:${platformtools_version}"))
+    implementation forgeRuntimeLibrary(include("org.redlance.platformtools:common:$platformtools_version")) { transitive = false }
+    implementation forgeRuntimeLibrary(include("org.redlance.platformtools:referer:$platformtools_version")) { transitive = false }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }

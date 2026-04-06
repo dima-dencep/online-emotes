@@ -57,15 +57,20 @@ public class EmotePacketWrapper {
 
     public WebSocketFrame toWebSocketFrame(ByteBufAllocator alloc) {
         ByteBuf byteBuf = alloc.buffer();
-        byteBuf.writeByte(1); // Version
-        ByteBufCodecs.GAME_PROFILE.encode(byteBuf, this.gameProfile); // Profile
+        try {
+            byteBuf.writeByte(1); // Version
+            ByteBufCodecs.GAME_PROFILE.encode(byteBuf, this.gameProfile); // Profile
 
-        // Level data
-        FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, NetworkUtils::writeUuid);
-        FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress, ProtocolUtils::writeString);
+            // Level data
+            FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, NetworkUtils::writeUuid);
+            FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress, ProtocolUtils::writeString);
 
-        this.emotePacket.write(byteBuf, alloc); // Emote Packet
-        return new BinaryWebSocketFrame(byteBuf); // Frame
+            this.emotePacket.write(byteBuf); // Emote Packet
+            return new BinaryWebSocketFrame(byteBuf); // Frame
+        } catch (Throwable th) {
+            byteBuf.release();
+            throw th;
+        }
     }
 
     private static String getIP(SocketAddress address) {

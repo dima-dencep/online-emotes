@@ -29,7 +29,8 @@ dependencies {
     modImplementation "io.github.kosmx.emotes:emotesFabric:${emotecraft_version}"
 
     // Third-party
-    include implementation("org.redlance:platformtools:${platformtools_version}")
+    include implementation("org.redlance.platformtools:common:$platformtools_version") { transitive = false }
+    include implementation("org.redlance.platformtools:referer:$platformtools_version") { transitive = false }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }

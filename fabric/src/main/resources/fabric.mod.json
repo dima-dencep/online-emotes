@@ -34,7 +34,7 @@
     "fabricloader": ">=${fabric_version}",
     "minecraft": ">=${minecraft_version}",
     "forgeconfigapiport": ">=${fcapip_version}",
-    "emotecraft": ">=3.2.0-a.build.133"
+    "emotecraft": ">=3.2.0-b.build.147"
   },
   "breaks": {
     "noemotecraft": "*"

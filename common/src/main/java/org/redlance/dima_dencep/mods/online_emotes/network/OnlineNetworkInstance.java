@@ -35,7 +35,7 @@ import io.netty.util.concurrent.ScheduledFuture;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.redlance.platformtools.PlatformFileReferer;
+import org.redlance.platformtools.referer.PlatformFileReferer;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;

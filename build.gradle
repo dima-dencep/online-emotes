@@ -1,9 +1,9 @@
 plugins {
-    id "com.gradleup.shadow" version "9.3.0" apply false
+    id "com.gradleup.shadow" version "9.4.1" apply false
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
     id "net.neoforged.licenser" version "0.7.5" apply false
-    id "io.github.p03w.machete" version "2.0.1" apply false
+    id "org.redlance.dima_dencep.gradle.machete"  version "1.0.2" apply false
 }
 
 architectury {
@@ -12,7 +12,7 @@ architectury {
 
 subprojects {
     apply plugin: "dev.architectury.loom"
-    apply plugin: "io.github.p03w.machete"
+    apply plugin: "org.redlance.dima_dencep.gradle.machete"
     apply plugin: "net.neoforged.licenser"
 
     loom {
@@ -23,13 +23,17 @@ subprojects {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.layered() {
             officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-1.21.10:${rootProject.parchment_version}@zip")
+            parchment("org.parchmentmc.data:parchment-${rootProject.minecraft_version}:${rootProject.parchment_version}@zip")
         }
     }
 
     machete {
-        ignoredTasks.add("shadowJar")
-        ignoredTasks.add("jar")
+        tasks.set(Collections.singleton("shadowJar"))
+        sourceFileStriping.enabled = true
+
+        png.compressionLevel.set(9)
+        png.compressorIterations.set(32)
+        png.enabled = false
     }
 
     license {
