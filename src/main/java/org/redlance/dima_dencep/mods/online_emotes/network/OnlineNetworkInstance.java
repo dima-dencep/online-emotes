@@ -12,9 +12,12 @@ package org.redlance.dima_dencep.mods.online_emotes.network;
 
 import io.github.kosmx.emotes.common.CommonData;
 import io.github.kosmx.emotes.common.network.PacketConfig;
+import io.github.kosmx.emotes.main.network.BaseClientNetwork;
+import io.github.kosmx.emotes.main.network.ClientPacketManager;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.CommonComponents;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotesPlatform;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
@@ -22,7 +25,6 @@ import org.redlance.dima_dencep.mods.online_emotes.netty.HandshakeHandler;
 import org.redlance.dima_dencep.mods.online_emotes.netty.WebsocketHandler;
 import org.redlance.dima_dencep.mods.online_emotes.utils.EmotePacketWrapper;
 import org.redlance.dima_dencep.mods.online_emotes.utils.NettyObjectFactory;
-import io.github.kosmx.emotes.api.proxy.AbstractNetworkInstance;
 import io.github.kosmx.emotes.common.network.EmotePacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -45,7 +47,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
-public class OnlineNetworkInstance extends AbstractNetworkInstance {
+public class OnlineNetworkInstance extends BaseClientNetwork {
     private static final URI URI_ADDRESS = URI.create("wss://api.redlance.org:443/websockets/online-emotes");
     public static final int PAYLOAD_LENGTH = Integer.MAX_VALUE;
 
@@ -222,5 +224,14 @@ public class OnlineNetworkInstance extends AbstractNetworkInstance {
 
         OnlineEmotes.LOGGER.info("Headers: {}", headers.unwrap());
         return headers;
+    }
+
+    @Override
+    protected void onConfigurationDone() {
+        if (OnlineEmotes.getConfig().debug.get()) FancyToast.sendMessage(
+                Component.translatable("online_emotes.messages.handshake-done",
+                        CommonComponents.optionStatus(ClientPacketManager.isInstanceOutdatedForStreaming(this))
+                )
+        );
     }
 }

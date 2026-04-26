@@ -4,8 +4,8 @@
 
   "online_emotes.configuration.title": "Online Emotes көйләүләре",
 
-  "online_emotes.configuration.global": "Төп",
-  "online_emotes.configuration.netty": "Netty",
+  "online_emotes.otherconfig.category.global": "Төп",
+  "online_emotes.otherconfig.category.netty": "Netty",
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "Секундда",
   "online_emotes.otherconfig.reconnectionDelay": "Яңадан тоташу алдыннан тоткарлагыч",

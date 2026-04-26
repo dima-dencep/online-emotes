@@ -1,8 +1,8 @@
 {
   "online_emotes.configuration.title": "Онлайн Эмоции",
 
-  "online_emotes.configuration.global": "Главная",
-  "online_emotes.configuration.netty": "Нетти",
+  "online_emotes.otherconfig.category.global": "Главная",
+  "online_emotes.otherconfig.category.netty": "Нетти",
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "В секундах",
   "online_emotes.otherconfig.reconnectionDelay": "Задержка перед повторным подключением",
@@ -19,6 +19,7 @@
   "online_emotes.button.reconect": "Переподключить OnlineEmotes",
 
   "online_emotes.messages.connected": "Веб-сокет подключен!",
+  "online_emotes.messages.handshake-done": "Рукопожатие завершено! (устаревший: %s)",
   "online_emotes.messages.disconnected": "Веб-сокет отключен!",
   "online_emotes.messages.internal.banned": "Вы были забанены по причине: %s! Если это ошибка, обратитесь в поддержку.",
   "online_emotes.messages.internal.restarting": "Сервер перезапускается...",

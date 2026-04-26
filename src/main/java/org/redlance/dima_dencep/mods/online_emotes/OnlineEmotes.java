@@ -11,6 +11,7 @@
 package org.redlance.dima_dencep.mods.online_emotes;
 
 import io.github.kosmx.emotes.arch.gui.screen.ConfigScreen;
+import io.github.kosmx.emotes.main.network.ClientPacketManager;
 import io.github.kosmx.emotes.server.config.ConfigSerializer;
 import io.github.kosmx.emotes.server.config.Serializer;
 import io.netty.channel.epoll.Epoll;
@@ -22,7 +23,6 @@ import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.Connection;
 import org.redlance.dima_dencep.mods.online_emotes.client.FancyToast;
 import org.redlance.dima_dencep.mods.online_emotes.network.OnlineNetworkInstance;
-import io.github.kosmx.emotes.api.proxy.EmotesProxyManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +39,7 @@ public abstract class OnlineEmotes {
     public static volatile OnlineNetworkInstance proxy;
 
     protected void onInitializeClient() {
-        EmotesProxyManager.registerProxyInstance(OnlineEmotes.proxy = new OnlineNetworkInstance());
+        ClientPacketManager.registerProxyInstance(OnlineEmotes.proxy = new OnlineNetworkInstance());
 
         OnlineEmotes.LOGGER.info("KQueue.isAvailable: {}", KQueue.isAvailable());
         OnlineEmotes.LOGGER.info("Epoll.isAvailable: {}", Epoll.isAvailable());
@@ -64,7 +64,7 @@ public abstract class OnlineEmotes {
     }
 
     public static Screen createConfigScreen(Screen parent) {
-        return new ConfigScreen(parent, getConfig(), OnlineEmotes.MOD_ID, FancyToast.TITLE);
+        return new ConfigScreen(parent, CONFIG_SERIALIZER, OnlineEmotes.MOD_ID, FancyToast.TITLE);
     }
 
     public static OnlineEmotesConfig getConfig() {

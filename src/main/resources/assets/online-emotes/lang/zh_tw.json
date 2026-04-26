@@ -1,8 +1,8 @@
 {
   "online_emotes.configuration.title": "線上表情",
 
-  "online_emotes.configuration.global": "主要",
-  "online_emotes.configuration.netty": "Netty",
+  "online_emotes.otherconfig.category.global": "主要",
+  "online_emotes.otherconfig.category.netty": "Netty",
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "單位：秒",
   "online_emotes.otherconfig.reconnectionDelay": "重新連線前的延遲",

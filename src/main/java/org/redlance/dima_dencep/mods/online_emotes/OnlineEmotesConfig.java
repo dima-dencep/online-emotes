@@ -14,14 +14,14 @@ import io.github.kosmx.emotes.common.SerializableConfig;
 
 public final class OnlineEmotesConfig extends SerializableConfig {
     // Global
-    public final ConfigEntry<Long> reconnectionDelay = new NumberConfigEntry<>("reconnectionDelay", 15L, true, this.basics, 0L, 300L) {
+    public final ConfigEntry<Long> reconnectionDelay = new NumberConfigEntry<>("reconnectionDelay", 15L, true, category("global"), 0L, 300L) {
         @Override
         public Long fromDouble(double value) {
             return (long) value;
         }
     };
-    public final ConfigEntry<Boolean> replaceMessages = new ConfigEntry<>("replaceMessages", false, false, this.basics);
-    public final ConfigEntry<Boolean> debug = new ConfigEntry<>("debug", false, false, this.expert);
+    public final ConfigEntry<Boolean> replaceMessages = new ConfigEntry<>("replaceMessages", false, false, category("global"));
+    public final ConfigEntry<Boolean> debug = new ConfigEntry<>("debug", false, false, category("global"));
 
     // Netty
     // public final ModConfigSpec.BooleanValue useEpoll;

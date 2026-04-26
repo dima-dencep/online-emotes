@@ -1,8 +1,8 @@
 {
   "online_emotes.configuration.title": "Online Emotes",
 
-  "online_emotes.configuration.global": "Main",
-  "online_emotes.configuration.netty": "Netty",
+  "online_emotes.otherconfig.category.global": "Main",
+  "online_emotes.otherconfig.category.netty": "Netty",
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "In seconds",
   "online_emotes.otherconfig.reconnectionDelay": "Delay before reconnecting",
@@ -19,6 +19,7 @@
   "online_emotes.button.reconect": "Reconnect OnlineEmotes",
 
   "online_emotes.messages.connected": "WebSocket connected!",
+  "online_emotes.messages.handshake-done": "Handshake done! (outdated: %s)",
   "online_emotes.messages.disconnected": "WebSocket disconnected!",
   "online_emotes.messages.internal.banned": "You have been banned for reason: %s! If this is an error, contact support.",
   "online_emotes.messages.internal.restarting": "The server is restarting...",

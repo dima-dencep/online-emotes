@@ -58,7 +58,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) {
         switch (msg) {
-            case BinaryWebSocketFrame frame -> this.proxy.receiveMessage(new EmotePacket(frame.content()));
+            case BinaryWebSocketFrame frame -> this.proxy.receiveMessage(new EmotePacket(frame.content()), null);
 
             case TextWebSocketFrame frame -> {
                 try {

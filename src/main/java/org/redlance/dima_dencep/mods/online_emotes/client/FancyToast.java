@@ -50,7 +50,7 @@ public class FancyToast implements Toast {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, Font font, long fullyVisibleForMs) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, @NonNull Font font, long fullyVisibleForMs) {
         graphics.fill(0, 0, width(), height() - 1, -1207959552);
         graphics.fill(0, height() - 1, width(), height(), 0xFFfc1a47);
         graphics.blit(RenderPipelines.GUI_TEXTURED, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
