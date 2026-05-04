@@ -7,13 +7,24 @@
   "online_emotes.otherconfig.category.global": "Төп",
   "online_emotes.otherconfig.category.netty": "Netty",
 
-  "online_emotes.otherconfig.reconnectionDelay.tooltip": "Секундда",
+  "online_emotes.otherconfig.reconnectionDelay.tooltip": "Секундта",
   "online_emotes.otherconfig.reconnectionDelay": "Яңадан тоташу алдыннан тоткарлагыч",
   "online_emotes.otherconfig.replaceMessages": "EmoteCraft хәбәрләрен тәфсиллерәккә алыштыру",
   "online_emotes.otherconfig.debug": "Төзәтү хәбәрләрен күрсәтү",
 
   "online_emotes.otherconfig.useEpoll.tooltip": "Linux өчен генә",
-  "online_emotes.otherconfig.useEpoll": "Epoll-ны Nio урнына куллану",
+  "online_emotes.otherconfig.useEpoll": "Epoll'ны Nio урнына куллану",
+  "online_emotes.otherconfig.useKQueue.tooltip": "macOS өчен генә",
+  "online_emotes.otherconfig.useKQueue": "KQueue'ны Nio урнына куллану",
 
-  "online_emotes.warnings.onlyThis": "Online Emotes аша агымда тапшыру ирешерлек!"
+  "online_emotes.warnings.onlyThis": "Online Emotes аша агымда тапшыру ирешерлек!",
+
+  "online_emotes.button.reconect": "OnlineEmotes серверына яңадан тоташу",
+  
+  "online_emotes.messages.connected": "WebSocket тоташылды!",
+  "online_emotes.messages.handshake-done": "Тоташылды! (искергән: %s)",
+  "online_emotes.messages.disconnected": "WebSocket өзелде!",
+  "online_emotes.messages.internal.banned": "Сез күрсәтелгән сәбәп буенча блокланды: %s! Әгәр хата булса, ярдәм белән бәйләнегез.",
+  "online_emotes.messages.internal.restarting": "Сервер яңадан кабызылу...",
+  "online_emotes.messages.internal.restarting-update": "Яңарту өчен сервер яңадан кабызыла; сез соңгы мод версиясен кулланган дип ышаныгыз!"
 }
