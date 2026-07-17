@@ -11,7 +11,7 @@
 package org.redlance.dima_dencep.mods.online_emotes.mixins;
 
 import net.minecraft.client.server.IntegratedServer;
-import net.minecraft.world.level.GameType;
+import net.minecraft.server.MinecraftServer;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(IntegratedServer.class)
 public abstract class IntegratedServerMixin {
-    @Inject(method = "publishServer", at = @At("RETURN"))
-    private void onlineEmotes$onPublishServer(GameType gameMode, boolean allowCommands, int port, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "publishServer(Lnet/minecraft/server/MinecraftServer$MultiplayerScope;I)Z", at = @At("RETURN"))
+    private void onlineEmotes$onPublishServer(MinecraftServer.MultiplayerScope scope, int port, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue()) OnlineEmotes.onLoggingInInternal();
     }
 }
