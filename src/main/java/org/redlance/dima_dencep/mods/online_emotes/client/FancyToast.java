@@ -96,7 +96,7 @@ public class FancyToast implements Toast {
 
         Runnable task = () -> {
             List<FormattedCharSequence> msg = Minecraft.getInstance().font.split(description, 200);
-            Minecraft.getInstance().getToastManager().addToast(new FancyToast(title, msg));
+            Minecraft.getInstance().gui.toastManager().addToast(new FancyToast(title, msg));
         };
 
         if (Minecraft.getInstance().isSameThread()) {
