@@ -1,4 +1,5 @@
 import org.redlance.dima_dencep.gradle.publish2discord.tasks.PublishDiscordTask
+import io.github.p03w.machete.tasks.OptimizeJarsTask
 
 plugins {
     id "org.redlance.dima_dencep.gradle.PublishToDiscord" version "1.0.8"
@@ -109,7 +110,7 @@ shadowJar {
     from(tasks.named("remapFabricJar").map { zipTree(it.archiveFile) })
     from(tasks.named("remapNeoforgeJar").map { zipTree(it.archiveFile) })
 
-    archiveClassifier.set null
+    archiveClassifier.set "fat"
 
     // Services
     filesMatching('META-INF/services/**') {
@@ -139,13 +140,19 @@ shadowJar {
     }
 }
 
-machete {
-    tasks.set(Collections.singleton("shadowJar"))
+var optimizeJar = tasks.register("optimizeJar", OptimizeJarsTask) {
+    input.set(tasks.shadowJar.archiveFile)
+    output.set(layout.buildDirectory.file("libs/${project["archives_base_name"]}-${version}.jar"))
+
     sourceFileStriping.enabled = true
 
     png.compressionLevel.set(9)
     png.compressorIterations.set(32)
     png.enabled = false
+}
+
+tasks.named("assemble") {
+    finalizedBy(optimizeJar)
 }
 
 tasks.register("publishToDiscord", PublishDiscordTask) {
