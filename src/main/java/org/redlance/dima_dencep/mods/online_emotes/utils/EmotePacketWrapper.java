@@ -13,6 +13,7 @@ package org.redlance.dima_dencep.mods.online_emotes.utils;
 import com.mojang.authlib.GameProfile;
 import com.zigythebird.playeranimcore.network.NetworkUtils;
 import io.github.kosmx.emotes.common.network.EmotePacket;
+import io.github.kosmx.emotes.common.network.PacketBound;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
@@ -55,7 +56,7 @@ public class EmotePacketWrapper {
         }
     }
 
-    public WebSocketFrame toWebSocketFrame(ByteBufAllocator alloc) {
+    public WebSocketFrame toWebSocketFrame(ByteBufAllocator alloc, PacketBound target) {
         ByteBuf byteBuf = alloc.buffer();
         try {
             byteBuf.writeByte(1); // Version
@@ -65,7 +66,7 @@ public class EmotePacketWrapper {
             FriendlyByteBuf.writeNullable(byteBuf, this.playerWorldId, NetworkUtils::writeUuid);
             FriendlyByteBuf.writeNullable(byteBuf, this.serverAddress, ProtocolUtils::writeString);
 
-            this.emotePacket.write(byteBuf); // Emote Packet
+            this.emotePacket.write(byteBuf, target); // Emote Packet
             return new BinaryWebSocketFrame(byteBuf); // Frame
         } catch (Throwable th) {
             byteBuf.release();

@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.zigythebird.playeranimcore.PlayerAnimLib;
 import io.github.kosmx.emotes.common.network.EmotePacket;
+import io.github.kosmx.emotes.common.network.PacketBound;
 import io.github.kosmx.emotes.mc.McUtils;
 import net.minecraft.core.RegistryAccess;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
@@ -58,7 +59,7 @@ public class WebsocketHandler extends SimpleChannelInboundHandler<WebSocketFrame
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) {
         switch (msg) {
-            case BinaryWebSocketFrame frame -> this.proxy.receiveMessage(new EmotePacket(frame.content()), null);
+            case BinaryWebSocketFrame frame -> this.proxy.receiveMessage(new EmotePacket(frame.content(), PacketBound.CLIENT), null);
 
             case TextWebSocketFrame frame -> {
                 try {

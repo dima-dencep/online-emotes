@@ -11,6 +11,7 @@
 package org.redlance.dima_dencep.mods.online_emotes.network;
 
 import io.github.kosmx.emotes.common.CommonData;
+import io.github.kosmx.emotes.common.network.PacketBound;
 import io.github.kosmx.emotes.common.network.PacketConfig;
 import io.github.kosmx.emotes.main.network.BaseClientNetwork;
 import io.github.kosmx.emotes.main.network.ClientPacketManager;
@@ -161,7 +162,7 @@ public class OnlineNetworkInstance extends BaseClientNetwork {
         }
 
         EmotePacket writer = builder.setSizeLimit(PAYLOAD_LENGTH, false).build();
-        this.ch.writeAndFlush(new EmotePacketWrapper(writer).toWebSocketFrame(this.ch.alloc()), this.ch.voidPromise());
+        this.ch.writeAndFlush(new EmotePacketWrapper(writer).toWebSocketFrame(this.ch.alloc(), PacketBound.SERVER), this.ch.voidPromise());
 
         if (writer.data.emoteData != null && writer.data.emoteData.data().has("song") && writer.data.skippedPackets.contains(PacketConfig.NBS_CONFIG)) {
             FancyToast.sendMessage(Component.translatable("emotecraft.song_too_big_to_send"));
