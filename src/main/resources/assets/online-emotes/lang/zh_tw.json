@@ -1,24 +1,21 @@
 {
-  "online_emotes.configuration.title": "線上表情",
-
-  "online_emotes.otherconfig.category.global": "主要",
-  "online_emotes.otherconfig.category.netty": "Netty",
-
-  "online_emotes.otherconfig.reconnectionDelay.tooltip": "單位：秒",
-  "online_emotes.otherconfig.reconnectionDelay": "重新連線前的延遲",
-  "online_emotes.otherconfig.replaceMessages": "以更詳細的訊息替換 EmoteCraft 訊息",
-  "online_emotes.otherconfig.debug": "顯示除錯訊息",
-
-  "online_emotes.otherconfig.useEpoll.tooltip": "僅限 Linux",
-  "online_emotes.otherconfig.useEpoll": "使用 Epoll 代替 Nio",
-
-  "online_emotes.warnings.onlyThis": "僅能透過線上表情進行串流！",
-
-  "online_emotes.button.reconect": "重新連線線上表情",
-
-  "online_emotes.messages.connected": "WebSocket 已連線！",
-  "online_emotes.messages.disconnected": "WebSocket 已斷線！",
-  "online_emotes.messages.internal.banned": "你因以下原因被封鎖：%s！ 如果這是錯誤的，請聯絡管理員。",
-  "online_emotes.messages.internal.restarting": "伺服器正在重新啟動……",
-  "online_emotes.messages.internal.restarting-update": "伺服器正在重新啟動以更新，請確保你安裝了最新版本的模組！"
+    "online_emotes.configuration.title": "線上表情",
+    "online_emotes.otherconfig.category.global": "主要",
+    "online_emotes.otherconfig.category.netty": "Netty",
+    "online_emotes.otherconfig.reconnectionDelay.tooltip": "單位：秒",
+    "online_emotes.otherconfig.reconnectionDelay": "重新連線前的延遲",
+    "online_emotes.otherconfig.replaceMessages": "以更詳細的訊息替換 EmoteCraft 訊息",
+    "online_emotes.otherconfig.debug": "顯示除錯訊息",
+    "online_emotes.otherconfig.useEpoll.tooltip": "僅限 Linux",
+    "online_emotes.otherconfig.useEpoll": "使用 Epoll 代替 Nio",
+    "online_emotes.warnings.onlyThis": "僅能透過線上表情進行串流！",
+    "online_emotes.button.reconect": "重新連線線上表情",
+    "online_emotes.messages.connected": "WebSocket 已連線！",
+    "online_emotes.messages.disconnected": "WebSocket 已斷線！",
+    "online_emotes.messages.internal.banned": "你因以下原因被封鎖：%s！ 如果這是錯誤的，請聯絡管理員。",
+    "online_emotes.messages.internal.restarting": "伺服器正在重新啟動……",
+    "online_emotes.messages.internal.restarting-update": "伺服器正在重新啟動以更新，請確保你安裝了最新版本的模組！",
+    "online_emotes.otherconfig.useKQueue": "使用 KQueue 取代 Nio",
+    "online_emotes.messages.handshake-done": "握手完成！（過時：%s）",
+    "online_emotes.otherconfig.useKQueue.tooltip": "僅適用於 macOS"
 }
