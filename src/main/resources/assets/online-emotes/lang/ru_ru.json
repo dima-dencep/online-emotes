@@ -6,7 +6,6 @@
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "В секундах",
   "online_emotes.otherconfig.reconnectionDelay": "Задержка перед повторным подключением",
-  "online_emotes.otherconfig.replaceMessages": "Заменять сообщения EmoteCraft на более подробные",
   "online_emotes.otherconfig.debug": "Отображение отладочных сообщений в игре",
 
   "online_emotes.otherconfig.useEpoll.tooltip": "Только для Линукс",

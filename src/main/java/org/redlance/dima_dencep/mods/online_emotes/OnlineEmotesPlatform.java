@@ -18,7 +18,6 @@ import java.nio.file.Path;
 public interface OnlineEmotesPlatform extends AdvancedService {
     OnlineEmotesPlatform INSTANCE = ServiceUtils.loadService(OnlineEmotesPlatform.class);
 
-    String getModVersion(String modid);
     Path getModFile(String modid);
 
     Path getConfigPath();

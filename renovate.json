@@ -3,7 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "baseBranchPatterns": ["/.*\\/dev$/"],
+  "matchBaseBranches": ["dev"],
   "packageRules": [
     {
       "matchPackageNames": ["com.mojang:*"],
@@ -15,10 +15,6 @@
         "https://repo.maven.apache.org/maven2",
         "https://maven.fabricmc.net/"
       ]
-    },
-    {
-      "matchBaseBranches": ["/^1\\.20\\./", "/^1\\.21\\./", "/^26\\.1/"],
-      "enabled": false
     }
   ]
 }

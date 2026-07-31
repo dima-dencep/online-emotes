@@ -6,7 +6,6 @@
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "單位：秒",
   "online_emotes.otherconfig.reconnectionDelay": "重新連線前的延遲",
-  "online_emotes.otherconfig.replaceMessages": "以更詳細的訊息替換 EmoteCraft 訊息",
   "online_emotes.otherconfig.debug": "顯示除錯訊息",
 
   "online_emotes.otherconfig.useEpoll.tooltip": "僅限 Linux",

@@ -12,8 +12,6 @@ package org.redlance.dima_dencep.mods.online_emotes.fabric;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.ModOrigin;
 import org.jetbrains.annotations.Nullable;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
@@ -23,15 +21,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 public final class OnlineEmotesPlatformImpl implements OnlineEmotesPlatform {
-    @Override
-    public String getModVersion(String modid) {
-        return FabricLoader.getInstance().getModContainer(modid)
-                .map(ModContainer::getMetadata)
-                .map(ModMetadata::getVersion)
-                .map(Version::getFriendlyString)
-                .orElse(modid.toUpperCase() + "-UNKNOWN-FABRIC");
-    }
-
     @Override
     public @Nullable Path getModFile(String modid) {
         return FabricLoader.getInstance().getModContainer(modid)

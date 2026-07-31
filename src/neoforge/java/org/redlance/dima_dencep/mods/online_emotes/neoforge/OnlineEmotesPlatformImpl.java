@@ -22,13 +22,6 @@ import java.nio.file.Path;
 @SuppressWarnings("UnstableApiUsage")
 public final class OnlineEmotesPlatformImpl implements OnlineEmotesPlatform {
     @Override
-    public String getModVersion(String modid) {
-        ModFileInfo info = FMLLoader.getCurrent().getLoadingModList().getModFileById(modid);
-        if (info == null) return modid.toUpperCase() + "-UNKNOWN-NEOFORGE";
-        return info.versionString();
-    }
-
-    @Override
     public @Nullable Path getModFile(String modid) {
         ModFileInfo inf = FMLLoader.getCurrent().getLoadingModList().getModFileById(modid);
         if (inf == null) return null;

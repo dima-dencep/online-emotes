@@ -10,93 +10,28 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.client;
 
+import io.github.kosmx.emotes.arch.gui.toast.EmotecraftToast;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastManager;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.FormattedCharSequence;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.redlance.dima_dencep.mods.online_emotes.OnlineEmotes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class FancyToast implements Toast {
+public class FancyToast extends EmotecraftToast {
     public static final Identifier ICON = Identifier.fromNamespaceAndPath("online-emotes", "icon.png");
     public static final Component TITLE = Component.translatable("online_emotes.configuration.title");
 
-    protected final Component title;
-    private final List<FormattedCharSequence> messageLines = new ArrayList<>();
-
-    private Visibility visibility = Visibility.SHOW;
-
-    protected FancyToast(Component title, List<FormattedCharSequence> msg) {
-        this.title = title;
-        this.messageLines.addAll(msg);
-    }
-
-    @Override
-    public @NonNull Visibility getWantedVisibility() {
-        return this.visibility;
-    }
-
-    @Override
-    public void update(ToastManager manager, long timeSinceLastVisible) {
-        this.visibility = timeSinceLastVisible < (double) 1500L * manager.getNotificationDisplayTimeMultiplier() ? Visibility.SHOW : Visibility.HIDE;
-    }
-
-    @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, @NonNull Font font, long fullyVisibleForMs) {
-        graphics.fill(0, 0, width(), height() - 1, -1207959552);
-        graphics.fill(0, height() - 1, width(), height(), 0xFFfc1a47);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, ICON, 8, 8, 0.0F, 0.0F, 16, 16, 16, 16);
-
-        if (this.title != null) {
-            graphics.text(font, this.title, 30, 7, -1, false);
-        }
-
-        for (int j = 0; j < this.messageLines.size(); j++) {
-            graphics.text(font, this.messageLines.get(j), 30, (title != null ? 18 : 16) + j * 12, -1, false);
-        }
-    }
-
-    @Override
-    public int width() {
-        Font font = Minecraft.getInstance().font;
-
-        int headerSize = font.width(this.title);
-        int messageSize = this.messageLines.stream()
-                .mapToInt(font::width)
-                .max()
-                .orElse(200);
-
-        return 37 + Math.max(headerSize, messageSize);
-    }
-
-    @Override
-    public int height() {
-        return 20 + Math.max(this.messageLines.size(), 1) * 12;
-    }
-
-    @Override
-    public int occcupiedSlotCount() {
-        return Math.min(Toast.super.occcupiedSlotCount(), 5);
+    protected FancyToast(ToastManager manager, @Nullable Component message) {
+        super(manager, ICON, 1500L, TITLE, message);
     }
 
     public static void sendMessage(Component description) {
-        sendMessage(FancyToast.TITLE, description);
-    }
-
-    public static void sendMessage(Component title, Component description) {
         OnlineEmotes.LOGGER.info("Toast message: {}", description.getString());
 
         Runnable task = () -> {
-            List<FormattedCharSequence> msg = Minecraft.getInstance().font.split(description, 200);
-            Minecraft.getInstance().gui.toastManager().addToast(new FancyToast(title, msg));
+            ToastManager manager = Minecraft.getInstance().gui.toastManager();
+            manager.addToast(new FancyToast(manager, description));
         };
 
         if (Minecraft.getInstance().isSameThread()) {

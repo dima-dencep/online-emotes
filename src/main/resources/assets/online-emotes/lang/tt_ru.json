@@ -9,7 +9,6 @@
 
   "online_emotes.otherconfig.reconnectionDelay.tooltip": "Секундта",
   "online_emotes.otherconfig.reconnectionDelay": "Яңадан тоташу алдыннан тоткарлагыч",
-  "online_emotes.otherconfig.replaceMessages": "EmoteCraft хәбәрләрен тәфсиллерәккә алыштыру",
   "online_emotes.otherconfig.debug": "Төзәтү хәбәрләрен күрсәтү",
 
   "online_emotes.otherconfig.useEpoll.tooltip": "Linux өчен генә",

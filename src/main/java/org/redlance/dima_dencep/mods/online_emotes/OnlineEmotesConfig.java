@@ -20,7 +20,6 @@ public final class OnlineEmotesConfig extends SerializableConfig {
             return (long) value;
         }
     };
-    public final ConfigEntry<Boolean> replaceMessages = new ConfigEntry<>("replaceMessages", false, false, category("global"));
     public final ConfigEntry<Boolean> debug = new ConfigEntry<>("debug", false, false, category("global"));
 
     // Netty

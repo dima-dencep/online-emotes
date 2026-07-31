@@ -10,6 +10,7 @@
 
 package org.redlance.dima_dencep.mods.online_emotes.network;
 
+import io.github.kosmx.emotes.EmotecraftModPlatform;
 import io.github.kosmx.emotes.common.CommonData;
 import io.github.kosmx.emotes.common.network.PacketBound;
 import io.github.kosmx.emotes.common.network.PacketConfig;
@@ -36,15 +37,12 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.concurrent.ScheduledFuture;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.redlance.platformtools.referer.PlatformFileReferer;
 
 import javax.net.ssl.SSLException;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @ChannelHandler.Sharable
@@ -129,19 +127,8 @@ public class OnlineNetworkInstance extends BaseClientNetwork {
         return channelFuture;
     }
 
-    @Override
-    public boolean sendPlayerID() {
-        return true;
-    }
-
     public void sendOnlineEmotesConfig() {
-        sendC2SConfig(builder -> {
-            try {
-                sendMessage(builder, null);
-            } catch (IOException e) {
-                OnlineEmotes.LOGGER.fatal("Failed to send message!", e);
-            }
-        });
+        sendMessage(createConfigurationPacket(false), false);
     }
 
     @Override
@@ -151,15 +138,12 @@ public class OnlineNetworkInstance extends BaseClientNetwork {
     }
 
     @Override
-    public void sendMessage(EmotePacket.Builder builder, @Nullable UUID target) throws IOException {
+    public void sendMessage(EmotePacket.Builder builder, boolean updateVersions) {
         if (!isActive()) {
             OnlineEmotes.LOGGER.error("Can't send packet to an inactive channel!");
             return;
         }
-
-        if (target != null) {
-            builder.configureTarget(target);
-        }
+        if (updateVersions) builder.setVersion(getVersions());
 
         EmotePacket writer = builder.setSizeLimit(PAYLOAD_LENGTH, false).build();
         this.ch.writeAndFlush(new EmotePacketWrapper(writer).toWebSocketFrame(this.ch.alloc(), PacketBound.SERVER), this.ch.voidPromise());
@@ -206,8 +190,8 @@ public class OnlineNetworkInstance extends BaseClientNetwork {
         DefaultHttpHeaders headers = new DefaultHttpHeaders();
 
         headers.add(HttpHeaderNames.USER_AGENT, String.format("%s/%s %s/%s Minecraft/%s",
-                OnlineEmotes.MOD_ID, OnlineEmotesPlatform.INSTANCE.getModVersion(OnlineEmotes.MOD_ID),
-                CommonData.MOD_NAME, OnlineEmotesPlatform.INSTANCE.getModVersion(CommonData.MOD_ID),
+                OnlineEmotes.MOD_ID, EmotecraftModPlatform.INSTANCE.getModVersion(OnlineEmotes.MOD_ID),
+                CommonData.MOD_NAME, EmotecraftModPlatform.INSTANCE.getModVersion(CommonData.MOD_ID),
                 SharedConstants.getProtocolVersion()
         ));
 
@@ -225,6 +209,11 @@ public class OnlineNetworkInstance extends BaseClientNetwork {
 
         OnlineEmotes.LOGGER.info("Headers: {}", headers.unwrap());
         return headers;
+    }
+
+    @Override
+    public boolean isTrackingPlayState() {
+        return false;
     }
 
     @Override
