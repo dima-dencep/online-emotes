@@ -3,8 +3,10 @@
   "extends": [
     "config:recommended"
   ],
-  "matchBaseBranches": ["dev"],
   "packageRules": [
+    {
+      "matchBaseBranches": ["dev"]
+    },
     {
       "matchPackageNames": ["com.mojang:*"],
       "enabled": false
