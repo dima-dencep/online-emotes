@@ -1,1 +1,20 @@
-{}
+{
+    "online_emotes.configuration.title": "Emosi Online",
+    "online_emotes.messages.internal.restarting": "Server keur dihidupkeun deui...",
+    "online_emotes.otherconfig.reconnectionDelay": "Tunda saméméh nyambung deui",
+    "online_emotes.otherconfig.replaceMessages": "Ngaganti pesen EmoteCraft kalayan langkung rinci",
+    "online_emotes.messages.connected": "WebSocket nyambung!",
+    "online_emotes.otherconfig.useKQueue": "Ngagunakeun KQueue tibatan Nio",
+    "online_emotes.otherconfig.useEpoll": "Ngagunakeun Epoll tinimbang Nio",
+    "online_emotes.messages.handshake-done": "Jabat leungeun geus réngsé! (kadaluwarsa: %s)",
+    "online_emotes.otherconfig.category.global": "Utama",
+    "online_emotes.button.reconect": "Nyambungkeun deui OnlineEmotes",
+    "online_emotes.messages.disconnected": "WebSocket pegat!",
+    "online_emotes.otherconfig.category.netty": "Netty",
+    "online_emotes.otherconfig.useKQueue.tooltip": "Ngan pikeun macOS",
+    "online_emotes.otherconfig.reconnectionDelay.tooltip": "Dina sababaraha detik",
+    "online_emotes.messages.internal.restarting-update": "Server keur di-restart pikeun apdet, pastikeun anjeun geus boga vérsi panganyarna tina mod-na!",
+    "online_emotes.otherconfig.useEpoll.tooltip": "Ngan pikeun Linux",
+    "online_emotes.otherconfig.debug": "Némbongkeun pesen debug",
+    "online_emotes.warnings.onlyThis": "Ngan streaming ngaliwatan Online Emotes anu sayogi!"
+}
