@@ -16,5 +16,6 @@
     "online_emotes.messages.internal.restarting-update": "Server keur di-restart pikeun apdet, pastikeun anjeun geus boga vérsi panganyarna tina mod-na!",
     "online_emotes.otherconfig.useEpoll.tooltip": "Ngan pikeun Linux",
     "online_emotes.otherconfig.debug": "Némbongkeun pesen debug",
-    "online_emotes.warnings.onlyThis": "Ngan streaming ngaliwatan Online Emotes anu sayogi!"
+    "online_emotes.warnings.onlyThis": "Ngan streaming ngaliwatan Online Emotes anu sayogi!",
+    "online_emotes.messages.internal.banned": "Anjeun parantos di larang alatan: {0}! Lamun ieu kasalahan, hubungi dukungan."
 }
