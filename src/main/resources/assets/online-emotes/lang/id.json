@@ -1,1 +1,21 @@
-{}
+{
+    "online_emotes.configuration.title": "Emoji Online",
+    "online_emotes.messages.internal.restarting": "Server sedang di-restart...",
+    "online_emotes.otherconfig.reconnectionDelay": "Waktu tunda sebelum terhubung kembali",
+    "online_emotes.otherconfig.replaceMessages": "Mengganti pesan EmoteCraft dengan yang lebih rinci",
+    "online_emotes.messages.connected": "WebSocket sudah terhubung!",
+    "online_emotes.otherconfig.useKQueue": "Menggunakan KQueue sebagai pengganti Nio",
+    "online_emotes.messages.internal.banned": "Anda telah diblokir karena alasan: %s! Jika ini merupakan kesalahan, silakan hubungi bagian dukungan.",
+    "online_emotes.otherconfig.useEpoll": "Menggunakan Epoll sebagai pengganti Nio",
+    "online_emotes.messages.handshake-done": "Jabat tangan selesai! (sudah usang: %s)",
+    "online_emotes.otherconfig.category.global": "Beranda",
+    "online_emotes.button.reconect": "Aktifkan Kembali Emote Online",
+    "online_emotes.messages.disconnected": "WebSocket terputus!",
+    "online_emotes.otherconfig.category.netty": "Netty",
+    "online_emotes.otherconfig.useKQueue.tooltip": "Hanya untuk macOS",
+    "online_emotes.otherconfig.reconnectionDelay.tooltip": "Dalam hitungan detik",
+    "online_emotes.messages.internal.restarting-update": "Server sedang di-restart untuk melakukan pembaruan, pastikan Anda sudah menggunakan versi terbaru dari mod ini!",
+    "online_emotes.otherconfig.useEpoll.tooltip": "Hanya untuk Linux",
+    "online_emotes.otherconfig.debug": "Menampilkan pesan debug",
+    "online_emotes.warnings.onlyThis": "Hanya tersedia streaming melalui Online Emotes!"
+}
