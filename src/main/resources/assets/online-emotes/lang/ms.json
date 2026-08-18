@@ -1,1 +1,21 @@
-{}
+{
+    "online_emotes.configuration.title": "Emoji Dalam Talian",
+    "online_emotes.messages.internal.restarting": "Pelayan sedang dihidupkan semula...",
+    "online_emotes.otherconfig.reconnectionDelay": "Lag sebelum menyambung semula",
+    "online_emotes.otherconfig.replaceMessages": "Menggantikan mesej EmoteCraft dengan lebih banyak perincian",
+    "online_emotes.messages.connected": "WebSocket telah disambungkan!",
+    "online_emotes.otherconfig.useKQueue": "Menggunakan KQueue bukannya Nio",
+    "online_emotes.messages.internal.banned": "Anda telah diharamkan atas sebab: %s! Jika ini adalah ralat, hubungi sokongan.",
+    "online_emotes.otherconfig.useEpoll": "Menggunakan Epoll bukannya Nio",
+    "online_emotes.messages.handshake-done": "Jabatan tangan selesai! (lapuk: %s)",
+    "online_emotes.otherconfig.category.global": "Utama",
+    "online_emotes.button.reconect": "Sambungkan semula OnlineEmotes",
+    "online_emotes.messages.disconnected": "WebSocket terputus!",
+    "online_emotes.otherconfig.category.netty": "Netty",
+    "online_emotes.otherconfig.useKQueue.tooltip": "Hanya untuk macOS",
+    "online_emotes.otherconfig.reconnectionDelay.tooltip": "Dalam beberapa saat",
+    "online_emotes.messages.internal.restarting-update": "Pelayan sedang dihidupkan semula untuk dikemas kini, pastikan anda mempunyai versi mod terkini!",
+    "online_emotes.otherconfig.useEpoll.tooltip": "Hanya untuk Linux",
+    "online_emotes.otherconfig.debug": "Menampilkan mesej debug",
+    "online_emotes.warnings.onlyThis": "Hanya penstriman melalui Online Emotes tersedia!"
+}
