@@ -16,6 +16,6 @@
     "online_emotes.messages.internal.restarting": "伺服器正在重新啟動……",
     "online_emotes.messages.internal.restarting-update": "伺服器正在重新啟動以更新，請確保你安裝了最新版本的模組！",
     "online_emotes.otherconfig.useKQueue": "使用 KQueue 取代 Nio",
-    "online_emotes.messages.handshake-done": "握手完成！（過時：%s）",
+    "online_emotes.messages.handshake-done": "握手完成！ (過時：%s)",
     "online_emotes.otherconfig.useKQueue.tooltip": "僅適用於 macOS"
 }
