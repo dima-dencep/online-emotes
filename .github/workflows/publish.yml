@@ -85,7 +85,7 @@ jobs:
             21
 
       - name: Publish Fabric to Modrinth & CurseForge
-        uses: Kir-Antipov/mc-publish@v3.3.0
+        uses: Kir-Antipov/mc-publish@v3.3.1
         with:
           modrinth-id: Dc4g4seU
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -99,6 +99,7 @@ jobs:
           name: "[Fabric ${{ steps.read_property.outputs.minecraft_version }}] v${{ steps.read_property.outputs.mod_version }}"
 
           changelog: ${{steps.build_changelog.outputs.changelog}}
+          environment: client
 
           version: "${{ steps.read_property.outputs.mod_version }}+mc${{ steps.read_property.outputs.minecraft_version }}-fabric"
           version-type: release
