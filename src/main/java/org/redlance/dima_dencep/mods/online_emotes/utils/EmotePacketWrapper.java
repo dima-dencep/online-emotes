@@ -24,7 +24,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import org.jetbrains.annotations.Nullable;
-import team.unnamed.mocha.util.network.ProtocolUtils;
+import org.redlance.mocha.parser.util.network.ProtocolUtils;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
